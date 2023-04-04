@@ -1,0 +1,12 @@
+# ignore files (https://git-scm.com/docs/gitignore)
+codegen/initdb/**
+!codegen/initdb/index.php
+codegen/src/_core_qcodo
+codegen/src/ajax_drafts/**
+!codegen/src/ajax_drafts/index.php
+!codegen/src/ajax_drafts/index.tpl.php
+codegen/src/form_drafts/**
+!codegen/src/form_drafts/index.php
+codegen/src/includes/ajaxbase_classes_generated/**
+codegen/src/includes/formbase_classes_generated/**
+codegen/src/includes/data_classes/**

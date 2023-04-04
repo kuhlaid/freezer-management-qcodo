@@ -1,0 +1,3 @@
+# About these files
+
+These scripts are used together to create a form for scanning biological samples into a box. Each cell of the box is programmed to respond to a specific barcode encoding scheme so samples that do not belong in this box will throw an alert to the user when scanning barcodes that do not belong. It also dynamically 'un-encodes' the barcode data to fill in more 'human readable' aspects of the samples that are saved to the database.

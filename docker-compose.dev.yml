@@ -1,0 +1,45 @@
+version: '2'
+services:
+  mysql:
+        image: mysql:8.0
+        container_name: ${DB_SERVER}
+        command: --default-authentication-plugin=mysql_native_password
+        volumes:
+          - ./initdb:/docker-entrypoint-initdb.d
+        restart: always
+        environment:
+          - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+          - MYSQL_DATABASE=${MYSQL_DATABASE}
+          - MYSQL_USER=${MYSQL_USER}
+          - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+        ports:
+          - "8082:3306"
+  website:
+    container_name: php74
+    build:
+      context: ./
+    links:
+      - "mysql:database"
+    volumes:
+      - ./src:/var/www/html
+    ports:
+      - 8000:80
+    depends_on:
+      - mysql
+    environment:
+      APPLICATION_NAME: ${APPLICATION_NAME}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_SERVER: ${DB_SERVER}
+      DB_PORT: ${DB_PORT}
+      DB_ADAPTER: ${DB_ADAPTER}
+      APP_SOURCE: ${APP_SOURCE}
+      APPLICATION_NAME: ${APPLICATION_NAME}
+      APPLICATION_TITLE: ${APPLICATION_TITLE}
+      COOKIE_DOMAIN_HOST: ${COOKIE_DOMAIN_HOST}
+      DOMAIN_URL: ${DOMAIN_URL}
+      ROOT_DIR: ${ROOT_DIR}
+      DISPLAY_ERRORS: ${DISPLAY_ERRORS}
+      VERSION_Num: ${VERSION_Num}
+      SUBDIRECTORY: ${SUBDIRECTORY}
