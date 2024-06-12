@@ -170,7 +170,7 @@
 			} else
 				throw new QCallerException('ParentObject must be either a QForm or QControl object');
 
-			if (strlen($strControlId) == 0)
+			if (strlen($strControlId ?? '') == 0)
 				$this->strControlId = $this->objForm->GenerateControlId();
 			else {
 				// Verify ControlId is only AlphaNumeric Characters
@@ -452,7 +452,7 @@
 				$strToReturn .= sprintf("background-color:%s;", $this->strBackColor);
 			if ($this->strBorderColor)
 				$strToReturn .= sprintf("border-color:%s;", $this->strBorderColor);
-			if (strlen(trim($this->strBorderWidth)) > 0) {
+			if (strlen(trim($this->strBorderWidth ?? '')) > 0) {
 				$strBorderWidth = null;
 				try {
 					$strBorderWidth = QType::Cast($this->strBorderWidth, QType::Integer);
@@ -492,7 +492,7 @@
 				$strTextDecoration .= "line-through ";
 			
 			if ($strTextDecoration) {
-				$strTextDecoration = trim($strTextDecoration);
+				$strTextDecoration = trim($strTextDecoration ?? '');
 				$strToReturn .= sprintf("text-decoration:%s;", $strTextDecoration);
 			}
 
@@ -646,7 +646,7 @@
 			else if ($blnIsBlockElement)
 				$strStyle .= 'display:inline;';
 
-			if (strlen(trim($this->strLeft)) > 0) {
+			if (strlen(trim($this->strLeft ?? '')) > 0) {
 				$strLeft = null;
 				try {
 					$strLeft = QType::Cast($this->strLeft, QType::Integer);
@@ -658,7 +658,7 @@
 					$strStyle .= sprintf('left:%spx;', $this->strLeft);
 			}
 
-			if (strlen(trim($this->strTop)) > 0) {
+			if (strlen(trim($this->strTop ?? '')) > 0) {
 				$strTop = null;
 				try {
 					$strTop = QType::Cast($this->strTop, QType::Integer);

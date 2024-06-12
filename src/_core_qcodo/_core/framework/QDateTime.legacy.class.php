@@ -409,11 +409,11 @@
 
 			$intStartPosition = 0;
 			for ($intIndex = 0; $intIndex < count($strArray); $intIndex++) {
-				$strToken = trim($strArray[$intIndex]);
+				$strToken = trim($strArray[$intIndex] ?? '');
 				if ($strToken) {
 					$intEndPosition = strpos($strFormat, $strArray[$intIndex], $intStartPosition);
 					$strToReturn .= substr($strFormat, $intStartPosition, $intEndPosition - $intStartPosition);
-					$intStartPosition = $intEndPosition + strlen($strArray[$intIndex]);
+					$intStartPosition = $intEndPosition + strlen($strArray[$intIndex] ?? '');
 
 					switch ($strArray[$intIndex]) {
 						case 'M':
@@ -498,7 +498,7 @@
 				}
 			}
 
-			if ($intStartPosition < strlen($strFormat))
+			if ($intStartPosition < strlen($strFormat ?? ''))
 				$strToReturn .= substr($strFormat, $intStartPosition);
 
 			return $strToReturn;

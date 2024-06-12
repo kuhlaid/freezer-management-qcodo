@@ -114,7 +114,7 @@
 						return $mixItem;
 					if (is_null($mixItem))
 						return false;
-					if (strlen($mixItem) == 0)
+					if (strlen($mixItem ?? '') == 0)
 						return false;
 					if (strtolower($mixItem) == 'false')
 						return false;
@@ -123,7 +123,7 @@
 
 				case QType::Integer:
 				case QType::Float:
-					if (strlen($mixItem) == 0)
+					if (strlen($mixItem ?? '') == 0)
 						return null;
 
 					$mixOriginal = $mixItem;

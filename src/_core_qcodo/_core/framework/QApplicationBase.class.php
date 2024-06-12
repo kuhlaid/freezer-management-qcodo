@@ -223,14 +223,14 @@
 			}
 
 			// Setup PathInfo and QueryString (if applicable)
-			QApplicationBase::$PathInfo = array_key_exists('PATH_INFO', $_SERVER) ? trim($_SERVER['PATH_INFO']) : null;
+			QApplicationBase::$PathInfo = array_key_exists('PATH_INFO', $_SERVER) ? trim($_SERVER['PATH_INFO'] ?? '') : null;
 			QApplicationBase::$QueryString = array_key_exists('QUERY_STRING', $_SERVER) ? $_SERVER['QUERY_STRING'] : null;
 
 			// Setup RequestUri
 			if (defined('__URL_REWRITE__')) {
 				switch (strtolower(__URL_REWRITE__)) {
 					case 'apache':
-						QApplicationBase::$RequestUri = htmlentities($_SERVER['REQUEST_URI']); // clean any suspicious characters (Jan. 2019 - wpg)
+						QApplicationBase::$RequestUri = htmlentities($_SERVER['REQUEST_URI'] ?? ''); // clean any suspicious characters (Jan. 2019 - wpg)
 						break;
 
 					case 'none':
@@ -249,11 +249,11 @@
 			}
 
 			// Setup DocumentRoot
-			QApplicationBase::$DocumentRoot = trim(__DOCROOT__);
+			QApplicationBase::$DocumentRoot = trim(__DOCROOT__ ?? '');
 
 			// Setup Browser Type
 			if (array_key_exists('HTTP_USER_AGENT', $_SERVER)) {
-				$strUserAgent = trim(strtolower($_SERVER['HTTP_USER_AGENT']));
+				$strUserAgent = trim(strtolower($_SERVER['HTTP_USER_AGENT'] ?? '') ?? '');
 
 				// INTERNET EXPLORER (supporting versions 6.0 and 7.0)
 				if (strpos($strUserAgent, 'msie') !== false) {
@@ -329,7 +329,7 @@
 
 					// Lookup the Serialized Array from the DB_CONFIG constants and unserialize it
 					$strSerialArray = constant($strConstantName);
-					$objConfigArray = unserialize($strSerialArray);
+					$objConfigArray = unserialize($strSerialArray ?? '');
 
 					// Set All Expected Keys
 					foreach ($strExpectedKeys as $strExpectedKey)
@@ -391,7 +391,7 @@
 				set_error_handler('QcodoHandleError', 0);
 				QApplicationBase::$intStoredErrorLevel = error_reporting(0);
 			} else {
-				set_error_handler($strName, $intLevel);
+				set_error_handler($strName, $intLevel ?? 0);
 				QApplicationBase::$intStoredErrorLevel = -1;
 			}
 		}
@@ -560,7 +560,7 @@
 			// Are we the correct IP?
 			if (is_string(ALLOW_REMOTE_ADMIN))
 				foreach (explode(',', ALLOW_REMOTE_ADMIN) as $strIpAddress)
-					if ($_SERVER['REMOTE_ADDR'] == trim($strIpAddress))
+					if ($_SERVER['REMOTE_ADDR'] == trim($strIpAddress ?? ''))
 						return;
 
 			// If we're here -- then we're not allowed to access.  Present the Error/Issue.
@@ -623,7 +623,7 @@
 				return $strBuffer;
 			} else {
 				if (QApplicationBase::$RequestMode == QRequestMode::Ajax) {
-					return trim($strBuffer);
+					return trim($strBuffer ?? '');
 				} else {
 					// Update Cache-Control setting
 					header('Cache-Control: ' . QApplicationBase::$CacheControl);
@@ -641,18 +641,18 @@
 		public static function RenderJavaScript($blnOutput = true) {
 			$strScript = '';
 			foreach (QApplicationBase::$AlertMessageArray as $strAlert) {
-				$strAlert = addslashes($strAlert);
+				$strAlert = addslashes($strAlert ?? '');
 				$strScript .= sprintf('alert("%s"); ', $strAlert);
 			}
 			foreach (QApplicationBase::$JavaScriptArrayHighPriority as $strJavaScript) {
-				$strJavaScript = trim($strJavaScript);
+				$strJavaScript = trim($strJavaScript ?? '');
 				if (QString::LastCharacter($strJavaScript) != ';')
 					$strScript .= sprintf('%s; ', $strJavaScript);
 				else
 					$strScript .= sprintf('%s ', $strJavaScript);
 			}
 			foreach (QApplicationBase::$JavaScriptArray as $strJavaScript) {
-				$strJavaScript = trim($strJavaScript);
+				$strJavaScript = trim($strJavaScript ?? '');
 				if (QString::LastCharacter($strJavaScript) != ';')
 					$strScript .= sprintf('%s; ', $strJavaScript);
 				else
@@ -700,7 +700,7 @@
 		 * @return string the html escaped string
 		 */
 		public static function HtmlEntities($strText) {
-			return htmlentities($strText, ENT_COMPAT); 	// wpg - remove last argument (, QApplicationBase::$EncodingType) if there are crazy characters (notibly one of those Word characters that causes a bug in PHP)
+			return htmlentities($strText ?? '', ENT_COMPAT); 	// wpg - remove last argument (, QApplicationBase::$EncodingType) if there are crazy characters (notibly one of those Word characters that causes a bug in PHP)
 		}
 
   		/**
@@ -732,7 +732,7 @@
 			if (QApplicationBase::$Database) foreach (QApplicationBase::$Database as $intKey => $objObject) {
 				printf('<li>QApplicationBase::$Database[%s] = %s</li>', 
 					$intKey,
-					var_export(unserialize(constant('DB_CONNECTION_' . $intKey)), true));
+					var_export(unserialize(constant('DB_CONNECTION_' . $intKey) ?? ''), true));
 			}
 			_p('</ul></div>', false);
 		}

@@ -143,7 +143,7 @@ class Zend_Uri_Http extends Zend_Uri
 
         // If no scheme-specific part was supplied, the user intends to create
         // a new URI with this object.  No further parsing is required.
-        if (strlen($schemeSpecific) === 0) {
+        if (strlen($schemeSpecific ?? '') === 0) {
             return;
         }
 
@@ -251,11 +251,11 @@ class Zend_Uri_Http extends Zend_Uri
             throw new Zend_Uri_Exception('One or more parts of the URI are invalid');
         }
 
-        $password = strlen($this->_password) > 0 ? ":$this->_password" : '';
-        $auth     = strlen($this->_username) > 0 ? "$this->_username$password@" : '';
-        $port     = strlen($this->_port) > 0 ? ":$this->_port" : '';
-        $query    = strlen($this->_query) > 0 ? "?$this->_query" : '';
-        $fragment = strlen($this->_fragment) > 0 ? "#$this->_fragment" : '';
+        $password = strlen($this->_password ?? '') > 0 ? ":$this->_password" : '';
+        $auth     = strlen($this->_username ?? '') > 0 ? "$this->_username$password@" : '';
+        $port     = strlen($this->_port ?? '') > 0 ? ":$this->_port" : '';
+        $query    = strlen($this->_query ?? '') > 0 ? "?$this->_query" : '';
+        $fragment = strlen($this->_fragment ?? '') > 0 ? "#$this->_fragment" : '';
 
         return $this->_scheme
              . '://'
@@ -292,7 +292,7 @@ class Zend_Uri_Http extends Zend_Uri
      */
     public function getUsername()
     {
-        return strlen($this->_username) > 0 ? $this->_username : false;
+        return strlen($this->_username ?? '') > 0 ? $this->_username : false;
     }
 
     /**
@@ -311,7 +311,7 @@ class Zend_Uri_Http extends Zend_Uri
         }
 
         // If the username is empty, then it is considered valid
-        if (strlen($username) === 0) {
+        if (strlen($username ?? '') === 0) {
             return true;
         }
 
@@ -354,7 +354,7 @@ class Zend_Uri_Http extends Zend_Uri
      */
     public function getPassword()
     {
-        return strlen($this->_password) > 0 ? $this->_password : false;
+        return strlen($this->_password ?? '') > 0 ? $this->_password : false;
     }
 
     /**
@@ -373,12 +373,12 @@ class Zend_Uri_Http extends Zend_Uri
         }
 
         // If the password is empty, then it is considered valid
-        if (strlen($password) === 0) {
+        if (strlen($password ?? '') === 0) {
             return true;
         }
 
         // If the password is nonempty, but there is no username, then it is considered invalid
-        if (strlen($password) > 0 and strlen($this->_username) === 0) {
+        if (strlen($password ?? '') > 0 and strlen($this->_username ?? '') === 0) {
             return false;
         }
 
@@ -421,7 +421,7 @@ class Zend_Uri_Http extends Zend_Uri
      */
     public function getHost()
     {
-        return strlen($this->_host) > 0 ? $this->_host : false;
+        return strlen($this->_host ?? '') > 0 ? $this->_host : false;
     }
 
     /**
@@ -439,7 +439,7 @@ class Zend_Uri_Http extends Zend_Uri
         }
 
         // If the host is empty, then it is considered invalid
-        if (strlen($host) === 0) {
+        if (strlen($host ?? '') === 0) {
             return false;
         }
 
@@ -476,7 +476,7 @@ class Zend_Uri_Http extends Zend_Uri
      */
     public function getPort()
     {
-        return strlen($this->_port) > 0 ? $this->_port : false;
+        return strlen($this->_port ?? '') > 0 ? $this->_port : false;
     }
 
     /**
@@ -493,7 +493,7 @@ class Zend_Uri_Http extends Zend_Uri
         }
 
         // If the port is empty, then it is considered valid
-        if (strlen($port) === 0) {
+        if (strlen($port ?? '') === 0) {
             return true;
         }
 
@@ -528,7 +528,7 @@ class Zend_Uri_Http extends Zend_Uri
      */
     public function getPath()
     {
-        return strlen($this->_path) > 0 ? $this->_path : '/';
+        return strlen($this->_path ?? '') > 0 ? $this->_path : '/';
     }
 
     /**
@@ -546,7 +546,7 @@ class Zend_Uri_Http extends Zend_Uri
         }
 
         // If the path is empty, then it is considered valid
-        if (strlen($path) === 0) {
+        if (strlen($path ?? '') === 0) {
             return true;
         }
 
@@ -588,7 +588,7 @@ class Zend_Uri_Http extends Zend_Uri
      */
     public function getQuery()
     {
-        return strlen($this->_query) > 0 ? $this->_query : false;
+        return strlen($this->_query ?? '') > 0 ? $this->_query : false;
     }
 
     /**
@@ -624,7 +624,7 @@ class Zend_Uri_Http extends Zend_Uri
         }
 
         // If query is empty, it is considered to be valid
-        if (strlen($query) === 0) {
+        if (strlen($query ?? '') === 0) {
             return true;
         }
 
@@ -713,7 +713,7 @@ class Zend_Uri_Http extends Zend_Uri
      */
     public function getFragment()
     {
-        return strlen($this->_fragment) > 0 ? $this->_fragment : false;
+        return strlen($this->_fragment ?? '') > 0 ? $this->_fragment : false;
     }
 
     /**
@@ -732,7 +732,7 @@ class Zend_Uri_Http extends Zend_Uri
         }
 
         // If fragment is empty, it is considered to be valid
-        if (strlen($fragment) === 0) {
+        if (strlen($fragment ?? '') === 0) {
             return true;
         }
 

@@ -44,12 +44,12 @@
 		}
 
 		public static function WordsFromCamelCase($strName) {
-			if (strlen($strName) == 0)
+			if (strlen($strName ?? '') == 0)
 				return '';
 
 			$strToReturn = QString::FirstCharacter($strName);
 
-			for ($intIndex = 1; $intIndex < strlen($strName); $intIndex++) {
+			for ($intIndex = 1; $intIndex < strlen($strName ?? ''); $intIndex++) {
 				// Get the current character we're examining
 				$strChar = substr($strName, $intIndex, 1);
 
@@ -90,12 +90,12 @@
 
 
 		public static function UnderscoreFromCamelCase($strName) {
-			if (strlen($strName) == 0)
+			if (strlen($strName ?? '') == 0)
 				return '';
 
 			$strToReturn = QString::FirstCharacter($strName);
 
-			for ($intIndex = 1; $intIndex < strlen($strName); $intIndex++) {
+			for ($intIndex = 1; $intIndex < strlen($strName ?? ''); $intIndex++) {
 				$strChar = substr($strName, $intIndex, 1);
 				if (strtoupper($strChar) == $strChar)
 					$strToReturn .= '_' . $strChar;

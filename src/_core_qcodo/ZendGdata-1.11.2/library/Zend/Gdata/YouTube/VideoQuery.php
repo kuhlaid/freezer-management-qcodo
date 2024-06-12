@@ -137,7 +137,7 @@ class Zend_Gdata_YouTube_VideoQuery extends Zend_Gdata_Query
                 }
 
                 foreach($parameters as $param) {
-                    $temp = trim($param);
+                    $temp = trim($param ?? '');
                     // strip off the optional exclamation mark for numeric check
                     if (substr($temp, -1) == '!') {
                         $temp = substr($temp, 0, -1);

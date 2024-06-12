@@ -814,7 +814,7 @@ class Zend_Gdata_YouTube extends Zend_Gdata_Media
 
             if (!$videoId) {
                 $videoId = $videoEntry->getVideoId();
-            } elseif (strlen($videoId) < 12) {
+            } elseif (strlen($videoId ?? '') < 12) {
                 //Append the full URI
                 $videoId = self::VIDEO_URI . '/' . $videoId;
             }

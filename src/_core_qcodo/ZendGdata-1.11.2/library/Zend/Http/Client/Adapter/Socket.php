@@ -323,7 +323,7 @@ class Zend_Http_Client_Adapter_Socket implements Zend_Http_Client_Adapter_Interf
             $gotStatus = $gotStatus || (strpos($line, 'HTTP') !== false);
             if ($gotStatus) {
                 $response .= $line;
-                if (rtrim($line) === '') break;
+                if (rtrim($line ?? '') === '') break;
             }
         }
 
@@ -363,7 +363,7 @@ class Zend_Http_Client_Adapter_Socket implements Zend_Http_Client_Adapter_Interf
                     $chunk = $line;
 
                     // Figure out the next chunk size
-                    $chunksize = trim($line);
+                    $chunksize = trim($line ?? '');
                     if (! ctype_xdigit($chunksize)) {
                         $this->close();
                         require_once 'Zend/Http/Client/Adapter/Exception.php';
@@ -388,7 +388,7 @@ class Zend_Http_Client_Adapter_Socket implements Zend_Http_Client_Adapter_Interf
                              }
                         } else {
                             $line = @fread($this->socket, $read_to - $current_pos);
-                            if ($line === false || strlen($line) === 0) {
+                            if ($line === false || strlen($line ?? '') === 0) {
                                 $this->_checkSocketReadTimeout();
                                 break;
                             }
@@ -440,7 +440,7 @@ class Zend_Http_Client_Adapter_Socket implements Zend_Http_Client_Adapter_Interf
                      }
                  } else {
                     $chunk = @fread($this->socket, $read_to - $current_pos);
-                    if ($chunk === false || strlen($chunk) === 0) {
+                    if ($chunk === false || strlen($chunk ?? '') === 0) {
                         $this->_checkSocketReadTimeout();
                         break;
                     }
@@ -463,7 +463,7 @@ class Zend_Http_Client_Adapter_Socket implements Zend_Http_Client_Adapter_Interf
                      }
                 }  else {
                     $buff = @fread($this->socket, 8192);
-                    if ($buff === false || strlen($buff) === 0) {
+                    if ($buff === false || strlen($buff ?? '') === 0) {
                         $this->_checkSocketReadTimeout();
                         break;
                     } else {

@@ -141,7 +141,7 @@
 
 		public function btnEdit_Click($strFormId, $strControlId, $strParameter) {
 			$strParameterArray = explode(',', $strParameter);
-			$<%= $objCodeGen->VariableNameFromTable($objTable->Name); %> = <%= $objTable->ClassName %>::Load(<% $strParameterList = ''; for ($intIndex = 0; $intIndex < count ($objTable->PrimaryKeyColumnArray); $intIndex++) $strParameterList .= '$strParameterArray[' . $intIndex . '], '; return substr($strParameterList, 0, strlen($strParameterList) - 2); %>);
+			$<%= $objCodeGen->VariableNameFromTable($objTable->Name); %> = <%= $objTable->ClassName %>::Load(<% $strParameterList = ''; for ($intIndex = 0; $intIndex < count ($objTable->PrimaryKeyColumnArray); $intIndex++) $strParameterList .= '$strParameterArray[' . $intIndex . '], '; return substr($strParameterList, 0, strlen($strParameterList ?? '') - 2); %>);
 
 			$objEditPanel = new <%= $objTable->ClassName %>EditPanel($this, $this->strCloseEditPanelMethod, $<%= $objCodeGen->VariableNameFromTable($objTable->Name); %>);
 			

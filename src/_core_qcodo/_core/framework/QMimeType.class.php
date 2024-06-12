@@ -109,7 +109,7 @@
 		 */
 		public static function GetMimeTypeForFilename($strFilename) {
 			if (($intPosition = strrpos($strFilename, '.')) !== false) {
-				$strExtension = trim(strtolower(substr($strFilename, $intPosition + 1)));
+				$strExtension = trim(strtolower(substr($strFilename, $intPosition + 1 ?? '')));
 				if (array_key_exists($strExtension, QMimeType::$MimeTypeFor))
 					return QMimeType::$MimeTypeFor[$strExtension];
 			}

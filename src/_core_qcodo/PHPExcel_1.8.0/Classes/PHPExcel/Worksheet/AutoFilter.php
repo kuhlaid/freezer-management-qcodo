@@ -338,7 +338,7 @@ class PHPExcel_Worksheet_AutoFilter
 			}
 			foreach($dateSet as $dateValue) {
 				//	Use of substr to extract value at the appropriate group level
-				if (substr($dtVal,0,strlen($dateValue)) == $dateValue)
+				if (substr($dtVal,0,strlen($dateValue ?? '')) == $dateValue)
 					return TRUE;
 			}
 		}
@@ -682,9 +682,9 @@ class PHPExcel_Worksheet_AutoFilter
 							//	Convert to a regexp allowing for regexp reserved characters, wildcards and escaped wildcards
 							$ruleValue = preg_quote($ruleValue);
 							$ruleValue = str_replace(self::$_fromReplace,self::$_toReplace,$ruleValue);
-							if (trim($ruleValue) == '') {
+							if (trim($ruleValue ?? '') == '') {
 								$customRuleForBlanks = TRUE;
-								$ruleValue = trim($ruleValue);
+								$ruleValue = trim($ruleValue ?? '');
 							}
 						}
 						$ruleValues[] = array( 'operator' => $rule->getOperator(),

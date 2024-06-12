@@ -524,12 +524,12 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
         //
         // (see ZF-6363)
         if (substr($value, -1) === '.') {
-            $value = substr($value, 0, strlen($value)-1);
+            $value = substr($value, 0, strlen($value ?? '')-1);
         }
         
         // Check input against DNS hostname schema
         $domainParts = explode('.', $value);
-        if ((count($domainParts) > 1) && (strlen($value) >= 4) && (strlen($value) <= 254)) {
+        if ((count($domainParts) > 1) && (strlen($value ?? '') >= 4) && (strlen($value ?? '') <= 254)) {
             $status = false;
 
             $origenc = iconv_get_encoding('internal_encoding');
@@ -585,8 +585,8 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
 
                         // Check dash (-) does not start, end or appear in 3rd and 4th positions
                         if ((strpos($domainPart, '-') === 0)
-                            || ((strlen($domainPart) > 2) && (strpos($domainPart, '-', 2) == 2) && (strpos($domainPart, '-', 3) == 3))
-                            || (strpos($domainPart, '-') === (strlen($domainPart) - 1))) {
+                            || ((strlen($domainPart ?? '') > 2) && (strpos($domainPart, '-', 2) == 2) && (strpos($domainPart, '-', 3) == 3))
+                            || (strpos($domainPart, '-') === (strlen($domainPart ?? '') - 1))) {
                                 $this->_error(self::INVALID_DASH);
                             $status = false;
                             break 2;
@@ -603,7 +603,7 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
                                     $length = $this->_idnLength[strtoupper($this->_tld)];
                                 }
 
-                                if (iconv_strlen($domainPart, 'UTF-8') > $length) {
+                                if (iconv_strlen($domainPart, 'UTF-8' ?? '') > $length) {
                                     $this->_error(self::INVALID_HOSTNAME);
                                 } else {
                                     $checked = true;
@@ -700,7 +700,7 @@ class Zend_Validate_Hostname extends Zend_Validate_Abstract
         }
 
         $lengthd = count($decoded);
-        $lengthe = strlen($encoded);
+        $lengthe = strlen($encoded ?? '');
 
         // decoding
         $init  = true;

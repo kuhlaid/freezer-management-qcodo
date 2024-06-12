@@ -121,7 +121,7 @@ class PHPExcel_Writer_Excel5_Escher
 				$dggData .= pack('VV', $dgId, $maxReducedSpId + 1);
 			}
 
-			$header = pack('vvV', $recVerInstance, $recType, strlen($dggData));
+			$header = pack('vvV', $recVerInstance, $recType, strlen($dggData ?? ''));
 			$innerData .= $header . $dggData;
 
 			// write the bstoreContainer
@@ -134,7 +134,7 @@ class PHPExcel_Writer_Excel5_Escher
 			$recVer			= 0xF;
 			$recInstance	= 0x0000;
 			$recType		= 0xF000;
-			$length			= strlen($innerData);
+			$length			= strlen($innerData ?? '');
 
 			$recVerInstance  = $recVer;
 			$recVerInstance |= $recInstance << 4;
@@ -162,7 +162,7 @@ class PHPExcel_Writer_Excel5_Escher
 			$recVer			= 0xF;
 			$recInstance	= count($this->_object->getBSECollection());
 			$recType		= 0xF001;
-			$length			= strlen($innerData);
+			$length			= strlen($innerData ?? '');
 
 			$recVerInstance  = $recVer;
 			$recVerInstance |= $recInstance << 4;
@@ -195,7 +195,7 @@ class PHPExcel_Writer_Excel5_Escher
 			$data .= $rgbUid;
 
 			$tag = 0;
-			$size = strlen($innerData);
+			$size = strlen($innerData ?? '');
 			$cRef = 1;
 			$foDelay = 0; //todo
 			$unused1 = 0x0;
@@ -210,7 +210,7 @@ class PHPExcel_Writer_Excel5_Escher
 			$recVer			= 0x2;
 			$recInstance	= $this->_object->getBlipType();
 			$recType		= 0xF007;
-			$length			= strlen($data);
+			$length			= strlen($data ?? '');
 
 			$recVerInstance  = $recVer;
 			$recVerInstance |=	$recInstance << 4;
@@ -243,7 +243,7 @@ class PHPExcel_Writer_Excel5_Escher
 				$recVer			= 0x0;
 				$recInstance	= 0x46A;
 				$recType		= 0xF01D;
-				$length			= strlen($innerData);
+				$length			= strlen($innerData ?? '');
 
 				$recVerInstance  = $recVer;
 				$recVerInstance |=	$recInstance << 4;
@@ -270,7 +270,7 @@ class PHPExcel_Writer_Excel5_Escher
 				$recVer			= 0x0;
 				$recInstance	= 0x6E0;
 				$recType		= 0xF01E;
-				$length			= strlen($innerData);
+				$length			= strlen($innerData ?? '');
 
 				$recVerInstance  = $recVer;
 				$recVerInstance |=	$recInstance << 4;
@@ -329,7 +329,7 @@ class PHPExcel_Writer_Excel5_Escher
 			$recVer			= 0xF;
 			$recInstance	= 0x0000;
 			$recType		= 0xF002;
-			$length			= strlen($innerData);
+			$length			= strlen($innerData ?? '');
 
 			$recVerInstance  = $recVer;
 			$recVerInstance |= $recInstance << 4;
@@ -357,7 +357,7 @@ class PHPExcel_Writer_Excel5_Escher
 				$innerData .= $spData;
 
 				// save the shape offsets (where new shape records begin)
-				$totalSize += strlen($spData);
+				$totalSize += strlen($spData ?? '');
 				$spOffsets[] = $totalSize;
 				
 				$spTypes = array_merge($spTypes, $writer->getSpTypes());
@@ -367,7 +367,7 @@ class PHPExcel_Writer_Excel5_Escher
 			$recVer			= 0xF;
 			$recInstance	= 0x0000;
 			$recType		= 0xF003;
-			$length			= strlen($innerData);
+			$length			= strlen($innerData ?? '');
 
 			$recVerInstance  = $recVer;
 			$recVerInstance |= $recInstance << 4;
@@ -425,7 +425,7 @@ class PHPExcel_Writer_Excel5_Escher
 				foreach ($this->_object->getOPTCollection() as $property => $value) {
 					$optData .= pack('vV', $property, $value);
 				}
-				$length			= strlen($optData);
+				$length			= strlen($optData ?? '');
 
 				$recVerInstance  = $recVer;
 				$recVerInstance |= $recInstance << 4;
@@ -468,7 +468,7 @@ class PHPExcel_Writer_Excel5_Escher
 					$c1, $startOffsetX, $r1, $startOffsetY,
 					$c2, $endOffsetX, $r2, $endOffsetY);
 				
-				$length			= strlen($clientAnchorData);
+				$length			= strlen($clientAnchorData ?? '');
 
 				$recVerInstance  = $recVer;
 				$recVerInstance |= $recInstance << 4;
@@ -485,7 +485,7 @@ class PHPExcel_Writer_Excel5_Escher
 				$recInstance	= 0x0;
 				$recType		= 0xF011;
 
-				$length = strlen($clientDataData);
+				$length = strlen($clientDataData ?? '');
 
 				$recVerInstance  = $recVer;
 				$recVerInstance |= $recInstance << 4;
@@ -498,7 +498,7 @@ class PHPExcel_Writer_Excel5_Escher
 			$recVer			= 0xF;
 			$recInstance	= 0x0000;
 			$recType		= 0xF004;
-			$length			= strlen($data);
+			$length			= strlen($data ?? '');
 
 			$recVerInstance  = $recVer;
 			$recVerInstance |= $recInstance << 4;

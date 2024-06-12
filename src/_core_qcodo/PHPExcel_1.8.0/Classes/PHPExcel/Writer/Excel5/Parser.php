@@ -596,8 +596,8 @@ class PHPExcel_Writer_Excel5_Parser
 	function _convertString($string)
 	{
 		// chop away beggining and ending quotes
-		$string = substr($string, 1, strlen($string) - 2);
-		if (strlen($string) > 255) {
+		$string = substr($string, 1, strlen($string ?? '') - 2);
+		if (strlen($string ?? '') > 255) {
 			throw new PHPExcel_Writer_Exception("String is too long");
 		}
 
@@ -1017,9 +1017,9 @@ class PHPExcel_Writer_Excel5_Parser
 		$row     = $match[4];
 
 		// Convert base26 column string to a number.
-		$expn   = strlen($col_ref) - 1;
+		$expn   = strlen($col_ref ?? '') - 1;
 		$col    = 0;
-		$col_ref_length = strlen($col_ref);
+		$col_ref_length = strlen($col_ref ?? '');
 		for ($i = 0; $i < $col_ref_length; ++$i) {
 			$col += (ord($col_ref{$i}) - 64) * pow(26, $expn);
 			--$expn;
@@ -1040,7 +1040,7 @@ class PHPExcel_Writer_Excel5_Parser
 	function _advance()
 	{
 		$i = $this->_current_char;
-		$formula_length = strlen($this->_formula);
+		$formula_length = strlen($this->_formula ?? '');
 		// eat up white spaces
 		if ($i < $formula_length) {
 			while ($this->_formula{$i} == " ") {
@@ -1063,7 +1063,7 @@ class PHPExcel_Writer_Excel5_Parser
 			}
 
 			if ($this->_match($token) != '') {
-				//if ($i < strlen($this->_formula) - 1) {
+				//if ($i < strlen($this->_formula ?? '') - 1) {
 				//    $this->_lookahead = $this->_formula{$i+1};
 				//}
 				$this->_current_char = $i + 1;

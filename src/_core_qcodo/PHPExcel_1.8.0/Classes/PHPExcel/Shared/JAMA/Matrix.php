@@ -478,12 +478,12 @@ class PHPExcel_Shared_JAMA_Matrix {
 				for($j = 0; $j < $this->n; ++$j) {
 					$validValues = True;
 					$value = $M->get($i, $j);
-					if ((is_string($this->A[$i][$j])) && (strlen($this->A[$i][$j]) > 0) && (!is_numeric($this->A[$i][$j]))) {
-						$this->A[$i][$j] = trim($this->A[$i][$j],'"');
+					if ((is_string($this->A[$i][$j])) && (strlen($this->A[$i][$j] ?? '') > 0) && (!is_numeric($this->A[$i][$j]))) {
+						$this->A[$i][$j] = trim($this->A[$i][$j],'"' ?? '');
 						$validValues &= PHPExcel_Shared_String::convertToNumberIfFraction($this->A[$i][$j]);
 					}
-					if ((is_string($value)) && (strlen($value) > 0) && (!is_numeric($value))) {
-						$value = trim($value,'"');
+					if ((is_string($value)) && (strlen($value ?? '') > 0) && (!is_numeric($value))) {
+						$value = trim($value,'"' ?? '');
 						$validValues &= PHPExcel_Shared_String::convertToNumberIfFraction($value);
 					}
 					if ($validValues) {
@@ -564,12 +564,12 @@ class PHPExcel_Shared_JAMA_Matrix {
 				for($j = 0; $j < $this->n; ++$j) {
 					$validValues = True;
 					$value = $M->get($i, $j);
-					if ((is_string($this->A[$i][$j])) && (strlen($this->A[$i][$j]) > 0) && (!is_numeric($this->A[$i][$j]))) {
-						$this->A[$i][$j] = trim($this->A[$i][$j],'"');
+					if ((is_string($this->A[$i][$j])) && (strlen($this->A[$i][$j] ?? '') > 0) && (!is_numeric($this->A[$i][$j]))) {
+						$this->A[$i][$j] = trim($this->A[$i][$j],'"' ?? '');
 						$validValues &= PHPExcel_Shared_String::convertToNumberIfFraction($this->A[$i][$j]);
 					}
-					if ((is_string($value)) && (strlen($value) > 0) && (!is_numeric($value))) {
-						$value = trim($value,'"');
+					if ((is_string($value)) && (strlen($value ?? '') > 0) && (!is_numeric($value))) {
+						$value = trim($value,'"' ?? '');
 						$validValues &= PHPExcel_Shared_String::convertToNumberIfFraction($value);
 					}
 					if ($validValues) {
@@ -652,12 +652,12 @@ class PHPExcel_Shared_JAMA_Matrix {
 				for($j = 0; $j < $this->n; ++$j) {
 					$validValues = True;
 					$value = $M->get($i, $j);
-					if ((is_string($this->A[$i][$j])) && (strlen($this->A[$i][$j]) > 0) && (!is_numeric($this->A[$i][$j]))) {
-						$this->A[$i][$j] = trim($this->A[$i][$j],'"');
+					if ((is_string($this->A[$i][$j])) && (strlen($this->A[$i][$j] ?? '') > 0) && (!is_numeric($this->A[$i][$j]))) {
+						$this->A[$i][$j] = trim($this->A[$i][$j],'"' ?? '');
 						$validValues &= PHPExcel_Shared_String::convertToNumberIfFraction($this->A[$i][$j]);
 					}
-					if ((is_string($value)) && (strlen($value) > 0) && (!is_numeric($value))) {
-						$value = trim($value,'"');
+					if ((is_string($value)) && (strlen($value ?? '') > 0) && (!is_numeric($value))) {
+						$value = trim($value,'"' ?? '');
 						$validValues &= PHPExcel_Shared_String::convertToNumberIfFraction($value);
 					}
 					if ($validValues) {
@@ -703,12 +703,12 @@ class PHPExcel_Shared_JAMA_Matrix {
 				for($j = 0; $j < $this->n; ++$j) {
 					$validValues = True;
 					$value = $M->get($i, $j);
-					if ((is_string($this->A[$i][$j])) && (strlen($this->A[$i][$j]) > 0) && (!is_numeric($this->A[$i][$j]))) {
-						$this->A[$i][$j] = trim($this->A[$i][$j],'"');
+					if ((is_string($this->A[$i][$j])) && (strlen($this->A[$i][$j] ?? '') > 0) && (!is_numeric($this->A[$i][$j]))) {
+						$this->A[$i][$j] = trim($this->A[$i][$j],'"' ?? '');
 						$validValues &= PHPExcel_Shared_String::convertToNumberIfFraction($this->A[$i][$j]);
 					}
-					if ((is_string($value)) && (strlen($value) > 0) && (!is_numeric($value))) {
-						$value = trim($value,'"');
+					if ((is_string($value)) && (strlen($value ?? '') > 0) && (!is_numeric($value))) {
+						$value = trim($value,'"' ?? '');
 						$validValues &= PHPExcel_Shared_String::convertToNumberIfFraction($value);
 					}
 					if ($validValues) {
@@ -960,12 +960,12 @@ class PHPExcel_Shared_JAMA_Matrix {
 				for($j = 0; $j < $this->n; ++$j) {
 					$validValues = True;
 					$value = $M->get($i, $j);
-					if ((is_string($this->A[$i][$j])) && (strlen($this->A[$i][$j]) > 0) && (!is_numeric($this->A[$i][$j]))) {
-						$this->A[$i][$j] = trim($this->A[$i][$j],'"');
+					if ((is_string($this->A[$i][$j])) && (strlen($this->A[$i][$j] ?? '') > 0) && (!is_numeric($this->A[$i][$j]))) {
+						$this->A[$i][$j] = trim($this->A[$i][$j],'"' ?? '');
 						$validValues &= PHPExcel_Shared_String::convertToNumberIfFraction($this->A[$i][$j]);
 					}
-					if ((is_string($value)) && (strlen($value) > 0) && (!is_numeric($value))) {
-						$value = trim($value,'"');
+					if ((is_string($value)) && (strlen($value ?? '') > 0) && (!is_numeric($value))) {
+						$value = trim($value,'"' ?? '');
 						$validValues &= PHPExcel_Shared_String::convertToNumberIfFraction($value);
 					}
 					if ($validValues) {
@@ -1007,7 +1007,7 @@ class PHPExcel_Shared_JAMA_Matrix {
 			$this->checkMatrixDimensions($M);
 			for($i = 0; $i < $this->m; ++$i) {
 				for($j = 0; $j < $this->n; ++$j) {
-					$this->A[$i][$j] = trim($this->A[$i][$j],'"').trim($M->get($i, $j),'"');
+					$this->A[$i][$j] = trim($this->A[$i][$j],'"' ?? '').trim($M->get($i, $j ?? ''),'"');
 				}
 			}
 			return $this;

@@ -253,7 +253,7 @@
 				$this->strControlId,
 				$this->GetAttributes(),
 				$strStyle,
-				($this->blnHtmlEntities) ? QApplication::HtmlEntities($this->strText) : $this->strText,
+				($this->blnHtmlEntities) ? QApplication::htmlentities($this->strText ?? '') : $this->strText,
 				$strTemplateEvaluated,
 				($this->blnAutoRenderChildren) ? $this->RenderChildren(false) : '',
 				$this->strTagName);

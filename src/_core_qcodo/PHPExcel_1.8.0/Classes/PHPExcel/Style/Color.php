@@ -263,7 +263,7 @@ class PHPExcel_Style_Color extends PHPExcel_Style_Supervisor implements PHPExcel
 	 * @return	string		The red colour component
 	 */
 	public static function getRed($RGB,$hex=TRUE) {
-		return self::_getColourComponent($RGB, strlen($RGB) - 6, $hex);
+		return self::_getColourComponent($RGB, strlen($RGB ?? '') - 6, $hex);
 	}
 
 	/**
@@ -275,7 +275,7 @@ class PHPExcel_Style_Color extends PHPExcel_Style_Supervisor implements PHPExcel
 	 * @return	string		The green colour component
 	 */
 	public static function getGreen($RGB,$hex=TRUE) {
-		return self::_getColourComponent($RGB, strlen($RGB) - 4, $hex);
+		return self::_getColourComponent($RGB, strlen($RGB ?? '') - 4, $hex);
 	}
 
 	/**
@@ -287,7 +287,7 @@ class PHPExcel_Style_Color extends PHPExcel_Style_Supervisor implements PHPExcel
 	 * @return	string		The blue colour component
 	 */
 	public static function getBlue($RGB,$hex=TRUE) {
-		return self::_getColourComponent($RGB, strlen($RGB) - 2, $hex);
+		return self::_getColourComponent($RGB, strlen($RGB ?? '') - 2, $hex);
 	}
 
 	/**
@@ -298,7 +298,7 @@ class PHPExcel_Style_Color extends PHPExcel_Style_Supervisor implements PHPExcel
 	 * @return	string		The adjusted colour as an RGBA or RGB value (e.g. FF00CCCC or CCDDEE)
 	 */
 	public static function changeBrightness($hex, $adjustPercentage) {
-		$rgba = (strlen($hex) == 8);
+		$rgba = (strlen($hex ?? '') == 8);
 
 		$red	= self::getRed($hex, FALSE);
 		$green	= self::getGreen($hex, FALSE);

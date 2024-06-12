@@ -14,7 +14,7 @@ This app assumes you are using MySQL for the database. You can use another type 
 
 Before you begin you need to check the environment variables in the `.env.dev` file and use them as they are or make edits to meet your needs.
 
-Also the `sampledb_pt__user.sql` has a insert statement at the end for a sample user using the following SQL statement (modify if you need other users or you simply wish to use other values for the user):
+Also the `sampledb_pt__user.sql` has an insert statement at the end for a sample user using the following SQL statement (modify if you need other users or you simply wish to use other values for the user):
 
 ```s SQL
 INSERT INTO `pt__user` (`firstname`, `lastname`, `email`, `active`, `onyen`) VALUES ('User', 'One', 'user_one@home.edu', '1', 'user1');
@@ -24,7 +24,21 @@ INSERT INTO `pt__user` (`firstname`, `lastname`, `email`, `active`, `onyen`) VAL
 
 Once we have the environment variables updated, use the following command to start the database and web application (adjust the naming of the `docker-compose.dev.yml` and `.env.dev` file references if you are using different file names, and delete any Docker containers and images that currently exist for this project so you know you are working with fresh copies):
 
+`cd "/mnt/c/Users/me/freezer-management-qcodo"`
+
+Go ahead and pull the image since it might fail from the Dockerfile if we do not have it already
+`docker pull php:8.1-apache` (here we try PHP 8.1, which causes deprecation errors)
+
+If we are wanting an empty MySQL database using our local scripts we would use this...
 `docker compose -f docker-compose.dev.yml --env-file .env.dev up`
+
+If we are wanting to use the MySQL data from production using our port forwarding then do this...
+`docker compose -f docker-compose.prod.dev.yml --env-file .env.prod.dev up`
+
+## Issues mounting the local code to the web server html directory
+
+I tried setting the website volume to `- ./src/:/var/www/html` and `- ./src:/var/www/html` but only `- ./:/var/www/html` pulls in any code to the Docker container
+**After installing latest updated to Docker Desktop the mounting of `- ./src:/var/www/html` was successful.
 
 ## Managing the database
 

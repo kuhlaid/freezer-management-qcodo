@@ -126,7 +126,7 @@
 					$this->SelectedItem = $objItem;
 
 					$strItemHtml = $this->GetItemHtml($objItem, $strParameter);
-					$strItemHtml = addslashes($strItemHtml);
+					$strItemHtml = addslashes($strItemHtml ?? '');
 					QApplication::ExecuteJavaScript('treenavRedrawElement("' . $strParameter . '", "' . $strItemHtml . '")');
 				} else if ($_POST['Qform__FormEvent'] == 'QTreeNav_Expand') {
 					$strParameter = $_POST['Qform__FormParameter'];
@@ -134,7 +134,7 @@
 					$objItem->Expanded = true;
 
 					$strItemHtml = $this->GetItemHtml($objItem, $strParameter);
-					$strItemHtml = addslashes($strItemHtml);
+					$strItemHtml = addslashes($strItemHtml ?? '');
 					QApplication::ExecuteJavaScript('treenavRedrawElement("' . $strParameter . '", "' . $strItemHtml . '")');
 				}
 			}

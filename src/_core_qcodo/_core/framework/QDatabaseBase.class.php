@@ -140,7 +140,7 @@
 			if ($this->blnEnableProfiling) {
 				// Dereference-ize Backtrace Information
 				$objDebugBacktrace = debug_backtrace();
-				$objDebugBacktrace = unserialize(serialize($objDebugBacktrace));
+				$objDebugBacktrace = unserialize(serialize($objDebugBacktrace) ?? '');
 
 				// Get Rid of Unnecessary Backtrace Info
 				$intLength = count($objDebugBacktrace);
@@ -270,7 +270,7 @@
 
 
 			// Assume it's some kind of string value
-			return $strToReturn . sprintf("'%s'", addslashes($mixData));
+			return $strToReturn . sprintf("'%s'", addslashes($mixData ?? ''));
 		}
 
 		public function PrepareStatement($strQuery, $mixParameterArray) {
@@ -302,7 +302,7 @@
 				printf('<input type="hidden" name="strProfileData" value="%s" />',
 					base64_encode(serialize($this->strProfileArray)));
 				printf('<input type="hidden" name="intDatabaseIndex" value="%s" />', $this->intDatabaseIndex);
-				printf('<input type="hidden" name="strReferrer" value="%s" /></div></form>', QApplication::HtmlEntities(QApplication::$RequestUri));
+				printf('<input type="hidden" name="strReferrer" value="%s" /></div></form>', QApplication::htmlentities(QApplication::$RequestUri ?? ''));
 
 				$intCount = round(count($this->strProfileArray) / 2);
 				if ($intCount == 0)

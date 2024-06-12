@@ -86,7 +86,7 @@ class PHPExcel_Shared_ZipStreamWrapper {
         }
 
 		$pos = strrpos($path, '#');
-		$url['host'] = substr($path, 6, $pos - 6); // 6: strlen('zip://')
+		$url['host'] = substr($path, 6, $pos - 6); // 6: strlen('zip://' ?? '')
 		$url['fragment'] = substr($path, $pos + 1);
 
         // Open archive
@@ -135,7 +135,7 @@ class PHPExcel_Shared_ZipStreamWrapper {
      */
     function stream_read($count) {
         $ret = substr($this->_data, $this->_position, $count);
-        $this->_position += strlen($ret);
+        $this->_position += strlen($ret ?? '');
         return $ret;
     }
 
@@ -155,7 +155,7 @@ class PHPExcel_Shared_ZipStreamWrapper {
 	 * @return	bool
      */
     public function stream_eof() {
-        return $this->_position >= strlen($this->_data);
+        return $this->_position >= strlen($this->_data ?? '');
     }
 
     /**
@@ -168,7 +168,7 @@ class PHPExcel_Shared_ZipStreamWrapper {
     public function stream_seek($offset, $whence) {
         switch ($whence) {
             case SEEK_SET:
-                if ($offset < strlen($this->_data) && $offset >= 0) {
+                if ($offset < strlen($this->_data ?? '') && $offset >= 0) {
                      $this->_position = $offset;
                      return true;
                 } else {
@@ -186,8 +186,8 @@ class PHPExcel_Shared_ZipStreamWrapper {
                 break;
 
             case SEEK_END:
-                if (strlen($this->_data) + $offset >= 0) {
-                     $this->_position = strlen($this->_data) + $offset;
+                if (strlen($this->_data ?? '') + $offset >= 0) {
+                     $this->_position = strlen($this->_data ?? '') + $offset;
                      return true;
                 } else {
                      return false;

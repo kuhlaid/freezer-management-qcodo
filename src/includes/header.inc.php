@@ -6,9 +6,9 @@
  */
 
 // if opening a sample pull
-if (unserialize(QSessionDB::get('__SAMPLE_SELECTION_SEARCH__'))!='')
-$objSampleSelection = unserialize(QSessionDB::get('__SAMPLE_SELECTION_SEARCH__'));
-$objMovingBox = unserialize(QSessionDB::get('__SAMPLE_MOVING_BOX__'));	// see if we have a moving box
+if (unserialize(QSessionDB::get('__SAMPLE_SELECTION_SEARCH__') ?? '')!='')
+$objSampleSelection = unserialize(QSessionDB::get('__SAMPLE_SELECTION_SEARCH__') ?? '');
+$objMovingBox = unserialize(QSessionDB::get('__SAMPLE_MOVING_BOX__') ?? '');	// see if we have a moving box
 
 // finds out if a page is selected or not
 function mainMenuSel($page) {
@@ -22,7 +22,7 @@ function mainBdyCol() {
 }
 
 function showSamplePull() {
-	$th = unserialize(QSessionDB::get('__MAIN_APP_THIS__'));
+	$th = unserialize(QSessionDB::get('__MAIN_APP_THIS__') ?? '');
 	// web service call to show or hide samples need processing link/alert
 	QApplication::ExecuteJavaScript(sprintf('$.get("sample-pull.php?option=c", function(data) { if(data==1) $("#dmI").show("slow");});', $th));
 }
@@ -108,7 +108,7 @@ if (!defined('__HIDE_MENU__')) {?>
 		<?php } ?>
 		<div id="bdyCol<?=mainBdyCol();?>">
 			<?php
-			if (trim(QSessionDB::get('error')) != '') {
+			if (trim(QSessionDB::get('error') ?? '') != '') {
 		QApplication::ExecuteJavaScript('$("#warning-err").fadeIn(2000, function() {$("#warning-err").fadeOut(8000);});', $this);
 		?>
 			<div class="warning" id="warning-err">

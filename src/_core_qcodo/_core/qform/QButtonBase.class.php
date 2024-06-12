@@ -37,7 +37,7 @@
 				$this->strControlId,
 				$this->strControlId,
 				($this->blnHtmlEntities) ?
-					QApplication::HtmlEntities($this->strText) :
+					QApplication::htmlentities($this->strText ?? '') :
 					$this->strText,
 				$this->GetAttributes(),
 				$strStyle);

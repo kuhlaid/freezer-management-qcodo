@@ -110,7 +110,7 @@ class PHPExcel_Calculation_LookupRef {
 	 * @return	integer or array of integer
 	 */
 	public static function COLUMN($cellAddress=Null) {
-		if (is_null($cellAddress) || trim($cellAddress) === '') { return 0; }
+		if (is_null($cellAddress) || trim($cellAddress ?? '') === '') { return 0; }
 
 		if (is_array($cellAddress)) {
 			foreach($cellAddress as $columnKey => $value) {
@@ -184,7 +184,7 @@ class PHPExcel_Calculation_LookupRef {
 	 * @return	integer or array of integer
 	 */
 	public static function ROW($cellAddress=Null) {
-		if (is_null($cellAddress) || trim($cellAddress) === '') { return 0; }
+		if (is_null($cellAddress) || trim($cellAddress ?? '') === '') { return 0; }
 
 		if (is_array($cellAddress)) {
 			foreach($cellAddress as $columnKey => $rowValue) {
@@ -263,11 +263,11 @@ class PHPExcel_Calculation_LookupRef {
 		$linkURL		= (is_null($linkURL))		? '' :	PHPExcel_Calculation_Functions::flattenSingleValue($linkURL);
 		$displayName	= (is_null($displayName))	? '' :	PHPExcel_Calculation_Functions::flattenSingleValue($displayName);
 
-		if ((!is_object($pCell)) || (trim($linkURL) == '')) {
+		if ((!is_object($pCell)) || (trim($linkURL ?? '') == '')) {
 			return PHPExcel_Calculation_Functions::REF();
 		}
 
-		if ((is_object($displayName)) || trim($displayName) == '') {
+		if ((is_object($displayName)) || trim($displayName ?? '') == '') {
 			$displayName = $linkURL;
 		}
 
@@ -315,7 +315,7 @@ class PHPExcel_Calculation_LookupRef {
 
 			if (strpos($cellAddress,'!') !== FALSE) {
 				list($sheetName, $cellAddress) = explode('!',$cellAddress);
-				$sheetName = trim($sheetName, "'");
+				$sheetName = trim($sheetName, "'" ?? '');
 				$pSheet = $pCell->getWorksheet()->getParent()->getSheetByName($sheetName);
 			} else {
 				$pSheet = $pCell->getWorksheet();
@@ -326,7 +326,7 @@ class PHPExcel_Calculation_LookupRef {
 
 		if (strpos($cellAddress,'!') !== FALSE) {
 			list($sheetName,$cellAddress) = explode('!',$cellAddress);
-			$sheetName = trim($sheetName, "'");
+			$sheetName = trim($sheetName, "'" ?? '');
 			$pSheet = $pCell->getWorksheet()->getParent()->getSheetByName($sheetName);
 		} else {
 			$pSheet = $pCell->getWorksheet();
@@ -379,7 +379,7 @@ class PHPExcel_Calculation_LookupRef {
 		$sheetName = NULL;
 		if (strpos($cellAddress,"!")) {
 			list($sheetName,$cellAddress) = explode("!",$cellAddress);
-			$sheetName = trim($sheetName, "'");
+			$sheetName = trim($sheetName, "'" ?? '');
 		}
 		if (strpos($cellAddress,":")) {
 			list($startCell,$endCell) = explode(":",$cellAddress);

@@ -92,7 +92,7 @@
 //
 //		$__exc_strFilename = $__exc_objException->getFile();
 //		$__exc_intLineNumber = $__exc_objException->getLine();
-//		$__exc_strStackTrace = trim($__exc_objException->getTraceAsString());
+//		$__exc_strStackTrace = trim($__exc_objException->getTraceAsString( ?? ''));
 //
 //		if (ob_get_length()) {
 //			$__exc_strRenderedPage = ob_get_contents();

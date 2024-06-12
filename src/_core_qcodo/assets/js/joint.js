@@ -536,7 +536,7 @@ jQuery.extend({
 		var script,
 				indirect = eval;
 
-		code = jQuery.trim( code );
+		code = jQuery.trim( code  ?? '');
 
 		if ( code ) {
 			// If the code includes a valid, prologue position
@@ -3858,7 +3858,7 @@ jQuery.fn.extend({
 							cur += clazz + " ";
 						}
 					}
-					elem.className = jQuery.trim( cur );
+					elem.className = jQuery.trim( cur  ?? '');
 
 				}
 			}
@@ -3897,7 +3897,7 @@ jQuery.fn.extend({
 							cur = cur.replace( " " + clazz + " ", " " );
 						}
 					}
-					elem.className = value ? jQuery.trim( cur ) : "";
+					elem.className = value ? jQuery.trim( cur  ?? '') : "";
 				}
 			}
 		}
@@ -7176,7 +7176,7 @@ jQuery.extend({
 		s.type = options.method || options.type || s.method || s.type;
 
 		// Extract dataTypes list
-		s.dataTypes = jQuery.trim( s.dataType || "*" ).toLowerCase().match( core_rnotwhite ) || [""];
+		s.dataTypes = jQuery.trim( s.dataType || "*"  ?? '').toLowerCase().match( core_rnotwhite ) || [""];
 
 		// A cross-domain request is in order when we have a protocol:host:port mismatch
 		if ( s.crossDomain == null ) {

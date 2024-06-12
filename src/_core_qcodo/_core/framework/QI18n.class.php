@@ -26,7 +26,7 @@
 				// If cached data exists and is valid, use it
 				$strData = $objCache->GetData();
 				if ($strData)
-					QApplication::$LanguageObject = unserialize($strData);
+					QApplication::$LanguageObject = unserialize($strData ?? '');
 					
 				// Otherwise, reload all langauge files and update the cache
 				else {
@@ -55,7 +55,7 @@
 		const PoParseStateMessageString = 4;
 		
 		protected static function UnescapeContent($strContent) {
-			$intLength = strlen($strContent);
+			$intLength = strlen($strContent ?? '');
 			$strToReturn = '';
 			$blnEscape = false;
 
@@ -107,7 +107,7 @@
 		}
 
 		protected function ParsePoData($strPoData) {
-			$strPoData = str_replace("\r", '', trim($strPoData));
+			$strPoData = str_replace("\r", '', trim($strPoData ?? ''));
 			$strPoLines = explode("\n", $strPoData);
 
 			$strMatches = array();
@@ -115,13 +115,13 @@
 			$intState = QI18n::PoParseStateNone;
 			$intLineCount = count($strPoLines);
 
-			if (strlen($strPoLines[0]) == 0)
+			if (strlen($strPoLines[0] ?? '') == 0)
 				return;
 
 			for ($intLineNumber = 0; $intLineNumber < $intLineCount; $intLineNumber++) {
-				$strPoLine = $strPoLines[$intLineNumber] = trim($strPoLines[$intLineNumber]);
+				$strPoLine = $strPoLines[$intLineNumber] = trim($strPoLines[$intLineNumber] ?? '');
 
-				if (strlen($strPoLine) && (QString::FirstCharacter($strPoLine) != '#')) {
+				if (strlen($strPoLine ?? '') && (QString::FirstCharacter($strPoLine) != '#')) {
 					switch ($intState) {
 						case QI18n::PoParseStateNone:
 							$intCount = preg_match_all('/msgid(_[a-z0-9]+)?[\s]+"([\S 	]*)"/i', $strPoLine, $strMatches);
@@ -151,7 +151,7 @@
 						case QI18n::PoParseStateMessageId:
 							$intCount = preg_match_all('/msgid(_[a-z0-9]+)[\s]+"([\S 	]*)"/i', $strPoLine, $strMatches);
 							if ($intCount && ($strMatches[0][0] == $strPoLine)) {
-								if (strlen(trim($strMessageId[$intArrayIndex])) == 0)
+								if (strlen(trim($strMessageId[$intArrayIndex] ?? '')) == 0)
 									throw new QPoParserException('No MsgId content for current MsgId on Line ' . ($intLineNumber) . ': ' . $strPoLine);
 								$intArrayIndex++;
 								$strContent = QI18n::UnescapeContent($strMatches[2][0]);
@@ -172,7 +172,7 @@
 
 							$intCount = preg_match_all('/msgstr(\[[0-9]+\])?[\s]+"([\S 	]*)"/i', $strPoLine, $strMatches);
 							if ($intCount && ($strMatches[0][0] == $strPoLine)) {
-								if (strlen(trim($strMessageId[$intArrayIndex])) == 0)
+								if (strlen(trim($strMessageId[$intArrayIndex] ?? '')) == 0)
 									throw new QPoParserException('No MsgId content for current MsgId on Line ' . ($intLineNumber) . ': ' . $strPoLine);
 								$intLineNumber--;
 								$intState = QI18n::PoParseStateMessageStringStart;
@@ -186,8 +186,8 @@
 							if ($intCount && ($strMatches[0][0] == $strPoLine)) {
 								$intArrayIndex = 0;
 
-								if (strlen($strMatches[1][0]))
-									$intArrayIndex = intval(substr($strMatches[1][0], 1, strlen($strMatches[1][0]) - 2));
+								if (strlen($strMatches[1][0] ?? ''))
+									$intArrayIndex = intval(substr($strMatches[1][0], 1, strlen($strMatches[1][0] ?? '') - 2));
 
 								$strContent = QI18n::UnescapeContent($strMatches[2][0]);
 								if ($strContent === false)
@@ -203,8 +203,8 @@
 							$intCount = preg_match_all('/msgid(_[a-z0-9]+)?[\s]+"([\S 	]*)"/i', $strPoLine, $strMatches);
 							if ($intCount && ($strMatches[0][0] == $strPoLine)) {
 								for ($intIndex = 0; $intIndex < count($strMessageId); $intIndex++)
-									if (strlen(trim($strMessageId[$intIndex]))) {
-										if (!strlen(trim($strMessageString[$intIndex]))) {
+									if (strlen(trim($strMessageId[$intIndex] ?? ''))) {
+										if (!strlen(trim($strMessageString[$intIndex] ?? ''))) {
 											throw new QPoParserException('No MsgStr defined for MsgId at index ' . $intIndex . ' prior to Line ' . ($intLineNumber + 1) . ': ' . $strPoLine);
 										}
 
@@ -228,12 +228,12 @@
 							$intCount = preg_match_all('/msgstr(\[[0-9]+\])?[\s]+"([\S 	]*)"/i', $strPoLine, $strMatches);
 							if ($intCount && ($strMatches[0][0] == $strPoLine)) {
 
-								if (strlen($strMatches[1][0]))
-									$intArrayIndex = intval(substr($strMatches[1][0], 1, strlen($strMatches[1][0]) - 2));
+								if (strlen($strMatches[1][0] ?? ''))
+									$intArrayIndex = intval(substr($strMatches[1][0], 1, strlen($strMatches[1][0] ?? '') - 2));
 								else
 									throw new QPoParserException('No index specified for alternate MsgStr for PoParseStateMessageString on Line ' . ($intLineNumber + 1) . ': ' . $strPoLine);
 
-								if (strlen(trim($strMessageId[$intArrayIndex])) == 0)
+								if (strlen(trim($strMessageId[$intArrayIndex] ?? '')) == 0)
 									throw new QPoParserException('No MsgId for MsgStr' . $strMatches[1][0] . ' for PoParseStateMessageString on Line ' . ($intLineNumber + 1) . ': ' . $strPoLine);
 
 								$strContent = QI18n::UnescapeContent($strMatches[2][0]);
@@ -252,8 +252,8 @@
 			}
 
 			for ($intIndex = 0; $intIndex < count($strMessageId); $intIndex++)
-				if (strlen(trim($strMessageId[$intIndex]))) {
-					if (!strlen(trim($strMessageString[$intIndex]))) {
+				if (strlen(trim($strMessageId[$intIndex] ?? ''))) {
+					if (!strlen(trim($strMessageString[$intIndex] ?? ''))) {
 						throw new QPoParserException('No MsgStr defined for MsgId at index ' . $intIndex . ' at the End of the File');
 					}
 
@@ -278,8 +278,8 @@
 		public function VarDump() {
 			$strToReturn = '';
 			foreach ($this->strTranslationArray as $strKey=>$strValue) {
-				$strKey = str_replace("\n", '\\n', addslashes(QApplication::HtmlEntities($strKey)));
-				$strValue = str_replace("\n", '\\n', addslashes(QApplication::HtmlEntities($strValue)));
+				$strKey = str_replace("\n", '\\n', addslashes(QApplication::htmlentities($strKey ?? '') ?? ''));
+				$strValue = str_replace("\n", '\\n', addslashes(QApplication::htmlentities($strValue ?? '') ?? ''));
 				$strToReturn .= sprintf("\"%s\"\n\"%s\"\n\n", $strKey, $strValue);
 			}
 			return $strToReturn;

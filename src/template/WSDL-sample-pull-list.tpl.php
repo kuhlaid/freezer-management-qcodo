@@ -7,7 +7,7 @@
  */
 // we do not print header or footer html
 $this->RenderBegin(false);
-$freezerPullArray = unserialize(QSessionDB::get('__FREEZER_PULL_LIST__'));
+$freezerPullArray = unserialize(QSessionDB::get('__FREEZER_PULL_LIST__') ?? '');
 // if we have a list of selected samples to pull then we will return true
 if (is_array($freezerPullArray) && count($freezerPullArray) > 0) print 1;
 else print 0;

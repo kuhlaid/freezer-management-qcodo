@@ -45,7 +45,7 @@
 				$strToReturn .= sprintf("display:%s;", $this->strDisplayStyle);
 			if ($this->strBorderColor)
 				$strToReturn .= sprintf("color:%s;", $this->strBorderColor);
-			if (strlen(trim($this->strBorderWidth)) > 0) {
+			if (strlen(trim($this->strBorderWidth ?? '')) > 0) {
 				$strBorderWidth = null;
 				try {
 					$strBorderWidth = QType::Cast($this->strBorderWidth, QType::Integer);
@@ -122,7 +122,7 @@
 				$strPath, 
 				$strWidth,
 				$strHeight,
-				QApplication::HtmlEntities($this->strText),
+				QApplication::htmlentities($this->strText ?? ''),
 				$this->GetAttributes(),
 				$strStyle);
 			return $strToReturn;
@@ -156,7 +156,7 @@
 			if (function_exists('gzcompress'))
 				$strData = gzuncompress($strData);
 
-			$objLabel = unserialize($strData);
+			$objLabel = unserialize($strData ?? '');
 			$objLabel->RenderImage();
 		}
 		
@@ -168,7 +168,7 @@
 				throw new QCallerException('Cannot find font file: ' . $this->strFontNames);
 
 			// Figure Out Font Type
-			$strFontExtension = substr($this->strFontNames, strlen($this->strFontNames) - 3);
+			$strFontExtension = substr($this->strFontNames, strlen($this->strFontNames ?? '') - 3);
 			$strFontExtension = strtolower($strFontExtension);
 			
 			// Based on Font Type, Calculate Bounding Box
@@ -550,7 +550,7 @@
 						throw $objExc;
 					}
 
-					if (strlen($mixValue) != 6)
+					if (strlen($mixValue ?? '') != 6)
 						throw new QInvalidCastException('ForeColor must be a 6-digit hexadecimal value');
 
 					// Verify ControlId is only Hexadecimal Digits
@@ -572,7 +572,7 @@
 						throw $objExc;
 					}
 
-					if (strlen($mixValue) != 6)
+					if (strlen($mixValue ?? '') != 6)
 						throw new QInvalidCastException('BackColor must be a 6-digit hexadecimal value');
 
 					// Verify ControlId is only Hexadecimal Digits
@@ -632,7 +632,7 @@
 					$this->strFontNames = $strFontPath;
 
 					// Figure Out Font Type
-					$strFontExtension = substr($mixValue, strlen($mixValue) - 3);
+					$strFontExtension = substr($mixValue, strlen($mixValue ?? '') - 3);
 					$strFontExtension = strtolower($strFontExtension);
 
 					// Based on Font Type, Calculate Bounding Box
@@ -640,10 +640,10 @@
 						case 'ttf':
 							break;
 						case 'pfb':
-							$strFontPath = substr($strFontPath, 0, strlen($strFontPath) - 3) . 'afm';
+							$strFontPath = substr($strFontPath, 0, strlen($strFontPath ?? '') - 3) . 'afm';
 							if (!file_exists($strFontPath))
 								throw new QCallerException('Cannot find accompanying Font Metrics file: ' .
-									substr($mixValue, 0, strlen($mixValue) - 3) . 'afm');
+									substr($mixValue, 0, strlen($mixValue ?? '') - 3) . 'afm');
 							break;
 						case 'afm':
 							throw new QCallerException('AFM is only a Font Metrics file.  You must provide a PFB file for PostScript Type 1 Typefaces: ' . $mixValue);

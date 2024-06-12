@@ -95,7 +95,7 @@ class PHPExcel_CachedObjectStorage_MemorySerialized extends PHPExcel_CachedObjec
 
 		//	Set current entry to the requested entry
 		$this->_currentObjectID = $pCoord;
-		$this->_currentObject = unserialize($this->_cellCache[$pCoord]);
+		$this->_currentObject = unserialize($this->_cellCache[$pCoord] ?? '');
         //    Re-attach this as the cell's parent
         $this->_currentObject->attach($this);
 

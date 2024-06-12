@@ -218,7 +218,7 @@ class PHPExcel_Shared_Drawing
         //    Calculate if padding at the end-line is needed
         //    Divided by two to keep overview.
         //    1 byte = 2 HEX-chars
-        $body_size        =    (strlen($body)/2);
+        $body_size        =    (strlen($body ?? '')/2);
         $header_size    =    ($width*$height);
 
         //    Use end-line padding? Only when needed

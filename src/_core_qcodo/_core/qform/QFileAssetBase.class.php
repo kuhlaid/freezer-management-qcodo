@@ -194,15 +194,15 @@
 			// Now, we need to see if the file, itself, is actually in the docroot somewhere so that
 			// it can be viewed, and if so, we need to return the web-based URL (relative to the docroot)
 			if ($this->strFile) {
-				if (substr($this->strFile, 0, strlen(__DOCROOT__)) == __DOCROOT__)
-					return __VIRTUAL_DIRECTORY__ . substr($this->strFile, strlen(__DOCROOT__));
+				if (substr($this->strFile, 0, strlen(__DOCROOT__ ?? '')) == __DOCROOT__)
+					return __VIRTUAL_DIRECTORY__ . substr($this->strFile, strlen(__DOCROOT__ ?? ''));
 			}
 
 			return null;
 		}
 
 		protected function SetFile($strFile) {
-			if (!strlen($strFile)) {
+			if (!strlen($strFile ?? '')) {
 				// No File Selected -- Remove
 				$this->strFile = null;
 				$this->imgFileIcon->ImagePath = $this->strIconFilePathArray['blank'];
@@ -215,7 +215,7 @@
 
 				// Figure Out File Type, and Display Icon Accordingly
 				$strExtension = substr($this->strFile, strrpos($this->strFile, '.') + 1);
-				switch (trim(strtolower($strExtension))) {
+				switch (trim(strtolower($strExtension ?? ''))) {
 					case 'jpg':
 					case 'jpeg':
 					case 'png':
@@ -223,7 +223,7 @@
 						$this->imgFileIcon->ImagePath = $this->strFile;
 						break;
 					case 'pdf':
-						$this->imgFileIcon->ImagePath = $this->strIconFilePathArray[trim(strtolower($strExtension))];
+						$this->imgFileIcon->ImagePath = $this->strIconFilePathArray[trim(strtolower($strExtension ?? ''))];
 						break;
 					default:
 						$this->imgFileIcon->ImagePath = $this->strIconFilePathArray['default'];

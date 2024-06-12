@@ -2622,7 +2622,7 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
         }
 
         if ($returnRange) {
-            return array( trim(substr($pRange, 0, $sep),"'"),
+            return array( trim(substr($pRange, 0, $sep ?? ''),"'"),
                           substr($pRange, $sep + 1)
                         );
         }
@@ -2836,7 +2836,7 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
                     $this->_autoFilter = $newAutoFilter;
                     $this->_autoFilter->setParent($this);
                 } else {
-                    $this->{$key} = unserialize(serialize($val));
+                    $this->{$key} = unserialize(serialize($val) ?? '');
                 }
             }
         }

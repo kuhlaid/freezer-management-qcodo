@@ -115,7 +115,7 @@ class PHPExcel_CachedObjectStorage_SQLite extends PHPExcel_CachedObjectStorage_C
 		$this->_currentObjectID = $pCoord;
 
 		$cellResult = $cellResultSet->fetchSingle();
-		$this->_currentObject = unserialize($cellResult);
+		$this->_currentObject = unserialize($cellResult ?? '');
         //    Re-attach this as the cell's parent
         $this->_currentObject->attach($this);
 

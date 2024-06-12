@@ -43,7 +43,7 @@ class Freezer extends FreezerGen {
 		// 			return $id;
 		// 		}
 
-		//(array_key_exists($objRack->Freezer, $this->objFreezerArray)||trim($objRack->Freezer)!='')?$this->objFreezerArray[$objRack->Freezer]:''
+		//(array_key_exists($objRack->Freezer, $this->objFreezerArray)||trim($objRack->Freezer ?? '')!='')?$this->objFreezerArray[$objRack->Freezer]:''
 
 		// 		$objFreezerArray = Freezer::QueryArray(QQ::All(),null,null,array('id','name'));
 		// 		if ($objFreezerArray) foreach ($objFreezerArray as $objFreezer) {

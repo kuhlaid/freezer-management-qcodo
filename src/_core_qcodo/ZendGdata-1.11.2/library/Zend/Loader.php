@@ -64,7 +64,7 @@ class Zend_Loader
         // Implementation is PHP namespace-aware, and based on
         // Framework Interop Group reference implementation:
         // http://groups.google.com/group/php-standards/web/psr-0-final-proposal
-        $className = ltrim($class, '\\');
+        $className = ltrim($class, '\\' ?? '');
         $file      = '';
         $namespace = '';
         if ($lastNsPos = strripos($className, '\\')) {
@@ -84,7 +84,7 @@ class Zend_Loader
                 if ($dir == '.') {
                     $dirs[$key] = $dirPath;
                 } else {
-                    $dir = rtrim($dir, '\\/');
+                    $dir = rtrim($dir, '\\/' ?? '');
                     $dirs[$key] = $dir . DIRECTORY_SEPARATOR . $dirPath;
                 }
             }

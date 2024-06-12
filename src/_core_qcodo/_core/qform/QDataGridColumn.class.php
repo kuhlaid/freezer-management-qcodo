@@ -42,7 +42,7 @@
 		public function __construct($strName, $strHtml = null, $objOverrideParameters = null, $strFooter = null) {
 			$this->strName = $strName;
 			$this->strHtml = $strHtml;
-			$this->strFooter = $strFooter[0];	// NOTE: this variable needs to be sent as an array with a single element (if it is not sent as an array the code below will complain about it)
+			$this->strFooter = is_null($strFooter) ? '' : $strFooter[0];	// NOTE: this variable needs to be sent as an array with a single element (if it is not sent as an array the code below will complain about it)
 
 			$objOverrideArray = func_get_args();
 
@@ -139,7 +139,7 @@
 				$strTextDecoration .= "line-through ";
 
 			if ($strTextDecoration) {
-				$strTextDecoration = trim($strTextDecoration);
+				$strTextDecoration = trim($strTextDecoration ?? '');
 				$strStyle .= sprintf("text-decoration:%s;", $strTextDecoration);
 			}
 

@@ -151,7 +151,7 @@
 //				curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
 //				curl_setopt($ch, CURLOPT_PROXYUSERPWD, QEmailServer::$SmtpUsername.":".QEmailServer::$SmtpPassword);
 //				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-//				$authCheck = trim(curl_exec($ch));
+//				$authCheck = trim(curl_exec($ch ?? ''));
 //				if(curl_exec($ch) === false)
 //				{
 //				    echo 'Curl error: ' . curl_error($ch);
@@ -359,12 +359,12 @@
 					fwrite($objResource, sprintf("Content-Type: %s;\r\n", $objFile->MimeType ));
 					fwrite($objResource, sprintf("      name=\"%s\"\r\n", $objFile->FileName ));
 					fwrite($objResource, "Content-Transfer-Encoding: base64\r\n");
-					fwrite($objResource, "Content-Length: %s\r\n", strlen($objFile->EncodedFileData));
+					fwrite($objResource, "Content-Length: %s\r\n", strlen($objFile->EncodedFileData ?? ''));
 					fwrite($objResource, "Content-Disposition: attachment;\r\n");
 					fwrite($objResource, sprintf("      filename=\"%s\"\r\n\r\n", $objFile->FileName));
 					fwrite($objResource, $objFile->EncodedFileData);
 //					foreach (explode("\n", $objFile->EncodedFileData) as $strLine) {
-//						$strLine = trim($strLine);
+//						$strLine = trim($strLine ?? '');
 //						fwrite($objResource, $strLine . "\r\n");
 //					}
 				}
@@ -531,7 +531,7 @@
 					case 'From': return ($this->strFrom = QType::Cast($mixValue, QType::String));
 					case 'To': return ($this->strTo = QType::Cast($mixValue, QType::String));
 					case 'Subject':
-						$strSubject = trim(QType::Cast($mixValue, QType::String));
+						$strSubject = trim(QType::Cast($mixValue, QType::String ?? ''));
 						$strSubject = str_replace("\r", "", $strSubject);
 						$strSubject = str_replace("\n", " ", $strSubject);
 						return ($this->strSubject = $strSubject);

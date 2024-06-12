@@ -92,14 +92,14 @@
 				$strGroupName = $this->strControlId;
 
 			$strStyle = $this->GetStyleAttributes();
-			if (strlen($strStyle) > 0)
+			if (strlen($strStyle ?? '') > 0)
 				$strStyle = sprintf('style="%s" ', $strStyle);
 
 			$strCustomAttributes = $this->GetCustomAttributes();
 
 			$strActions = $this->GetActionAttributes();
 
-			if (strlen($this->strText)) {
+			if (strlen($this->strText ?? '')) {
 				$this->blnIsBlockElement = true;
 				if ($this->strTextAlign == QTextAlign::Left) {
 					$strToReturn = sprintf('<span %s%s%s%s%s><label for="%s">%s</label><input type="radio" title="'.$this->Name.'" id="%s" name="%s" value="%s" %s%s%s%s%s /></span>',
@@ -110,7 +110,7 @@
 						$strDisabled,
 						
 						$this->strControlId,
-						($this->blnHtmlEntities) ? QApplication::HtmlEntities($this->strText) : $this->strText,
+						($this->blnHtmlEntities) ? QApplication::htmlentities($this->strText ?? '') : $this->strText,
 						
 						$this->strControlId,
 						$strGroupName,
@@ -141,7 +141,7 @@
 						$strTabIndex,
 						
 						$this->strControlId,
-						($this->blnHtmlEntities) ? QApplication::HtmlEntities($this->strText) : $this->strText
+						($this->blnHtmlEntities) ? QApplication::htmlentities($this->strText ?? '') : $this->strText
 					);
 				}
 			} else {

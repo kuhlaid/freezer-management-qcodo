@@ -835,7 +835,7 @@ class Zend_Gdata_YouTube_VideoEntry extends Zend_Gdata_YouTube_MediaEntry
 
             $keywords = $this->getMediaGroup()->getKeywords();
             $keywordsString = $keywords->getText();
-            if (strlen(trim($keywordsString)) > 0) {
+            if (strlen(trim($keywordsString ?? '')) > 0) {
                 return preg_split('/(, *)|,/', $keywordsString);
             }
         }
@@ -891,8 +891,8 @@ class Zend_Gdata_YouTube_VideoEntry extends Zend_Gdata_YouTube_MediaEntry
 
             $positionString = $position->__toString();
 
-            if (strlen(trim($positionString)) > 0) {
-                $positionArray = explode(' ', trim($positionString));
+            if (strlen(trim($positionString ?? '')) > 0) {
+                $positionArray = explode(' ', trim($positionString ?? ''));
                 if (count($positionArray) == 2) {
                     $returnArray = array();
                     $returnArray['latitude'] = $positionArray[0];

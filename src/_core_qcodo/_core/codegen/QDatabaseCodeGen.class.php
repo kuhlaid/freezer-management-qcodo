@@ -87,8 +87,8 @@
 		 * @return boolean true if it is found/validated
 		 */
 		public function ValidateTableColumn($strTableName, $strColumnName) {
-			$strTableName = trim(strtolower($strTableName));
-			$strColumnName = trim(strtolower($strColumnName));
+			$strTableName = trim(strtolower($strTableName ?? ''));
+			$strColumnName = trim(strtolower($strColumnName ?? ''));
 
 			if (array_key_exists($strTableName, $this->objTableArray))
 				$strTableName = $this->objTableArray[$strTableName]->Name;
@@ -102,7 +102,7 @@
 			$objFieldArray = $this->objDb->GetFieldsForTable($strTableName);
 
 			foreach ($objFieldArray as $objField) {
-				if (trim(strtolower($objField->Name)) == $strColumnName)
+				if (trim(strtolower($objField->Name ?? '')) == $strColumnName)
 					return true;
 			}
 
@@ -214,13 +214,13 @@
 
 			// Table Type Identifiers
 			$this->strTypeTableSuffix = QCodeGen::LookupSetting($objSettingsXml, 'typeTableIdentifier', 'suffix');
-			$this->intTypeTableSuffixLength = strlen($this->strTypeTableSuffix);
+			$this->intTypeTableSuffixLength = strlen($this->strTypeTableSuffix ?? '');
 			$this->strAssociationTableSuffix = QCodeGen::LookupSetting($objSettingsXml, 'associationTableIdentifier', 'suffix');
-			$this->intAssociationTableSuffixLength = strlen($this->strAssociationTableSuffix);
+			$this->intAssociationTableSuffixLength = strlen($this->strAssociationTableSuffix ?? '');
 
 			// Stripping TablePrefixes
 			$this->strStripTablePrefix = QCodeGen::LookupSetting($objSettingsXml, 'stripFromTableName', 'prefix');
-			$this->intStripTablePrefixLength = strlen($this->strStripTablePrefix);
+			$this->intStripTablePrefixLength = strlen($this->strStripTablePrefix ?? '');
 
 			// Exclude/Include Tables
 			$this->strExcludePattern = QCodeGen::LookupSetting($objSettingsXml, 'excludeTables', 'pattern');
@@ -250,10 +250,10 @@
 			if ($this->strRelationships) {
 				$strLines = explode("\n", strtolower($this->strRelationships));
 				if ($strLines) foreach ($strLines as $strLine) {
-					$strLine = trim($strLine);
+					$strLine = trim($strLine ?? '');
 
 					if (($strLine) && 
-						(strlen($strLine) > 2) &&
+						(strlen($strLine ?? '') > 2) &&
 						(substr($strLine, 0, 2) != '//') &&
 						(substr($strLine, 0, 2) != '--') &&
 						(substr($strLine, 0, 1) != '#')) {
@@ -266,15 +266,15 @@
 				if (!file_exists($this->strRelationshipsScriptPath))
 					$this->strErrors .= sprintf("CodeGen Settings XML Fatal Error: relationshipsScript filepath \"%s\" does not exist\r\n", $this->strRelationshipsScriptPath);
 				else {
-					$strScript = strtolower(trim(file_get_contents($this->strRelationshipsScriptPath)));
+					$strScript = strtolower(trim(file_get_contents($this->strRelationshipsScriptPath ?? '')));
 					switch ($this->strRelationshipsScriptFormat) {
 						case 'qcodo':
 							$strLines = explode("\n", $strScript);
 							if ($strLines) foreach ($strLines as $strLine) {
-								$strLine = trim($strLine);
+								$strLine = trim($strLine ?? '');
 
 								if (($strLine) && 
-									(strlen($strLine) > 2) &&
+									(strlen($strLine ?? '') > 2) &&
 									(substr($strLine, 0, 2) != '//') &&
 									(substr($strLine, 0, 2) != '--') &&
 									(substr($strLine, 0, 1) != '#')) {
@@ -287,14 +287,14 @@
 							// Separate all commands in the script (separated by ";")
 							$strCommands = explode(';', $strScript);
 							if ($strCommands) foreach ($strCommands as $strCommand) {
-								$strCommand = trim($strCommand);
+								$strCommand = trim($strCommand ?? '');
 
 								if ($strCommand) {
 									// Take out all comment lines in the script
 									$strLines = explode("\n", $strCommand);
 									$strCommand = '';
 									foreach ($strLines as $strLine) {
-										$strLine = trim($strLine);
+										$strLine = trim($strLine ?? '');
 										if (($strLine) &&
 											(substr($strLine, 0, 2) != '//') &&
 											(substr($strLine, 0, 2) != '--') &&
@@ -316,7 +316,7 @@
 										}
 									}
 
-									$strCommand = trim($strCommand);
+									$strCommand = trim($strCommand ?? '');
 									if ((strpos($strCommand, 'alter table') === 0) &&
 										(strpos($strCommand, 'foreign key') !== false))
 										$this->strRelationshipLinesSql[$strCommand] = $strCommand;
@@ -363,12 +363,12 @@
 				// Do we Exclude this Table Name? (given includeTables and excludeTables)
 				// First check the lists of Excludes and the Exclude Patterns
 				if (in_array($strTableName,$this->strExcludeListArray) ||
-					(strlen($this->strExcludePattern) > 0 && preg_match(":".$this->strExcludePattern.":i",$strTableName))) {
+					(strlen($this->strExcludePattern ?? '') > 0 && preg_match(":".$this->strExcludePattern.":i",$strTableName))) {
 						
 					// So we THINK we may be excluding this table
 					// But check against the explicit INCLUDE list and patterns
 					if (in_array($strTableName,$this->strIncludeListArray) ||
-						(strlen($this->strIncludePattern) > 0 && preg_match(":".$this->strIncludePattern.":i",$strTableName))) {
+						(strlen($this->strIncludePattern ?? '') > 0 && preg_match(":".$this->strIncludePattern.":i",$strTableName))) {
 						// If we're here, we explicitly want to include this table
 						// Therefore, do nothing
 					} else {
@@ -392,16 +392,16 @@
 				// Perform different tasks based on whether it's an Association table,
 				// a Type table, or just a regular table
 				if (($this->intTypeTableSuffixLength) &&
-					(strlen($strTableName) > $this->intTypeTableSuffixLength) &&
-					(substr($strTableName, strlen($strTableName) - $this->intTypeTableSuffixLength) == $this->strTypeTableSuffix)) {
+					(strlen($strTableName ?? '') > $this->intTypeTableSuffixLength) &&
+					(substr($strTableName, strlen($strTableName ?? '') - $this->intTypeTableSuffixLength) == $this->strTypeTableSuffix)) {
 					// Create a TYPE Table and add it to the array
 					$objTypeTable = new QTypeTable($strTableName);
 					$this->objTypeTableArray[strtolower($strTableName)] = $objTypeTable;
 //					_p("TYPE Table: $strTableName<br />", false);
 
 				} else if (($this->intAssociationTableSuffixLength) &&
-					(strlen($strTableName) > $this->intAssociationTableSuffixLength) &&
-					(substr($strTableName, strlen($strTableName) - $this->intAssociationTableSuffixLength) == $this->strAssociationTableSuffix)) {
+					(strlen($strTableName ?? '') > $this->intAssociationTableSuffixLength) &&
+					(substr($strTableName, strlen($strTableName ?? '') - $this->intAssociationTableSuffixLength) == $this->strAssociationTableSuffix)) {
 					// Add this ASSOCIATION Table Name to the array
 					$this->strAssociationTableNameArray[strtolower($strTableName)] = $strTableName;
 //					_p("ASSN Table: $strTableName<br />", false);
@@ -607,7 +607,7 @@
 			// Setup the Array of Reserved Words
 			$strReservedWords = explode(',', QCodeGen::PhpReservedWords);
 			for ($intIndex = 0; $intIndex < count($strReservedWords); $intIndex++)
-				$strReservedWords[$intIndex] = strtolower(trim($strReservedWords[$intIndex]));
+				$strReservedWords[$intIndex] = strtolower(trim($strReservedWords[$intIndex] ?? ''));
 
 			// Setup the Type Table Object
 			$strTableName = $objTypeTable->Name;
@@ -645,12 +645,12 @@
 				$strTokenArray[$objRow[0]] = $this->TypeTokenFromTypeName($objRow[1]);
 
 				foreach ($strReservedWords as $strReservedWord)
-					if (trim(strtolower($strTokenArray[$objRow[0]])) == $strReservedWord) {
+					if (trim(strtolower($strTokenArray[$objRow[0]] ?? '')) == $strReservedWord) {
 						$this->strErrors .= sprintf("Warning: TypeTable %s contains a type name which is a reserved word: %s.  Appended _ to the beginning of it.\r\n",
 							$strTableName, $strReservedWord);
 						$strTokenArray[$objRow[0]] = '_' . $strTokenArray[$objRow[0]];
 					}
-				if (strlen($strTokenArray[$objRow[0]]) == 0) {
+				if (strlen($strTokenArray[$objRow[0]] ?? '') == 0) {
 					$this->strErrors .= sprintf("Warning: TypeTable %s contains an invalid type name: %s\r\n",
 						$strTableName, stripslashes($strNameArray[$objRow[0]]));
 					return;
@@ -920,9 +920,9 @@
 				// Setup Reserved Words
 				$strReservedWords = explode(',', QCodeGen::PhpReservedWords);
 				for ($intIndex = 0; $intIndex < count($strReservedWords); $intIndex++)
-					$strReservedWords[$intIndex] = strtolower(trim($strReservedWords[$intIndex]));
+					$strReservedWords[$intIndex] = strtolower(trim($strReservedWords[$intIndex] ?? ''));
 
-				$strTableNameToTest = trim(strtolower($strTableName));
+				$strTableNameToTest = trim(strtolower($strTableName ?? ''));
 				foreach ($strReservedWords as $strReservedWord)
 					if ($strTableNameToTest == $strReservedWord) {
 						$this->strErrors .= sprintf("Table '%s' has a table name which is a PHP reserved word.\r\n", $strTableName);
@@ -991,8 +991,8 @@
 		protected function StripPrefixFromTable($strTableName) {
 			// If applicable, strip any StripTablePrefix from the table name
 			if ($this->intStripTablePrefixLength &&
-				(strlen($strTableName) > $this->intStripTablePrefixLength) &&
-				(substr($strTableName, 0, $this->intStripTablePrefixLength - strlen($strTableName)) == $this->strStripTablePrefix))
+				(strlen($strTableName ?? '') > $this->intStripTablePrefixLength) &&
+				(substr($strTableName, 0, $this->intStripTablePrefixLength - strlen($strTableName ?? '')) == $this->strStripTablePrefix))
 				return substr($strTableName, $this->intStripTablePrefixLength);	
 
 			return $strTableName;
@@ -1016,12 +1016,12 @@
 				return null;
 			}
 
-			$strColumnName = trim($strSourceTokens[1]);
-			$strReferenceTableName = trim($strDestinationTokens[0]);
-			$strReferenceColumnName = trim($strDestinationTokens[1]);
+			$strColumnName = trim($strSourceTokens[1] ?? '');
+			$strReferenceTableName = trim($strDestinationTokens[0] ?? '');
+			$strReferenceColumnName = trim($strDestinationTokens[1] ?? '');
 			$strFkName = sprintf('virtualfk_%s_%s', $strTableName, $strColumnName);
 
-			if (strtolower($strTableName) == trim($strSourceTokens[0])) {
+			if (strtolower($strTableName) == trim($strSourceTokens[0] ?? '')) {
 				$this->strRelationshipLinesQcodo[$strLine] = null;
 				return $this->GetForeignKeyHelper($strLine, $strFkName, $strTableName, $strColumnName, $strReferenceTableName, $strReferenceColumnName);
 			}
@@ -1054,9 +1054,9 @@
 			preg_match($strPattern, $strLine, $strMatches);
 
 			if (count($strMatches) == 8) {
-				$strColumnName = trim($strMatches[5]);
-				$strReferenceTableName = trim($strMatches[6]);
-				$strReferenceColumnName = trim($strMatches[7]);
+				$strColumnName = trim($strMatches[5] ?? '');
+				$strReferenceTableName = trim($strMatches[6] ?? '');
+				$strReferenceColumnName = trim($strMatches[7] ?? '');
 				$strFkName = $strMatches[4];
 				if (!$strFkName)
 					$strFkName = sprintf('virtualfk_%s_%s', $strTableName, $strColumnName);
@@ -1088,7 +1088,7 @@
 				$strReferenceColumnName = str_replace("\r", '', $strReferenceColumnName);
 				$strReferenceColumnName = str_replace("\n", '', $strReferenceColumnName);
 
-				if (strtolower($strTableName) == trim($strMatches[1])) {
+				if (strtolower($strTableName) == trim($strMatches[1] ?? '')) {
 					$this->strRelationshipLinesSql[$strLine] = null;
 					return $this->GetForeignKeyHelper($strLine, $strFkName, $strTableName, $strColumnName, $strReferenceTableName, $strReferenceColumnName);
 				}
@@ -1197,7 +1197,7 @@
 		}
 	}
 
-	function array_trim(&$strValue) {
-		$strValue = trim($strValue);
+	function array_trim(&$strValue ?? '') {
+		$strValue = trim($strValue ?? '');
 	}
 ?>

@@ -417,7 +417,7 @@ class Zend_Http_Client
             } else {
                 // Header names are stored lowercase internally.
                 if (is_string($value)) {
-                    $value = trim($value);
+                    $value = trim($value ?? '');
                 }
                 $this->headers[$normalized_name] = array($name, $value);
             }
@@ -664,7 +664,7 @@ class Zend_Http_Client
                 throw new Zend_Http_Client_Exception("Cookie name cannot contain these characters: =,; \t\r\n\013\014 ({$cookie})");
             }
 
-            $value = addslashes($value);
+            $value = addslashes($value ?? '');
 
             if (! isset($this->headers['cookie'])) {
                 $this->headers['cookie'] = array('Cookie', '');
@@ -1052,7 +1052,7 @@ class Zend_Http_Client
                     } else {
                         // Get the current path directory, removing any trailing slashes
                         $path = $this->uri->getPath();
-                        $path = rtrim(substr($path, 0, strrpos($path, '/')), "/");
+                        $path = rtrim(substr($path, 0, strrpos($path, '/' ?? '')), "/");
                         $this->uri->setPath($path . '/' . $location);
                     }
                 }
@@ -1175,7 +1175,7 @@ class Zend_Http_Client
 
         // If we have raw_post_data set, just use it as the body.
         if (isset($this->raw_post_data)) {
-            $this->setHeaders(self::CONTENT_LENGTH, strlen($this->raw_post_data));
+            $this->setHeaders(self::CONTENT_LENGTH, strlen($this->raw_post_data ?? ''));
             if (isset($mbIntEnc)) {
                 mb_internal_encoding($mbIntEnc);
             }
@@ -1234,7 +1234,7 @@ class Zend_Http_Client
 
         // Set the Content-Length if we have a body or if request is POST/PUT
         if ($body || $this->method == self::POST || $this->method == self::PUT) {
-            $this->setHeaders(self::CONTENT_LENGTH, strlen($body));
+            $this->setHeaders(self::CONTENT_LENGTH, strlen($body ?? ''));
         }
 
         if (isset($mbIntEnc)) {

@@ -118,7 +118,7 @@ class PHPExcel_Writer_Excel2007_StringTable extends PHPExcel_Writer_Excel2007_Wr
 						if (! $textElement instanceof PHPExcel_RichText) {
 							$textToWrite = PHPExcel_Shared_String::ControlCharacterPHP2OOXML( $textElement );
 							$objWriter->startElement('t');
-							if ($textToWrite !== trim($textToWrite)) {
+							if ($textToWrite !== trim($textToWrite ?? '')) {
 								$objWriter->writeAttribute('xml:space', 'preserve');
 							}
 							$objWriter->writeRawData($textToWrite);

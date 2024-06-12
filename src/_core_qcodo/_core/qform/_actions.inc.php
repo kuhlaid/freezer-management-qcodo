@@ -14,15 +14,15 @@
 				if ($objAction->objEvent->Delay > 0) {
 					$strCode = sprintf(" qcodo.setTimeout('%s', '%s', %s);",
 						$objControl->ControlId,
-						addslashes($objAction->RenderScript($objControl)),
+						addslashes($objAction->RenderScript($objControl) ?? ''),
 						$objAction->objEvent->Delay);
 				} else {
 					$strCode = ' ' . $objAction->RenderScript($objControl);
 				}
 
 				// Add Condition (if applicable)
-				if (strlen($objAction->objEvent->Condition))
-					$strCode = sprintf(' if (%s) {%s}', $objAction->objEvent->Condition, trim($strCode));
+				if (strlen($objAction->objEvent->Condition ?? ''))
+					$strCode = sprintf(' if (%s) {%s}', $objAction->objEvent->Condition, trim($strCode ?? ''));
 
 				// Append it to the Return Value
 				$strToReturn .= $strCode;
@@ -35,7 +35,7 @@
 					$strToReturn .= ' return false;';
 			}
 
-			if (strlen($strToReturn))
+			if (strlen($strToReturn ?? ''))
 				return sprintf('%s="%s" ', $strEventName, substr($strToReturn, 1));
 			else
 				return null;
@@ -93,7 +93,7 @@
 
 		public function RenderScript(QControl $objControl) {
 			return sprintf("qc.pB('%s', '%s', '%s', '%s');",
-				$objControl->Form->FormId, $objControl->ControlId, get_class($this->objEvent), addslashes($objControl->ActionParameter));
+				$objControl->Form->FormId, $objControl->ControlId, get_class($this->objEvent), addslashes($objControl->ActionParameter ?? ''));
 		}
 	}
 
@@ -132,7 +132,7 @@
 			}
 
 			return sprintf("qc.pA('%s', '%s', '%s', '%s', '%s');",
-				$objControl->Form->FormId, $objControl->ControlId, get_class($this->objEvent), addslashes($objControl->ActionParameter), $strWaitIconControlId);
+				$objControl->Form->FormId, $objControl->ControlId, get_class($this->objEvent), addslashes($objControl->ActionParameter ?? ''), $strWaitIconControlId);
 		}
 	}
 
@@ -152,9 +152,9 @@
 		protected $strJavaScript;
 
 		public function __construct($strJavaScript) {
-			$this->strJavaScript = trim($strJavaScript);
+			$this->strJavaScript = trim($strJavaScript ?? '');
 			if (QString::LastCharacter($this->strJavaScript) == ';')
-				$this->strJavaScript = substr($this->strJavaScript, 0, strlen($this->strJavaScript) - 1);
+				$this->strJavaScript = substr($this->strJavaScript, 0, strlen($this->strJavaScript ?? '') - 1);
 		}
 
 		public function __get($strName) {
@@ -198,7 +198,7 @@
 		}
 
 		public function RenderScript(QControl $objControl) {
-			$strMessage = QApplication::HtmlEntities($this->strMessage);
+			$strMessage = QApplication::htmlentities($this->strMessage ?? '');
 			$strMessage = str_replace("'", "\\'", $strMessage);
 			return sprintf("if (!confirm('%s')) return false;", $strMessage);
 		}
@@ -226,7 +226,7 @@
 		}
 
 		public function RenderScript(QControl $objControl) {
-			$strMessage = QApplication::HtmlEntities($this->strMessage);
+			$strMessage = QApplication::htmlentities($this->strMessage ?? '');
 			$strMessage = str_replace("'", "\\'", $strMessage);
 			return sprintf("alert('%s');", $strMessage);
 		}

@@ -133,8 +133,8 @@
 			// Set the Template Escaping
 			QCodeGen::$TemplateEscapeBegin = QCodeGen::LookupSetting(QCodeGen::$SettingsXml, 'templateEscape', 'begin');
 			QCodeGen::$TemplateEscapeEnd = QCOdeGen::LookupSetting(QCodeGen::$SettingsXml, 'templateEscape', 'end');
-			QCodeGen::$TemplateEscapeBeginLength = strlen(QCodeGen::$TemplateEscapeBegin);
-			QCodeGen::$TemplateEscapeEndLength = strlen(QCodeGen::$TemplateEscapeEnd);
+			QCodeGen::$TemplateEscapeBeginLength = strlen(QCodeGen::$TemplateEscapeBegin ?? '');
+			QCodeGen::$TemplateEscapeEndLength = strlen(QCodeGen::$TemplateEscapeEnd ?? '');
 
 			if ((!QCodeGen::$TemplateEscapeBeginLength) || (!QCodeGen::$TemplateEscapeEndLength)) {
 				QCodeGen::$RootErrors .= "CodeGen Settings XML Fatal Error: templateEscape begin and/or end was not defined\r\n";
@@ -196,11 +196,11 @@
 							return null;
 						}
 					default:
-						$strToReturn = trim(QType::Cast($objNode[$strAttributeName], QType::String));
+						$strToReturn = trim(QType::Cast($objNode[$strAttributeName], QType::String ?? ''));
 						return $strToReturn;
 				}
 			} else {
-				$strToReturn = trim(QType::Cast($objNode, QType::String));
+				$strToReturn = trim(QType::Cast($objNode, QType::String ?? ''));
 				return $strToReturn;
 			}
 		}
@@ -251,13 +251,13 @@
 			$strTemplateFileArray = array();
 			
 			// Calculate Prefix Size
-			$intPrefixLength = strlen($strTemplatePrefix);
+			$intPrefixLength = strlen($strTemplatePrefix ?? '');
 
 			// Go through the set of standard templates, first
 			$objDirectory = opendir($strTemplatePath);
 			while ($strTemplateFile = readdir($objDirectory)) {
 				if ((substr($strTemplateFile, 0, $intPrefixLength) == $strTemplatePrefix) &&
-					(substr($strTemplateFile, strlen($strTemplateFile) - 4) == '.tpl'))
+					(substr($strTemplateFile, strlen($strTemplateFile ?? '') - 4) == '.tpl'))
 					$strTemplateFileArray[$strTemplateFile] = sprintf('%s%s', $strTemplatePath, $strTemplateFile);
 			}
 
@@ -265,7 +265,7 @@
 			$objDirectory = opendir($strTemplatePathCustom);
 			while ($strTemplateFile = readdir($objDirectory)) {
 				if ((substr($strTemplateFile, 0, $intPrefixLength) == $strTemplatePrefix) &&
-					(substr($strTemplateFile, strlen($strTemplateFile) - 4) == '.tpl'))
+					(substr($strTemplateFile, strlen($strTemplateFile ?? '') - 4) == '.tpl'))
 					$strTemplateFileArray[$strTemplateFile] = sprintf('%s%s', $strTemplatePathCustom, $strTemplateFile);
 			}
 
@@ -311,7 +311,7 @@
 			if ($intPosition === false)
 				throw new Exception($strError);
 
-			$strFirstLine = trim(substr($strTemplate, 0, $intPosition));
+			$strFirstLine = trim(substr($strTemplate, 0, $intPosition ?? ''));
 			$strTemplate = substr($strTemplate, $intPosition + 1);
 
 			$objTemplateXml = null;
@@ -357,7 +357,7 @@
 					chmod($strFilePath, 0666);
 					QApplication::RestoreErrorHandler();
 
-					return ($intBytesSaved == strlen($strTemplate));
+					return ($intBytesSaved == strlen($strTemplate ?? ''));
 				} else
 					// Becuase we are not supposed to overwrite, we should return "true" by default
 					return true;
@@ -421,25 +421,25 @@
 				// Get and cleanup the Eval Statement
 				$strStatement = substr($strTemplate, $intPosition + QCodeGen::$TemplateEscapeBeginLength, 
 										$intPositionEnd - $intPosition - QCodeGen::$TemplateEscapeEndLength);
-				$strStatement = trim($strStatement);
+				$strStatement = trim($strStatement ?? '');
 
 				if (substr($strStatement, 0, 1) == '=') {
 					// Remove Trailing ';' if applicable
-					if (substr($strStatement, strlen($strStatement) - 1) == ';')
-						$strStatement = trim(substr($strStatement, 0, strlen($strStatement) - 1));
+					if (substr($strStatement, strlen($strStatement ?? '') - 1) == ';')
+						$strStatement = trim(substr($strStatement, 0, strlen($strStatement ?? '') - 1));
 
 					// Remove Head '='
-					$strStatement = trim(substr($strStatement, 1));
+					$strStatement = trim(substr($strStatement, 1 ?? ''));
 					
 					// Add 'return' eval
 					$strStatement = sprintf('return (%s);', $strStatement);
 				} else if (substr($strStatement, 0, 1) == '@') {
 					// Remove Trailing ';' if applicable
-					if (substr($strStatement, strlen($strStatement) - 1) == ';')
-						$strStatement = trim(substr($strStatement, 0, strlen($strStatement) - 1));
+					if (substr($strStatement, strlen($strStatement ?? '') - 1) == ';')
+						$strStatement = trim(substr($strStatement, 0, strlen($strStatement ?? '') - 1));
 
 					// Remove Head '@'
-					$strStatement = trim(substr($strStatement, 1));
+					$strStatement = trim(substr($strStatement, 1 ?? ''));
 
 					// Calculate Template Filename
 					$intVariablePosition = strpos($strStatement, '(');
@@ -450,20 +450,20 @@
 
 					$strVariableList = substr($strStatement, $intVariablePosition + 1);
 					// Remove trailing ')'
-					$strVariableList = trim(substr($strVariableList, 0, strlen($strVariableList) - 1));
+					$strVariableList = trim(substr($strVariableList, 0, strlen($strVariableList ?? '') - 1));
 
 					$strVariableArray = explode(',', $strVariableList);
 
 					// Clean Each Variable
 					for ($intIndex = 0; $intIndex < count($strVariableArray); $intIndex++) {
 						// Trim
-						$strVariableArray[$intIndex] = trim($strVariableArray[$intIndex]);
+						$strVariableArray[$intIndex] = trim($strVariableArray[$intIndex] ?? '');
 						
 						// Remove trailing and head "'"
-						$strVariableArray[$intIndex] = substr($strVariableArray[$intIndex], 1, strlen($strVariableArray[$intIndex]) - 2);
+						$strVariableArray[$intIndex] = substr($strVariableArray[$intIndex], 1, strlen($strVariableArray[$intIndex] ?? '') - 2);
 						
 						// Trim Again
-						$strVariableArray[$intIndex] = trim($strVariableArray[$intIndex]);
+						$strVariableArray[$intIndex] = trim($strVariableArray[$intIndex] ?? '');
 					}
 					
 					// Ensure each variable exists!
@@ -495,12 +495,12 @@
 
 				if (substr($strStatement, 0, 1) == '-') {
 					// Backup a number of characters
-					$intPosition = $intPosition - strlen($strStatement);
+					$intPosition = $intPosition - strlen($strStatement ?? '');
 					$strStatement = '';
 					
 					
 				// Check if we're starting an open-ended statemen
-				} else if (substr($strStatement, strlen($strStatement) - 1) == '{') {
+				} else if (substr($strStatement, strlen($strStatement ?? '') - 1) == '{') {
 					// We ARE in an open-ended statement
 
 					// SubTemplate is the contents of this open-ended template
@@ -515,9 +515,9 @@
 						$intSubPositionEnd = strpos($strSubTemplate, QCodeGen::$TemplateEscapeEnd, $intSubPosition);
 						$strFragment = substr($strSubTemplate, $intSubPosition + QCodeGen::$TemplateEscapeEndLength,
 							$intSubPositionEnd - $intSubPosition - QCodeGen::$TemplateEscapeEndLength);
-						$strFragment = trim($strFragment);
+						$strFragment = trim($strFragment ?? '');
 						
-						$strFragmentLastCharacter = substr($strFragment, strlen($strFragment) - 1);
+						$strFragmentLastCharacter = substr($strFragment, strlen($strFragment ?? '') - 1);
 
 						if ($strFragmentLastCharacter == '{') {
 							$intLevel++;
@@ -537,7 +537,7 @@
 					$intCrPosition = strpos($strSubTemplate, "\n");
 					if ($intCrPosition !== false) {
 						$strFragment = substr($strSubTemplate, 0, $intCrPosition + 1);
-						if (trim($strFragment) == '') {
+						if (trim($strFragment ?? '') == '') {
 							// Nothing exists before the first CR
 							// Go ahead and chop it off
 							$strSubTemplate = substr($strSubTemplate, $intCrPosition + 1);
@@ -548,7 +548,7 @@
 					$intCrPosition = strrpos($strSubTemplate, "\n");
 					if ($intCrPosition !== false) {
 						$strFragment = substr($strSubTemplate, $intCrPosition + 1);
-						if (trim($strFragment) == '') {
+						if (trim($strFragment ?? '') == '') {
 							// Nothing exists after the last CR
 							// Go ahead and chop it off
 							$strSubTemplate = substr($strSubTemplate, 0, $intCrPosition + 1);
@@ -562,28 +562,28 @@
 							$strFullStatement = $strStatement;
 
 							// Remove leading 'foreach' and trailing '{'
-							$strStatement = substr($strStatement, strlen('foreach'));
-							$strStatement = substr($strStatement, 0, strlen($strStatement) - 1);
-							$strStatement = trim($strStatement);
+							$strStatement = substr($strStatement, strlen('foreach' ?? ''));
+							$strStatement = substr($strStatement, 0, strlen($strStatement ?? '') - 1);
+							$strStatement = trim($strStatement ?? '');
 							
 							// Ensure that we've got a "(" and a ")"
 							if ((QString::FirstCharacter($strStatement) != '(') ||
 								(QString::LastCharacter($strStatement) != ')'))
 								throw new Exception("Improperly Formatted foreach: $strFullStatement");
-							$strStatement = trim(substr($strStatement, 1, strlen($strStatement) - 2));
+							$strStatement = trim(substr($strStatement, 1, strlen($strStatement ?? '') - 2));
 							
 							// Pull out the two sides of the "as" clause
 							$strStatement = explode(' as ', $strStatement);
 							if (count($strStatement) != 2)
 								throw new Exception("Improperly Formatted foreach: $strFullStatement");
 							
-							$objArray = eval(sprintf('return %s;', trim($strStatement[0])));
-							$strSingleObjectName = trim($strStatement[1]);
+							$objArray = eval(sprintf('return %s;', trim($strStatement[0] ?? '')));
+							$strSingleObjectName = trim($strStatement[1] ?? '');
 							$strNameKeyPair = explode('=>', $strSingleObjectName);
 
 							if (count($strNameKeyPair) == 2) {
-								$strSingleObjectKey = trim($strNameKeyPair[0]);
-								$strSingleObjectValue = trim($strNameKeyPair[1]);
+								$strSingleObjectKey = trim($strNameKeyPair[0] ?? '');
+								$strSingleObjectValue = trim($strNameKeyPair[1] ?? '');
 								
 								// Remove leading '$'
 								$strSingleObjectKey = substr($strSingleObjectKey, 1);
@@ -616,9 +616,9 @@
 							$strFullStatement = $strStatement;
 
 							// Remove leading 'if' and trailing '{'
-							$strStatement = substr($strStatement, strlen('if'));
-							$strStatement = substr($strStatement, 0, strlen($strStatement) - 1);
-							$strStatement = trim($strStatement);
+							$strStatement = substr($strStatement, strlen('if' ?? ''));
+							$strStatement = substr($strStatement, 0, strlen($strStatement ?? '') - 1);
+							$strStatement = trim($strStatement ?? '');
 							
 							
 							if (eval(sprintf('return (%s);', $strStatement))) {
@@ -638,17 +638,17 @@
 					$intCrPosition = strpos($strTemplate, "\n", $intPositionEnd + QCodeGen::$TemplateEscapeEndLength);
 					if ($intCrPosition !== false) {
 						$strFragment = substr($strTemplate, $intPositionEnd + QCodeGen::$TemplateEscapeEndLength, $intCrPosition - ($intPositionEnd + QCodeGen::$TemplateEscapeEndLength));
-						if (trim($strFragment == '')) {
+						if (trim($strFragment == '' ?? '')) {
 							// Nothing exists after the escapeend and the next CR
 							// Go ahead and chop it off
 							$intPositionEnd = $intCrPosition - QCodeGen::$TemplateEscapeEndLength + 1;
 						}
 					} else {
 						$strFragment = substr($strTemplate, $intPositionEnd + QCodeGen::$TemplateEscapeEndLength);
-						if (trim($strFragment == '')) {
+						if (trim($strFragment == '' ?? '')) {
 							// Nothing exists after the escapeend and the end
 							// Go ahead and chop it off
-							$intPositionEnd = strlen($strTemplate);
+							$intPositionEnd = strlen($strTemplate ?? '');
 						}
 					}
 
@@ -675,7 +675,7 @@
 						$intCrLength = 0;
 					$strFragment = substr($strTemplate, $intCrPosition, $intPosition - $intCrPosition);
 					
-					if (trim($strFragment) == '') {
+					if (trim($strFragment ?? '') == '') {
 						// Nothing exists before the escapebegin and the previous CR
 						// Go ahead and chop it off (but not the CR or CR/LF)
 						$intPosition = $intCrPosition + $intLfLength + $intCrLength;
@@ -727,7 +727,7 @@
 		
 		protected function ReferenceColumnNameFromColumn(QColumn $objColumn) {
 			$strColumnName = $objColumn->Name;
-			$intNameLength = strlen($strColumnName);
+			$intNameLength = strlen($strColumnName ?? '');
 			
 			// Does the column name for this reference column end in "_id"?
 			if (($intNameLength > 3) && (substr($strColumnName, $intNameLength - 3) == "_id")) {
@@ -799,7 +799,7 @@
 
 		protected function TypeTokenFromTypeName($strName) {
 			$strToReturn = '';
-			for($intIndex = 0; $intIndex < strlen($strName); $intIndex++)
+			for($intIndex = 0; $intIndex < strlen($strName ?? ''); $intIndex++)
 				if (((ord($strName[$intIndex]) >= ord('a')) &&
 					 (ord($strName[$intIndex]) <= ord('z'))) ||
 					((ord($strName[$intIndex]) >= ord('A')) &&
@@ -902,7 +902,7 @@
 					return sprintf('Child%s', $strToReturn);
 				
 				// Rip out trailing "_id" if applicable
-				$intLength = strlen($strColumnName);
+				$intLength = strlen($strColumnName ?? '');
 				if (($intLength > 3) && (substr($strColumnName, $intLength - 3) == "_id"))
 					$strColumnName = substr($strColumnName, 0, $intLength - 3);
 	
@@ -930,7 +930,7 @@
 					return $strToReturn;
 
 				// Rip out trailing "_id" if applicable
-				$intLength = strlen($strColumnName);
+				$intLength = strlen($strColumnName ?? '');
 				if (($intLength > 3) && (substr($strColumnName, $intLength - 3) == "_id"))
 					$strColumnName = substr($strColumnName, 0, $intLength - 3);
 	
@@ -1048,7 +1048,7 @@
 					return $strName . 's';
 			}
 
-			$intLength = strlen($strName);
+			$intLength = strlen($strName ?? '');
 			if (substr($strName, $intLength - 1) == "y")
 				return substr($strName, 0, $intLength - 1) . "ies";
 			if (substr($strName, $intLength - 1) == "s")

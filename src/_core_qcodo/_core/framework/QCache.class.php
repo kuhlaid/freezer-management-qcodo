@@ -8,9 +8,9 @@
 		protected $strCheckFilesArray;
 
 		public function __construct($strNamespace, $strKey, $strExtension = 'txt', $mixCheckFiles = null) {
-			$this->strNamespace = trim(strtolower($strNamespace));
-			$this->strKey = md5(trim(strtolower($strKey)));
-			$this->strExtension = trim(strtolower($strExtension));
+			$this->strNamespace = trim(strtolower($strNamespace ?? ''));
+			$this->strKey = md5(trim(strtolower($strKey ?? '')));
+			$this->strExtension = trim(strtolower($strExtension ?? ''));
 
 			if (is_array($mixCheckFiles))
 				$this->strCheckFilesArray = $mixCheckFiles;

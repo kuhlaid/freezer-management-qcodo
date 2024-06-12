@@ -348,7 +348,7 @@ class PHPExcel_Shared_Date
 	 * @return	float|FALSE		Excel date/time serial value
 	 */
 	public static function stringToExcel($dateValue = '') {
-		if (strlen($dateValue) < 2)
+		if (strlen($dateValue ?? '') < 2)
 			return FALSE;
 		if (!preg_match('/^(\d{1,4}[ \.\/\-][A-Z]{3,9}([ \.\/\-]\d{1,4})?|[A-Z]{3,9}[ \.\/\-]\d{1,4}([ \.\/\-]\d{1,4})?|\d{1,4}[ \.\/\-]\d{1,4}([ \.\/\-]\d{1,4})?)( \d{1,2}:\d{1,2}(:\d{1,2})?)?$/iu', $dateValue))
 			return FALSE;

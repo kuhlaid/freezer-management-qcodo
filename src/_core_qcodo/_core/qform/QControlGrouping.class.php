@@ -5,7 +5,7 @@
 		protected $blnModified = false;
 
 		public function __construct(QForm $objForm, $strGroupingId) {
-			if (strlen($strGroupingId) == 0)
+			if (strlen($strGroupingId ?? '') == 0)
 				$this->strGroupingId = $objForm->GenerateControlId();
 			else {
 				// Verify ControlId is only AlphaNumeric Characters

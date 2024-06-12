@@ -609,8 +609,8 @@ class PHPExcel_Cell
 
 			// Create absolute coordinate
 			list($column, $row) = self::coordinateFromString($pCoordinateString);
-			$column = ltrim($column,'$');
-			$row = ltrim($row,'$');
+			$column = ltrim($column,'$' ?? '');
+			$row = ltrim($row,'$' ?? '');
 			return $worksheet . '$' . $column . '$' . $row;
 		}
 

@@ -479,7 +479,7 @@ class PHPExcel_Calculation_DateTime {
 	 *						depending on the value of the ReturnDateType flag
 	 */
 	public static function DATEVALUE($dateValue = 1) {
-		$dateValue = trim(PHPExcel_Calculation_Functions::flattenSingleValue($dateValue),'"');
+		$dateValue = trim(PHPExcel_Calculation_Functions::flattenSingleValue($dateValue ?? ''),'"');
 		//	Strip any ordinals because they're allowed in Excel (English only)
 		$dateValue = preg_replace('/(\d)(st|nd|rd|th)([ -\/])/Ui','$1$3',$dateValue);
 		//	Convert separators (/ . or space) to hyphens (should also handle dot used for ordinals in some countries, e.g. Denmark, Germany)
@@ -581,7 +581,7 @@ class PHPExcel_Calculation_DateTime {
 	 *						depending on the value of the ReturnDateType flag
 	 */
 	public static function TIMEVALUE($timeValue) {
-		$timeValue = trim(PHPExcel_Calculation_Functions::flattenSingleValue($timeValue),'"');
+		$timeValue = trim(PHPExcel_Calculation_Functions::flattenSingleValue($timeValue ?? ''),'"');
 		$timeValue	= str_replace(array('/','.'),array('-','-'),$timeValue);
 
 		$PHPDateArray = date_parse($timeValue);
@@ -1005,7 +1005,7 @@ class PHPExcel_Calculation_DateTime {
 		if (!empty($dateArgs)) {
 			$holidayCountedArray = $holidayDates = array();
 			foreach ($dateArgs as $holidayDate) {
-				if (($holidayDate !== NULL) && (trim($holidayDate) > '')) {
+				if (($holidayDate !== NULL) && (trim($holidayDate ?? '') > '')) {
 					if (is_string($holidayDate = self::_getDateValue($holidayDate))) {
 						return PHPExcel_Calculation_Functions::VALUE();
 					}
@@ -1277,7 +1277,7 @@ class PHPExcel_Calculation_DateTime {
 		if (!is_numeric($timeValue)) {
 			if (PHPExcel_Calculation_Functions::getCompatibilityMode() == PHPExcel_Calculation_Functions::COMPATIBILITY_GNUMERIC) {
 				$testVal = strtok($timeValue,'/-: ');
-				if (strlen($testVal) < strlen($timeValue)) {
+				if (strlen($testVal ?? '') < strlen($timeValue ?? '')) {
 					return PHPExcel_Calculation_Functions::VALUE();
 				}
 			}
@@ -1317,7 +1317,7 @@ class PHPExcel_Calculation_DateTime {
 		if (!is_numeric($timeValue)) {
 			if (PHPExcel_Calculation_Functions::getCompatibilityMode() == PHPExcel_Calculation_Functions::COMPATIBILITY_GNUMERIC) {
 				$testVal = strtok($timeValue,'/-: ');
-				if (strlen($testVal) < strlen($timeValue)) {
+				if (strlen($testVal ?? '') < strlen($timeValue ?? '')) {
 					return PHPExcel_Calculation_Functions::VALUE();
 				}
 			}
@@ -1357,7 +1357,7 @@ class PHPExcel_Calculation_DateTime {
 		if (!is_numeric($timeValue)) {
 			if (PHPExcel_Calculation_Functions::getCompatibilityMode() == PHPExcel_Calculation_Functions::COMPATIBILITY_GNUMERIC) {
 				$testVal = strtok($timeValue,'/-: ');
-				if (strlen($testVal) < strlen($timeValue)) {
+				if (strlen($testVal ?? '') < strlen($timeValue ?? '')) {
 					return PHPExcel_Calculation_Functions::VALUE();
 				}
 			}

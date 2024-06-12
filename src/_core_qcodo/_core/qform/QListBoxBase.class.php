@@ -93,7 +93,7 @@
 				if ($objItem->Selected)
 					return sprintf('<span %s>%s</span>',
 						$this->GetAttributes(),
-						QApplication::HtmlEntities($objItem->Name)
+						QApplication::htmlentities($objItem->Name ?? '')
 					);
 				else return '';
 			}
@@ -104,8 +104,8 @@
 				if ($objItem->Value != '') {
 					return sprintf('<div %s align="right"><span class="listboxValue">%s</span>|<b>%s</b> <input type="radio"></div>',
 							$this->GetAttributes(),
-							QApplication::HtmlEntities($objItem->Value),
-							QApplication::HtmlEntities($objItem->Name)
+							QApplication::htmlentities($objItem->Value ?? ''),
+							QApplication::htmlentities($objItem->Name ?? '')
 						);
 				}
 				else return '';
@@ -115,7 +115,7 @@
 				$intIndex,
 				($objItem->Selected) ? 'selected="selected"' : "",
 				$objStyle->GetAttributes(),
-				QApplication::HtmlEntities($objItem->Name)
+				QApplication::htmlentities($objItem->Name ?? '')
 			);
 
 			return $strToReturn;
@@ -144,13 +144,13 @@
 						// We've got grouping -- are we in a new or same group?
 						if (is_null($strCurrentGroup)) {
 							// New Group
-							$strToReturn .= '<optgroup label="' . QApplication::HtmlEntities($objItem->ItemGroup) . '">';							
-							$strToReturnLabelModeOnly .= '<span class="selectGroup">'.QApplication::HtmlEntities($objItem->ItemGroup);
+							$strToReturn .= '<optgroup label="' . QApplication::htmlentities($objItem->ItemGroup ?? '') . '">';							
+							$strToReturnLabelModeOnly .= '<span class="selectGroup">'.QApplication::htmlentities($objItem->ItemGroup ?? '');
 						}	
 						else if ($strCurrentGroup != $objItem->ItemGroup) {
 							// Different Group
-							$strToReturn .= '</optgroup><optgroup label="' . QApplication::HtmlEntities($objItem->ItemGroup) . '">';
-							$strToReturnLabelModeOnly .= '</span><span class="selectGroup">'.QApplication::HtmlEntities($objItem->ItemGroup).'</span>';
+							$strToReturn .= '</optgroup><optgroup label="' . QApplication::htmlentities($objItem->ItemGroup ?? '') . '">';
+							$strToReturnLabelModeOnly .= '</span><span class="selectGroup">'.QApplication::htmlentities($objItem->ItemGroup ?? '').'</span>';
 						}
 						$strCurrentGroup = $objItem->ItemGroup;
 						
@@ -213,7 +213,7 @@
 					return false;
 				}
 
-				if (($this->SelectedIndex == 0) && (strlen($this->SelectedValue) == 0)) {
+				if (($this->SelectedIndex == 0) && (strlen($this->SelectedValue ?? '') == 0)) {
 					if ($this->strName)
 						$this->strValidationError = sprintf($this->strLabelForRequired, $this->strName);
 					else

@@ -24,8 +24,8 @@
 			if ($intIndex == $_SERVER['argc'] - 1)
 				QUpdateUtility::Error('No Qcodo Version was specified');
 			$blnQuietMode = true;
-		} else if (substr($strArgument, 0, strlen('--interaction')) == '--interaction') {
-			$strArgument = substr($strArgument, strlen('--interaction='));
+		} else if (substr($strArgument, 0, strlen('--interaction' ?? '')) == '--interaction') {
+			$strArgument = substr($strArgument, strlen('--interaction=' ?? ''));
 			switch ($strArgument) {
 				case QUpdateUtility::Interactive:
 					$strInteractionType = QUpdateUtility::Interactive;

@@ -80,7 +80,7 @@ $sFileUrl		= '' ;
 $iCounter = 0 ;
 
 // Get the target directory.
-if ( isset( $Config['UserFilesAbsolutePath'] ) && strlen( $Config['UserFilesAbsolutePath'] ) > 0 )
+if ( isset( $Config['UserFilesAbsolutePath'] ) && strlen( $Config['UserFilesAbsolutePath']  ?? '') > 0 )
 	$sServerDir = $Config['UserFilesAbsolutePath'] ;
 else
 	$sServerDir = GetRootPath() . $Config["UserFilesPath"] ;

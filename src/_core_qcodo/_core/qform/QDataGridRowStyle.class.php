@@ -153,7 +153,7 @@
 				$strTextDecoration .= "line-through ";
 			
 			if ($strTextDecoration) {
-				$strTextDecoration = trim($strTextDecoration);
+				$strTextDecoration = trim($strTextDecoration ?? '');
 				$strStyle .= sprintf("text-decoration:%s;", $strTextDecoration);
 			}
 			

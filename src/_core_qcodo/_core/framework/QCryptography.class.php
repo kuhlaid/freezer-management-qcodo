@@ -97,7 +97,7 @@
 				restore_error_handler();
 
 				// If the RandomNumGenerator didn't work, we revert back to using MCRYPT_RAND
-				if (strlen($strIv) != $intIvSize) {
+				if (strlen($strIv ?? '') != $intIvSize) {
 					srand();
 					$strIv = mcrypt_create_iv($intIvSize, MCRYPT_RAND);
 				}
@@ -121,7 +121,7 @@
 			if (($intReturnValue === false) || ($intReturnValue < 0))
 				throw new QCryptographyException('Incorrect Parameters used in LibMcrypt Initialization');
 			// Add Length to strData
-			$strData = strlen($strData) . '/' . $strData;
+			$strData = strlen($strData ?? '') . '/' . $strData;
 
 			$strEncryptedData =  mcrypt_generic($this->objMcryptModule, $strData);
 			if ($this->blnBase64) {

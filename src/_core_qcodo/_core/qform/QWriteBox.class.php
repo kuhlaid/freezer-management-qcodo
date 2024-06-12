@@ -50,7 +50,7 @@
 		}
 
 		public static function DisplayHtml($strText, $strCssClass) {
-			$strText = trim(str_replace("\r", '', $strText));
+			$strText = trim(str_replace("\r", '', $strText ?? ''));
 			$strToReturn = '';
 
 			$objStateStack = new QStack();
@@ -59,7 +59,7 @@
 
 			$strBufferArray = array();
 
-			for ($intIndex = 0; $intIndex < strlen($strText); $intIndex++) {
+			for ($intIndex = 0; $intIndex < strlen($strText ?? ''); $intIndex++) {
 				$strChar = $strText[$intIndex];
 
 				switch ($objStateStack->PeekLast()) {
@@ -141,7 +141,7 @@
 								$strToReturn .= '&nbsp;&nbsp;&nbsp;&nbsp;';
 								break;
 							case ' ':
-								if ((strlen($strText) > ($intIndex + 1)) &&
+								if ((strlen($strText ?? '') > ($intIndex + 1)) &&
 									($strText[$intIndex + 1] == ' ')) {
 									$strToReturn .= ' &nbsp;';
 									$intIndex++;
@@ -192,7 +192,7 @@
 											$strToReturn .= '&lt;' . $strBufferArray[QWriteBox::StateTag] . '&gt;';
 										break;
 									default:
-										if ((strlen($strTag) >= 8) && ((substr($strTag, 0, 7) == 'http://') || (substr($strTag, 0, 8) == 'https://')) &&
+										if ((strlen($strTag ?? '') >= 8) && ((substr($strTag, 0, 7) == 'http://') || (substr($strTag, 0, 8) == 'https://')) &&
 											(strpos($strTag, '"') === false) &&
 											(strpos($strTag, ' ') === false) &&
 											(strpos($strTag, '	') === false)) {
@@ -213,14 +213,14 @@
 					case QWriteBox::StateCode:
 						$strBufferArray[QWriteBox::StateCode] .= $strChar;
 						$strBuffer = $strBufferArray[QWriteBox::StateCode];
-						if ((strlen($strBuffer) >= 7) && 
-							(strtolower(substr($strBuffer, strlen($strBuffer) - 7)) == '</code>')) {
+						if ((strlen($strBuffer ?? '') >= 7) && 
+							(strtolower(substr($strBuffer, strlen($strBuffer ?? '') - 7)) == '</code>')) {
 								$objStateStack->Pop();
-								$strBuffer = substr($strBuffer, 0, strlen($strBuffer) - 7);
-								$strBuffer = highlight_string(trim($strBuffer), true);
+								$strBuffer = substr($strBuffer, 0, strlen($strBuffer ?? '') - 7);
+								$strBuffer = highlight_string(trim($strBuffer ?? ''), true);
 
 								$strToReturn .= sprintf('<div class="%s">%s</div>', $strCssClass, $strBuffer);
-								if ((strlen($strText) > ($intIndex + 1)) &&
+								if ((strlen($strText ?? '') > ($intIndex + 1)) &&
 									($strText[$intIndex + 1] == "\n"))
 									$intIndex++;
 							}
@@ -247,7 +247,7 @@
 					
 					case QWriteBox::StateCode:
 						$strBuffer = $strBufferArray[QWriteBox::StateCode];
-						$strBuffer = highlight_string(trim($strBuffer), true);
+						$strBuffer = highlight_string(trim($strBuffer ?? ''), true);
 
 						$strToReturn .= sprintf('<div class="%s">%s</div>', $strCssClass, $strBuffer);
 						break;

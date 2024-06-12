@@ -16,7 +16,7 @@
 	QCodeGen::Run(dirname(__FILE__) . '/codegen_settings.xml');
 
 	function DisplayMonospacedText($strText) {
-		$strText = QApplication::HtmlEntities($strText);
+		$strText = QApplication::htmlentities($strText ?? '');
 		$strText = str_replace('	', '    ', $strText);
 		$strText = str_replace(' ', '&nbsp;', $strText);
 		$strText = str_replace("\r", '', $strText);

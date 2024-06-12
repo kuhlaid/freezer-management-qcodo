@@ -46,7 +46,7 @@ else
 if ( ! ereg( '/$', $GLOBALS["UserFilesPath"] ) )
 	$GLOBALS["UserFilesPath"] .= '/' ;
 
-if ( strlen( $Config['UserFilesAbsolutePath'] ) > 0 )
+if ( strlen( $Config['UserFilesAbsolutePath']  ?? '') > 0 )
 {
 	$GLOBALS["UserFilesDirectory"] = $Config['UserFilesAbsolutePath'] ;
 

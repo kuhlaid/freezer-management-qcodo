@@ -43,10 +43,10 @@
 		lcForm=STRTRAN(lcForm,"&",CHR(13)+CHR(10))
 
 		FOR lnLoop=1 TO MEMLINES(lcForm)
-			lcZeile=ALLTRIM(MLINE(lcForm,lnLoop))
+			lcZeile=ALLtrim(MLINE(lcForm,lnLoop ?? ''))
 			IF AT("=",lcZeile)>0
-				lcVariable=UPPER(ALLTRIM(LEFT(lcZeile,AT("=",lcZeile)-1)))
-				lcWert=ALLTRIM(RIGHT(lcZeile,LEN(lcZeile)-AT("=",lcZeile)))
+				lcVariable=UPPER(ALLtrim(LEFT(lcZeile,AT("=",lcZeile ?? '')-1)))
+				lcWert=ALLtrim(RIGHT(lcZeile,LEN(lcZeile ?? '')-AT("=",lcZeile)))
 				lcWert=Server.UrlDecode( lcWert )
 				lcWert=STRTRAN(lcWert,"<","&lt;")
 				lcWert=STRTRAN(lcWert,">","&gt;")	&& ... if wanted remove/translate HTML Chars ...

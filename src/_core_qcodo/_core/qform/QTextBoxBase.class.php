@@ -73,7 +73,7 @@
 						break;
 					case QCrossScripting::HtmlEntities:
 						// Go ahead and perform HtmlEntities on the text
-						$this->strText = QApplication::HtmlEntities($this->strText);
+						$this->strText = QApplication::htmlentities($this->strText ?? '');
 						break;
 					default:
 						// Deny the Use of CrossScripts
@@ -146,7 +146,7 @@
 						$this->strControlId,
 						$this->GetAttributes(),
 						$strStyle,
-						QApplication::HtmlEntities($this->strText));
+						QApplication::htmlentities($this->strText ?? ''));
 				return $strToReturn;
 			}
 
@@ -158,14 +158,14 @@
 						$this->strControlId,
 						$this->GetAttributes(),
 						$strStyle,
-						QApplication::HtmlEntities($this->strText));
+						QApplication::htmlentities($this->strText ?? ''));
 					break;
 				case QTextMode::Password:
 					$strToReturn = sprintf('<input type="password" title="%s" name="%s" id="%s" value="%s" %s%s />',
 						$this->Name,
 						$this->strControlId,
 						$this->strControlId,
-						QApplication::HtmlEntities($this->strText),
+						QApplication::htmlentities($this->strText ?? ''),
 						$this->GetAttributes(),
 						$strStyle);
 					break;
@@ -175,7 +175,7 @@
 						$this->Name,
 						$this->strControlId,
 						$this->strControlId,
-						QApplication::HtmlEntities($this->strText),
+						QApplication::htmlentities($this->strText ?? ''),
 						$this->GetAttributes(),
 						$strStyle);
 			}
@@ -195,12 +195,12 @@
 
 			// Get the Text string
 			if ($this->blnValidateTrimmed)
-				$strText = trim($this->strText);
+				$strText = trim($this->strText ?? '');
 			else
 				$strText = $this->strText;
 			// Check for Required
 			if ($this->blnRequired) {
-				if (strlen($strText) == 0) {
+				if (strlen($strText ?? '') == 0) {
 					if ($this->strName)
 						$this->strValidationError = sprintf($this->strLabelForRequired, $this->strName);
 					else
@@ -211,7 +211,7 @@
 
 			// Check against minimum length?
 			if ($this->intMinLength > 0) {
-				if (strlen($strText) < $this->intMinLength) {
+				if (strlen($strText ?? '') < $this->intMinLength) {
 					if ($this->strName)
 						$this->strValidationError = sprintf($this->strLabelForTooShort, $this->strName, $this->intMinLength);
 					else
@@ -222,7 +222,7 @@
 
 			// Check against maximum length?
 			if ($this->intMaxLength > 0) {
-				if (strlen($strText) > $this->intMaxLength) {
+				if (strlen($strText ?? '') > $this->intMaxLength) {
 					if ($this->strName)
 						$this->strValidationError = sprintf($this->strLabelForTooLong, $this->strName, $this->intMaxLength);
 					else

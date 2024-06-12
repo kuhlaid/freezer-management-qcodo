@@ -63,7 +63,7 @@ print '</div>';
 print '<h2>Samples List</h2>';
 $this->btnRemoveSamples->RenderNoBreaks();
 
-$freezerPullArray = unserialize(QSessionDB::get('__FREEZER_PULL_LIST__'));
+$freezerPullArray = unserialize(QSessionDB::get('__FREEZER_PULL_LIST__') ?? '');
 //var_dump(array_values($freezerPullArray));	// used for testing
 $this->dtgSample->Render();
 $this->RenderEnd();?>

@@ -104,7 +104,7 @@
 			}
 
 			// Assume it's some kind of string value
-			return $strToReturn . sprintf("'%s'", addslashes($mixData));
+			return $strToReturn . sprintf("'%s'", addslashes($mixData ?? ''));
 		}
 		
 		public function SqlLimitVariablePrefix($strLimitInfo) {
@@ -115,7 +115,7 @@
 
 		public function SqlLimitVariableSuffix($strLimitInfo) {
 			// Setup limit suffix (if applicable) via a LIMIT clause 
-			if (strlen($strLimitInfo)) {
+			if (strlen($strLimitInfo ?? '')) {
 				if (strpos($strLimitInfo, ';') !== false)
 					throw new Exception('Invalid Semicolon in LIMIT Info');
 				if (strpos($strLimitInfo, '`') !== false)
@@ -139,7 +139,7 @@
 
 		public function SqlSortByVariable($strSortByInfo) {
 			// Setup sorting information (if applicable) via a ORDER BY clause
-			if (strlen($strSortByInfo)) {
+			if (strlen($strSortByInfo ?? '')) {
 				if (strpos($strSortByInfo, ';') !== false)
 					throw new Exception('Invalid Semicolon in ORDER BY Info');
 				if (strpos($strSortByInfo, '`') !== false)
@@ -282,18 +282,18 @@
 		}
 
 		private function ParseColumnNameArrayFromKeyDefinition($strKeyDefinition) {
-			$strKeyDefinition = trim($strKeyDefinition);
+			$strKeyDefinition = trim($strKeyDefinition ?? '');
 			
 			// Get rid of the opening "(" and the closing ")"
 			$intPosition = strpos($strKeyDefinition, '(');
 			if ($intPosition === false)
 				throw new Exception("Invalid Key Definition: $strKeyDefinition");
-			$strKeyDefinition = trim(substr($strKeyDefinition, $intPosition + 1));
+			$strKeyDefinition = trim(substr($strKeyDefinition, $intPosition + 1 ?? ''));
 
 			$intPosition = strpos($strKeyDefinition, ')');
 			if ($intPosition === false)
 				throw new Exception("Invalid Key Definition: $strKeyDefinition");
-			$strKeyDefinition = trim(substr($strKeyDefinition, 0, $intPosition));
+			$strKeyDefinition = trim(substr($strKeyDefinition, 0, $intPosition ?? ''));
 			$strKeyDefinition = str_replace(" ","",$strKeyDefinition);
 			
 			// Create the Array
@@ -393,7 +393,7 @@
 				
 				// Remove leading and trailing '"' characters (if applicable)
 				if (substr($strKeyName, 0, 1) == '"')
-					$strKeyName = substr($strKeyName, 1, strlen($strKeyName) - 2);
+					$strKeyName = substr($strKeyName, 1, strlen($strKeyName ?? '') - 2);
 
 				// By the end of the following lines, we will end up with a strTokenArray
 				// Index 1: the list of columns that are the foreign key
@@ -409,7 +409,7 @@
 				
 				// Remove leading and trailing '"' characters (if applicable)
 				if (substr($strTokenArray[2], 0, 1) == '"')
-					$strTokenArray[2] = substr($strTokenArray[2], 1, strlen($strTokenArray[2]) - 2);
+					$strTokenArray[2] = substr($strTokenArray[2], 1, strlen($strTokenArray[2] ?? '') - 2);
 					
 				$strColumnNameArray = $this->ParseColumnNameArrayFromKeyDefinition($strTokenArray[1]);
 				$strReferenceTableName = $strTokenArray[2];

@@ -162,14 +162,14 @@ class PHPExcel_Shared_OLE_ChainedBlockStream
 	public function stream_eof()
 	{
 //		As we don't support below 5.2 anymore, this is simply redundancy and overhead
-//		$eof = $this->pos >= strlen($this->data);
+//		$eof = $this->pos >= strlen($this->data ?? '');
 //		// Workaround for bug in PHP 5.0.x: http://bugs.php.net/27508
 //		if (version_compare(PHP_VERSION, '5.0', '>=') &&
 //			version_compare(PHP_VERSION, '5.1', '<')) {
 //		   $eof = !$eof;
 //		}
 //		return $eof;
-		return $this->pos >= strlen($this->data);
+		return $this->pos >= strlen($this->data ?? '');
 	}
 
 	/**
@@ -197,7 +197,7 @@ class PHPExcel_Shared_OLE_ChainedBlockStream
 		} elseif ($whence == SEEK_CUR && -$offset <= $this->pos) {
 			$this->pos += $offset;
 		} elseif ($whence == SEEK_END && -$offset <= sizeof($this->data)) {
-			$this->pos = strlen($this->data) + $offset;
+			$this->pos = strlen($this->data ?? '') + $offset;
 		} else {
 			return false;
 		}
@@ -212,7 +212,7 @@ class PHPExcel_Shared_OLE_ChainedBlockStream
 	public function stream_stat()
 	{
 		return array(
-			'size' => strlen($this->data),
+			'size' => strlen($this->data ?? ''),
 			);
 	}
 

@@ -63,7 +63,7 @@ return base64_encode($iv.$tag.$ciphertext);
 
   function UnpackCrypt(&$SecretData, $key, $options=array() ) {// $cipher = 'tripledes', $mode = 'ofb') {
 
-    return unserialize($SecretData);  // bypassing encryption
+    return unserialize($SecretData ?? '');  // bypassing encryption
     // load options
 
     if (isset($options['cipher'])) {                                 // Check whether user specified an alternate cipher in the options
@@ -86,11 +86,11 @@ $ciphertext = substr($encrypted, $iv_len + $tag_length);
 
 return openssl_decrypt($ciphertext, $cipher, $key, OPENSSL_RAW_DATA, $iv, $tag);
 exit;
-    //(unserialize($decrypted));
+    //(unserialize($decrypted ?? ''));
 //error_log('unencrypt');
 //error_log(len($SecretData));
-//error_log(unserialize($decrypted));
-    return unserialize($decrypted);
+//error_log(unserialize($decrypted ?? ''));
+    return unserialize($decrypted ?? '');
    	exit;
   }
 ?>

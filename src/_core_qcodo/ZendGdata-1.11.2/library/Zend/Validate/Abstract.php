@@ -234,7 +234,7 @@ abstract class Zend_Validate_Abstract implements Zend_Validate_Interface
         }
 
         if ($this->getObscureValue()) {
-            $value = str_repeat('*', strlen($value));
+            $value = str_repeat('*', strlen($value ?? ''));
         }
 
         $message = str_replace('%value%', (string) $value, $message);
@@ -243,7 +243,7 @@ abstract class Zend_Validate_Abstract implements Zend_Validate_Interface
         }
 
         $length = self::getMessageLength();
-        if (($length > -1) && (strlen($message) > $length)) {
+        if (($length > -1) && (strlen($message ?? '') > $length)) {
             $message = substr($message, 0, (self::getMessageLength() - 3)) . '...';
         }
 

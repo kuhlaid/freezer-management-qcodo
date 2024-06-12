@@ -129,7 +129,7 @@
 
 			$strAlt = null;
 			if ($this->strAlternateText)
-				$strAlt = ' alt="' . QApplication::HtmlEntities($this->strAlternateText) . '"';
+				$strAlt = ' alt="' . QApplication::htmlentities($this->strAlternateText ?? '') . '"';
 
 			// Render final "IMG SRC" tag
 			$strToReturn = sprintf('<img src="%s" %s%s%s/>',
@@ -172,7 +172,7 @@
 			if (function_exists('gzcompress'))
 				$strData = gzuncompress($strData);
 
-			$objControl = unserialize($strData);
+			$objControl = unserialize($strData ?? '');
 			$objControl->RenderImage();
 		}
 

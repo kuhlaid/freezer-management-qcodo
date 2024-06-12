@@ -108,7 +108,7 @@ DEFINE CLASS goFckeditor AS CONTAINER OLEPUBLIC
 		llRetval=.F.
 
 
-		sAgent = LOWER(ALLTRIM(request.servervariables("HTTP_USER_AGENT")))
+		sAgent = LOWER(ALLtrim(request.servervariables("HTTP_USER_AGENT" ?? '')))
 
 		IF AT("msie",sAgent) >0 .AND. AT("mac",sAgent)=0 .AND. AT("opera",sAgent)=0
 			iVersion=VAL(SUBSTR(sAgent,AT("msie",sAgent)+5,3))

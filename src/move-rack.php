@@ -83,7 +83,7 @@ class MoveRackForm8 extends QForm {
 			$this->strRack->Text .= "<div>Boxes: <b>".$a."</b></div>";
 
 		$freezerName='';
-		if (array_key_exists($objBox->Freezer, $this->objFreezerArray) && trim($objBox->Freezer)!="")
+		if (array_key_exists($objBox->Freezer, $this->objFreezerArray) && trim($objBox->Freezer ?? '')!="")
 			$freezerName=$this->objFreezerArray[$objBox->Freezer];
 
 		$this->strRack->Text .= '<div><a href="freezer-view.php?intFreezer='.$objBox->Freezer.'">'.$freezerName.'</a>'.($objBox->Shelf ? "<br/>Shelf #".$objBox->Shelf:'')."</div>";

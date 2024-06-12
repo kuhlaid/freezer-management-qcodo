@@ -158,7 +158,7 @@
 
 				if ($strPostDataState)
 					// We might have a valid form state -- let's see by unserializing this object
-					$objClass = QForm::Unserialize($strPostDataState);
+					$objClass = QForm::unserialize($strPostDataState ?? '');
 			}
 
 			if ($objClass) {
@@ -177,9 +177,9 @@
 				$$strFormId = $objClass;
 
 				// Iterate through all the control modifications
-				$strModificationArray = explode("\n", trim($_POST['Qform__FormUpdates']));
+				$strModificationArray = explode("\n", trim($_POST['Qform__FormUpdates'] ?? ''));
 				if ($strModificationArray) foreach ($strModificationArray as $strModification) {
-					$strModification = trim($strModification);
+					$strModification = trim($strModification ?? '');
 					
 					if ($strModification) {
 						$intPosition = strpos($strModification, ' ');
@@ -221,10 +221,10 @@
 
 				// Clear the RenderedCheckableControlArray
 				$objClass->blnRenderedCheckableControlArray = array();
-				$strCheckableControlList = trim($_POST['Qform__FormCheckableControls']);
+				$strCheckableControlList = trim($_POST['Qform__FormCheckableControls'] ?? '');
 				$strCheckableControlArray = explode(' ', $strCheckableControlList);
 				foreach ($strCheckableControlArray as $strCheckableControl) {
-					$objClass->blnRenderedCheckableControlArray[trim($strCheckableControl)] = true;
+					$objClass->blnRenderedCheckableControlArray[trim($strCheckableControl ?? '')] = true;
 				}
 
 				// Iterate through all the controls 
@@ -408,14 +408,14 @@
 			foreach ($this->GetAllControls() as $objControl) {
 				if ($objControl->Rendered) {
 					$strJavaScript = $objControl->GetEndScript();
-					if (trim($strJavaScript))
-						$strCommands .= trim($strJavaScript);
+					if (trim($strJavaScript ?? ''))
+						$strCommands .= trim($strJavaScript ?? '');
 				}
 			}
 			foreach ($this->objGroupingArray as $objGrouping) {
 				$strRender = $objGrouping->Render();
-				if (trim($strRender))
-					$strCommands .= trim($strRender);
+				if (trim($strRender ?? ''))
+					$strCommands .= trim($strRender ?? '');
 			}
 
 			// Next, look to the Application object for any commands to run
@@ -441,8 +441,8 @@
 			}
 
 			// Set Up the Command Node
-			if (trim($strCommands))
-				$strCommands = '<command>' . QString::XmlEscape(trim($strCommands)) . '</command>';
+			if (trim($strCommands ?? ''))
+				$strCommands = '<command>' . QString::XmlEscape(trim($strCommands ?? '')) . '</command>';
 
 			// Add in the form state
 			$strFormState = QForm::Serialize($this);
@@ -456,7 +456,7 @@
 			// close Command collection
 			$strToReturn .= '</commands>';
 
-			$strContents = trim(ob_get_contents());
+			$strContents = trim(ob_get_contents() ?? '');
 
 			if (strtolower(substr($strContents, 0, 5)) == 'debug') {
 			} else {
@@ -512,14 +512,14 @@
 		 * @param string $strSerializedForm
 		 * @return Form the Form object
 		 */
-		public static function Unserialize($strPostDataState) {
+		public static function unserialize($strPostDataState) {
 			// Setup and Call the FormStateHandler to retrieve the Serialized Form
 			$strLoadCommand = array(QForm::$FormStateHandler, 'Load');
 			$strSerializedForm = call_user_func($strLoadCommand, $strPostDataState);
 
 			if ($strSerializedForm) {
 				// Unserialize and Cast the Form
-				$objForm = unserialize($strSerializedForm);
+				$objForm = unserialize($strSerializedForm ?? '');
 				$objForm = QType::Cast($objForm, 'QForm');
 
 				// Reset the links from Control->Form
@@ -871,7 +871,7 @@
 			}
 
 			QApplicationBase::$ProcessOutput = false;
-			$strOutputtedText = strtolower(trim(ob_get_contents()));
+			$strOutputtedText = strtolower(trim(ob_get_contents() ?? ''));
 			if (strpos($strOutputtedText, '<body') === false) {
 				$strToReturn = '<body>';
 				$this->blnRenderedBodyTag = true;
@@ -923,12 +923,12 @@
 			$strArrayToReturn = array();
 
 			// Is there a comma-delimited list of javascript files to include?
-			if ($strJavaScriptFileList = trim($strJavaScriptFileList)) {
+			if ($strJavaScriptFileList = trim($strJavaScriptFileList ?? '')) {
 				$strScriptArray = explode(',', $strJavaScriptFileList);
 
 				// Iterate through the list of JavaScriptFiles to Include...
 				foreach ($strScriptArray as $strScript)
-					if ($strScript = trim($strScript)) 
+					if ($strScript = trim($strScript ?? '')) 
 
 						// Include it if we're NOT ignoring it and it has NOT already been included
 						if ((array_search($strScript, $this->strIgnoreJavaScriptFileArray) === false) &&
@@ -958,12 +958,12 @@
 			$strArrayToReturn = array();
 
 			// Is there a comma-delimited list of StyleSheet files to include?
-			if ($strStyleSheetFileList = trim($strStyleSheetFileList)) {
+			if ($strStyleSheetFileList = trim($strStyleSheetFileList ?? '')) {
 				$strScriptArray = explode(',', $strStyleSheetFileList);
 
 				// Iterate through the list of StyleSheetFiles to Include...
 				foreach ($strScriptArray as $strScript)
-					if ($strScript = trim($strScript)) 
+					if ($strScript = trim($strScript ?? '')) 
 
 						// Include it if we're NOT ignoring it and it has NOT already been included
 						if ((array_search($strScript, $this->strIgnoreStyleSheetFileArray) === false) &&
@@ -1129,7 +1129,7 @@
 			$strEndScriptArray = explode('; ', $strEndScript);
 			$strEndScriptCommands = array();
 			foreach ($strEndScriptArray as $strEndScript)
-				$strEndScriptCommands[trim($strEndScript)] = true;
+				$strEndScriptCommands[trim($strEndScript ?? '')] = true;
 			$strEndScript = implode('; ', array_keys($strEndScriptCommands));
 
 			// Finally, add any application level js commands

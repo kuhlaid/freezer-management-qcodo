@@ -73,14 +73,14 @@
 				$strChecked = "";
 
 			$strStyle = $this->GetStyleAttributes();
-			if (strlen($strStyle) > 0)
+			if (strlen($strStyle ?? '') > 0)
 				$strStyle = sprintf('style="%s" ', $strStyle);
 
 			$strCustomAttributes = $this->GetCustomAttributes();
 
 			$strActions = $this->GetActionAttributes();
 
-			if (strlen($this->strText)) {
+			if (strlen($this->strText ?? '')) {
 				$this->blnIsBlockElement = true;
 				if ($this->strTextAlign == QTextAlign::Left) {
 					// wpg - added a 'title' element to the checkbox so we can check the question name
@@ -91,7 +91,7 @@
 						$strCustomAttributes,
 						$strDisabled,
 						$this->strControlId,
-						($this->blnHtmlEntities) ? QApplication::HtmlEntities($this->strText) : $this->strText,
+						($this->blnHtmlEntities) ? QApplication::htmlentities($this->strText ?? '') : $this->strText,
 						$this->strControlId,
 						$this->strControlId,
 						$strDisabled,
@@ -116,7 +116,7 @@
 						$strCustomAttributes,
 						$strDisabled,
 						$this->strControlId,
-						($this->blnHtmlEntities) ? QApplication::HtmlEntities($this->strText) : $this->strText
+						($this->blnHtmlEntities) ? QApplication::htmlentities($this->strText ?? '') : $this->strText
 					);
 				}
 			} else {

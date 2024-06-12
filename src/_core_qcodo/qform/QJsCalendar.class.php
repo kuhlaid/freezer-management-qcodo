@@ -129,7 +129,7 @@
 		}
 
 		public function GetDateFromLabel($dttPrevDate = null) {
-			$strDate = trim($this->Text);
+			$strDate = trim($this->Text ?? '');
 			if ($strDate) {
 				$dttDate = new QDateTime($strDate);
 				if ($dttDate->IsNull()) {
@@ -327,7 +327,7 @@
 			$strToReturn = sprintf('<input type="hidden" name="%s" id="%s" value="%s" %s%s />',
 				$this->strControlId,
 				$this->strControlId,
-				QApplication::HtmlEntities($this->strText),
+				QApplication::htmlentities($this->strText ?? ''),
 				$this->GetAttributes(),
 				$strStyle);
 

@@ -13,7 +13,7 @@
 	if ($_SERVER['argc'] != 5)
 		QUpdateUtility::PrintDownloaderInstructions();
 
-	$strVersion = trim(strtolower($_SERVER['argv'][1]));
+	$strVersion = trim(strtolower($_SERVER['argv'][1] ?? ''));
 	if (($strVersion == 'stable') || ($strVersion == 'development'))
 		QUpdateUtility::Error('Invalid Version format: ' . $strVersion);
 

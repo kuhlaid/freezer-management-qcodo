@@ -344,7 +344,7 @@ class BoxSamplePullForm8 extends BoxEditFormBase {
 	protected function SetupBox() {
 		$this->highlightSlots = array();
 		$intId=QApplication::QueryString('intId');
-		$freezerPullArray = unserialize(QSessionDB::get('__FREEZER_PULL_LIST__'));
+		$freezerPullArray = unserialize(QSessionDB::get('__FREEZER_PULL_LIST__') ?? '');
 		$freezerSampleIDArray = array_values($freezerPullArray);	// we need to only get the array values array for the query to function correctly
 		$objSamplePullArray = Sample::QueryArray(
 				QQ::AndCondition(
@@ -432,8 +432,8 @@ class BoxSamplePullForm8 extends BoxEditFormBase {
 			$this->objFreezerArray[$objFreezer->Id] = $objFreezer->__toString();
 		}
 
-		$this->objSampleSelection = unserialize(QSessionDB::get('__SAMPLE_SELECTION_SEARCH__')); // load the selected sample pull data
-		$this->objMovingBox = unserialize(QSessionDB::get('__SAMPLE_MOVING_BOX__'));	// see if we have a moving box
+		$this->objSampleSelection = unserialize(QSessionDB::get('__SAMPLE_SELECTION_SEARCH__') ?? ''); // load the selected sample pull data
+		$this->objMovingBox = unserialize(QSessionDB::get('__SAMPLE_MOVING_BOX__') ?? '');	// see if we have a moving box
 
 		parent::Form_Create();
 		$this->lstStudy_Create();
@@ -464,7 +464,7 @@ class BoxSamplePullForm8 extends BoxEditFormBase {
 		}
 	}
 
-	protected function completedControl($flag=1,$objControl) {
+	protected function completedControl($flag=1,$objControl=new stdClass()) {
 		if ($flag) {
 			$objControl->Opacity = 100;
 			$this->cssAddRemove($objControl, 'reqG', 'a');
@@ -612,7 +612,7 @@ class BoxSamplePullForm8 extends BoxEditFormBase {
 
 	protected function chkSamplePull_Change($strFormId, $strControlId, $strParameter) {
 		$chkSamplePull = $this->GetControl($strControlId);
-		$freezerPullArray = unserialize(QSessionDB::get('__FREEZER_PULL_LIST__'));
+		$freezerPullArray = unserialize(QSessionDB::get('__FREEZER_PULL_LIST__') ?? '');
 		if (!is_array($freezerPullArray)) $freezerPullArray = array();
 
 		if ($chkSamplePull instanceof QCheckbox && $chkSamplePull->Checked) {

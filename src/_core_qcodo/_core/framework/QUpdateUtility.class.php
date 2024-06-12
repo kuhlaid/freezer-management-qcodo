@@ -88,7 +88,7 @@
 				$intMinor = substr($strRemainder, 0, $intPosition);
 				$intBuild = substr($strRemainder, $intPosition + 1);
 
-				if (!strlen($intBuild))
+				if (!strlen($intBuild ?? ''))
 					QUpdateUtility::Error('Invalid Version format: ' . $strVersion);
 
 				$strArgs = sprintf('?mav=%s&miv=%s&bld=%s', $intMajor, $intMinor, $intBuild);
@@ -620,7 +620,7 @@
 
 				// We found a match for this pattern
 				// Let's make sure the match is at the end of the filepath
-				if (strpos($strFilePath, $strMatch) == (strlen($strFilePath) - strlen($strMatch)))
+				if (strpos($strFilePath, $strMatch) == (strlen($strFilePath ?? '') - strlen($strMatch ?? '')))
 					return true;
 				else
 					return false;
@@ -656,7 +656,7 @@
 			
 			while (!$blnValid) {
 				print($strPrompt);
-				$strInput = trim(strtolower($this->ReadString()));
+				$strInput = trim(strtolower($this->ReadString( ?? '')));
 
 				foreach ($strValidLetterArray as $strLetter)
 					if (strtolower($strLetter) == $strInput)
@@ -682,7 +682,7 @@
 		protected $objStdIn;
 		protected function ReadString() {
 			$strLine = fgets($this->objStdIn, 1024);
-			return trim($strLine);
+			return trim($strLine ?? '');
 		}
 
 		protected function DeleteFile($strActualFilePath, $strReason) {
@@ -749,14 +749,14 @@
 			}
 
 			$strData = substr($strData, strpos($strData, "\r\n") + 2);
-			$strReportedFile = trim(substr($strData, 0, strpos($strData, "\r\n")));
+			$strReportedFile = trim(substr($strData, 0, strpos($strData, "\r\n" ?? '')));
 			$strData = substr($strData, strpos($strData, "\r\n") + 2);
-			$strReportedToken = trim(substr($strData, 0, strpos($strData, "\r\n")));
+			$strReportedToken = trim(substr($strData, 0, strpos($strData, "\r\n" ?? '')));
 			$strData = substr($strData, strpos($strData, "\r\n") + 2);
-			$intFullSize = trim(substr($strData, 0, strpos($strData, "\r\n")));
+			$intFullSize = trim(substr($strData, 0, strpos($strData, "\r\n" ?? '')));
 			$strData = substr($strData, strpos($strData, "\r\n") + 2);
-			$intCompressedSize = trim(substr($strData, 0, strpos($strData, "\r\n")));
-			$strData = trim(substr($strData, strpos($strData, "\r\n") + 2));
+			$intCompressedSize = trim(substr($strData, 0, strpos($strData, "\r\n" ?? '')));
+			$strData = trim(substr($strData, strpos($strData, "\r\n" ?? '') + 2));
 
 			if ($strFile != $strReportedFile) {
 				$this->strAlertArray[] = sprintf(
@@ -772,7 +772,7 @@
 				return null;
 			}
 
-			if ($intCompressedSize != strlen($strData)) {
+			if ($intCompressedSize != strlen($strData ?? '')) {
 				$this->strAlertArray[] = sprintf(
 					'Unable to download file from webservice for version %s: %s %s [Invalid Encoded Size Check]',
 					$this->strVersion, $strToken, $strFile);
@@ -784,7 +784,7 @@
 			else
 				$strData = base64_decode($strData);
 
-			if ($intFullSize != strlen($strData)) {
+			if ($intFullSize != strlen($strData ?? '')) {
 				$this->strAlertArray[] = sprintf(
 					'Unable to download file from webservice for version %s: %s %s [Invalid Decoded Size Check]',
 					$this->strVersion, $strToken, $strFile);

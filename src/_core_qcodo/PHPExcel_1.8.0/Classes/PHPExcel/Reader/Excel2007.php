@@ -1716,7 +1716,7 @@ class PHPExcel_Reader_Excel2007 extends PHPExcel_Reader_Abstract implements PHPE
 				switch ($contentType["ContentType"]) {
 					case "application/vnd.openxmlformats-officedocument.drawingml.chart+xml":
 						if ($this->_includeCharts) {
-							$chartEntryRef = ltrim($contentType['PartName'],'/');
+							$chartEntryRef = ltrim($contentType['PartName'],'/' ?? '');
 							$chartElements = simplexml_load_string($this->_getFromZipArchive($zip, $chartEntryRef), 'SimpleXMLElement', PHPExcel_Settings::getLibXmlLoaderOptions());
 							$objChart = PHPExcel_Reader_Excel2007_Chart::readChart($chartElements,basename($chartEntryRef,'.xml'));
 

@@ -401,7 +401,7 @@ class BoxGen extends QBaseClass {
 		// Instantiate Virtual Attributes
 		foreach ($objDbRow->GetColumnNameArray() as $strColumnName => $mixValue) {
 			$strVirtualPrefix = $strAliasPrefix . '__';
-			$strVirtualPrefixLength = strlen($strVirtualPrefix);
+			$strVirtualPrefixLength = strlen($strVirtualPrefix ?? '');
 			if (substr($strColumnName, 0, $strVirtualPrefixLength) == $strVirtualPrefix)
 				$objToReturn->__strVirtualAttributeArray[substr($strColumnName, $strVirtualPrefixLength)] = $mixValue;
 		}
@@ -2300,7 +2300,7 @@ class BoxGen extends QBaseClass {
 		foreach ($objArray as $objObject)
 			array_push($objArrayToReturn, Box::GetSoapObjectFromObject($objObject, true));
 
-		return unserialize(serialize($objArrayToReturn));
+		return unserialize(serialize($objArrayToReturn ?? '') ?? '');
 	}
 
 	public static function GetSoapObjectFromObject($objObject, $blnBindRelatedObjects) {

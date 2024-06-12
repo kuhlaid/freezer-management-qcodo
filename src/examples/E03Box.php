@@ -158,7 +158,7 @@ class E03BoxForm extends BoxEditFormBase {
 			if ($objBox) {
 				//QApplication::DisplayAlert($objBox->Name);
 				//@BL create next box sequential box id
-				$count = intval(str_replace($this->strBoxPrefix,'',$objBox->Name));	//	wpg - did not work after 30 -	ltrim($objBox->Name,$this->strBoxPrefix);
+				$count = intval(str_replace($this->strBoxPrefix,'',$objBox->Name));	//	wpg - did not work after 30 -	ltrim($objBox->Name,$this->strBoxPrefix ?? '');
 				if ($count < 100)
 					$this->objBox->Name = $this->strBoxPrefix.sprintf('%02d',($count+1));
 				else
@@ -236,7 +236,7 @@ class E03BoxForm extends BoxEditFormBase {
 		}
 	}
 
-	protected function completedControl($flag=1,$objControl) {
+	protected function completedControl($flag=1,$objControl=new stdClass()) {
 		if ($flag) {
 			$objControl->Opacity = 100;
 			$this->cssAddRemove($objControl, 'reqG', 'a');
@@ -326,7 +326,7 @@ class E03BoxForm extends BoxEditFormBase {
 			);
 
 			// if we want to delete a sample location then the text barcode field needs to be blank
-			if (trim($obj->Text) == ''){
+			if (trim($obj->Text ?? '') == ''){
 				// remove sample location
 				if ($objExistingSample) {
 					$objExistingSample->Delete();
@@ -338,7 +338,7 @@ class E03BoxForm extends BoxEditFormBase {
 			// check to see if a sample exists for the entered barcode
 			$objSampleExisting= Sample::QuerySingle(
 					QQ::AndCondition(
-							QQ::Equal(QQN::Sample()->Barcode, trim($obj->Text)),
+							QQ::Equal(QQN::Sample()->Barcode, trim($obj->Text ?? '')),
 							QQ::Equal(QQN::Sample()->StudyTypeId, $this->intStudyTypeId),
 							QQ::Equal(QQN::Sample()->BoxId, $this->objBox->Id)
 					)
@@ -591,7 +591,7 @@ class E03BoxForm extends BoxEditFormBase {
 	protected function ST_SL($strFormId='', $strControlId='', $strParameter=''){
 		if ($this->lstSampleType->SelectedValue!=''){
 			//@BL do not change the sample type if the first sample has been added to the box
-			if (trim($this->txtS1->Text) != '') {
+			if (trim($this->txtS1->Text ?? '') != '') {
 				$this->lstSampleType->Enabled=false;
 				//@BL when updating the form if the interview date has not been saved then set it to now
 				if ($this->objBox->Created == '')

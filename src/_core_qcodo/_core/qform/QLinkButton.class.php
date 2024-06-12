@@ -35,7 +35,7 @@
 				$this->GetAttributes(),
 				$strStyle,
 				($this->blnHtmlEntities) ? 
-					QApplication::HtmlEntities($this->strText) :
+					QApplication::htmlentities($this->strText ?? '') :
 					$this->strText);
 
 			return $strToReturn;

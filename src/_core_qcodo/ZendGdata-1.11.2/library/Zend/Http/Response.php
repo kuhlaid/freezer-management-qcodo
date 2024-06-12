@@ -166,8 +166,8 @@ class Zend_Http_Response
                     throw new Zend_Http_Exception("'{$value}' is not a valid HTTP header");
                 }
 
-                $name  = trim($header[0]);
-                $value = trim($header[1]);
+                $name  = trim($header[0] ?? '');
+                $value = trim($header[1] ?? '');
             }
 
             $this->headers[ucwords(strtolower($name))] = $value;
@@ -506,7 +506,7 @@ class Zend_Http_Response
         $last_header = null;
 
         foreach($lines as $line) {
-            $line = trim($line, "\r\n");
+            $line = trim($line, "\r\n" ?? '');
             if ($line == "") break;
 
             // Locate headers like 'Location: ...' and 'Location:...' (note the missing space)
@@ -573,14 +573,14 @@ class Zend_Http_Response
             mb_internal_encoding('ASCII');
         }
 
-        while (trim($body)) {
+        while (trim($body ?? '')) {
             if (! preg_match("/^([\da-fA-F]+)[^\r\n]*\r\n/sm", $body, $m)) {
                 require_once 'Zend/Http/Exception.php';
                 throw new Zend_Http_Exception("Error parsing body - doesn't seem to be a chunked message");
             }
 
-            $length = hexdec(trim($m[1]));
-            $cut = strlen($m[0]);
+            $length = hexdec(trim($m[1] ?? ''));
+            $cut = strlen($m[0] ?? '');
             $decBody .= substr($body, $cut, $length);
             $body = substr($body, $cut + $length + 2);
         }

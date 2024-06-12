@@ -104,7 +104,7 @@ class PHPExcel_Calculation_TextData {
 		}
 
 		if (is_string($stringValue) || is_numeric($stringValue)) {
-			return str_replace(self::$_invalidChars,'',trim($stringValue,"\x00..\x1F"));
+			return str_replace(self::$_invalidChars,'',trim($stringValue,"\x00..\x1F" ?? ''));
 		}
 		return NULL;
 	}	//	function TRIMNONPRINTABLE()
@@ -124,7 +124,7 @@ class PHPExcel_Calculation_TextData {
 		}
 
 		if (is_string($stringValue) || is_numeric($stringValue)) {
-			return trim(preg_replace('/ +/',' ',trim($stringValue,' ')));
+			return trim(preg_replace('/ +/',' ',trim($stringValue,' ' ?? '')));
 		}
 		return NULL;
 	}	//	function TRIMSPACES()
@@ -150,10 +150,10 @@ class PHPExcel_Calculation_TextData {
 
 		$character = $characters;
 		if ((function_exists('mb_strlen')) && (function_exists('mb_substr'))) {
-			if (mb_strlen($characters, 'UTF-8') > 1) { $character = mb_substr($characters, 0, 1, 'UTF-8'); }
+			if (mb_strlen($characters, 'UTF-8' ?? '') > 1) { $character = mb_substr($characters, 0, 1, 'UTF-8'); }
 			return self::_uniord($character);
 		} else {
-			if (strlen($characters) > 0) { $character = substr($characters, 0, 1); }
+			if (strlen($characters ?? '') > 0) { $character = substr($characters, 0, 1); }
 			return ord($character);
 		}
 	}	//	function ASCIICODE()
@@ -399,9 +399,9 @@ class PHPExcel_Calculation_TextData {
 		}
 
 		if ((function_exists('mb_substr')) && (function_exists('mb_strlen'))) {
-			return mb_substr($value, mb_strlen($value, 'UTF-8') - $chars, $chars, 'UTF-8');
+			return mb_substr($value, mb_strlen($value, 'UTF-8' ?? '') - $chars, $chars, 'UTF-8');
 		} else {
-			return substr($value, strlen($value) - $chars);
+			return substr($value, strlen($value ?? '') - $chars);
 		}
 	}	//	function RIGHT()
 
@@ -420,9 +420,9 @@ class PHPExcel_Calculation_TextData {
 		}
 
 		if (function_exists('mb_strlen')) {
-			return mb_strlen($value, 'UTF-8');
+			return mb_strlen($value, 'UTF-8' ?? '');
 		} else {
-			return strlen($value);
+			return strlen($value ?? '');
 		}
 	}	//	function STRINGLENGTH()
 
@@ -542,9 +542,9 @@ class PHPExcel_Calculation_TextData {
 			}
 			if ($pos !== false) {
 				if (function_exists('mb_strlen')) {
-					return self::REPLACE($text,++$pos,mb_strlen($fromText, 'UTF-8'),$toText);
+					return self::REPLACE($text,++$pos,mb_strlen($fromText, 'UTF-8' ?? ''),$toText);
 				} else {
-					return self::REPLACE($text,++$pos,strlen($fromText),$toText);
+					return self::REPLACE($text,++$pos,strlen($fromText ?? ''),$toText);
 				}
 			}
 		}

@@ -180,7 +180,7 @@
 		function _p($strString, $blnHtmlEntities = true) {
 			// Standard Print
 			if ($blnHtmlEntities && (gettype($strString) != 'object'))
-				print(QApplication::HtmlEntities($strString));
+				print(QApplication::htmlentities($strString ?? ''));
 			else
 				print($strString);
 		}
@@ -198,7 +198,7 @@
 		function _b($strString, $blnHtmlEntities = true) {
 			// Text Block Print
 			if ($blnHtmlEntities && (gettype($strString) != 'object'))
-				print(nl2br(QApplication::HtmlEntities($strString)));
+				print(nl2br(QApplication::htmlentities($strString ?? '')));
 			else
 				print(nl2br($strString));
 		}

@@ -237,7 +237,7 @@ class PHPExcel_Shared_OLERead {
 		$offset = 0;
 
 		// loop through entires, each entry is 128 bytes
-		$entryLen = strlen($this->entry);
+		$entryLen = strlen($this->entry ?? '');
 		while ($offset < $entryLen) {
 			// entry data (128 bytes)
 			$d = substr($this->entry, $offset, self::PROPERTY_STORAGE_BLOCK_SIZE);

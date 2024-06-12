@@ -118,7 +118,7 @@ class PHPExcel_Reader_HTML extends PHPExcel_Reader_Abstract implements PHPExcel_
 		//	Reading 2048 bytes should be enough to validate that the format is HTML
 		$data = fread($this->_fileHandle, 2048);
 		if ((strpos($data, '<') !== FALSE) &&
-			(strlen($data) !== strlen(strip_tags($data)))) {
+			(strlen($data ?? '') !== strlen(strip_tags($data ?? '')))) {
 			return TRUE;
 		}
 
@@ -189,7 +189,7 @@ class PHPExcel_Reader_HTML extends PHPExcel_Reader_Abstract implements PHPExcel_
 	private function _flushCell($sheet,$column,$row,&$cellContent) {
 		if (is_string($cellContent)) {
 			//	Simple String content
-			if (trim($cellContent) > '') {
+			if (trim($cellContent ?? '') > '') {
 				//	Only actually write it if there's content in the string
 //				echo 'FLUSH CELL: ' , $column , $row , ' => ' , $cellContent , '<br />';
 				//	Write to worksheet to be done here...
@@ -208,7 +208,7 @@ class PHPExcel_Reader_HTML extends PHPExcel_Reader_Abstract implements PHPExcel_
 	private function _processDomElement(DOMNode $element, $sheet, &$row, &$column, &$cellContent){
 		foreach($element->childNodes as $child){
 			if ($child instanceof DOMText) {
-				$domText = preg_replace('/\s+/',' ',trim($child->nodeValue));
+				$domText = preg_replace('/\s+/',' ',trim($child->nodeValue ?? ''));
 				if (is_string($cellContent)) {
 					//	simply append the text if the cell content is a plain text string
 					$cellContent .= $domText;

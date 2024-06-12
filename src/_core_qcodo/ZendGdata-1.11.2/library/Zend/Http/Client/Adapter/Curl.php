@@ -502,6 +502,6 @@ class Zend_Http_Client_Adapter_Curl implements Zend_Http_Client_Adapter_Interfac
     public function readHeader($curl, $header)
     {
         $this->_response .= $header;
-        return strlen($header);
+        return strlen($header ?? '');
     }
 }

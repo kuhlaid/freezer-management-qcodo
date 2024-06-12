@@ -525,12 +525,12 @@ class PHPExcel_Shared_String
 	 * @author vadik56
 	 */
 	public static function utf16_decode($str, $bom_be = TRUE) {
-		if( strlen($str) < 2 ) return $str;
+		if( strlen($str ?? '') < 2 ) return $str;
 		$c0 = ord($str{0});
 		$c1 = ord($str{1});
 		if( $c0 == 0xfe && $c1 == 0xff ) { $str = substr($str,2); }
 		elseif( $c0 == 0xff && $c1 == 0xfe ) { $str = substr($str,2); $bom_be = false; }
-		$len = strlen($str);
+		$len = strlen($str ?? '');
 		$newstr = '';
 		for($i=0;$i<$len;$i+=2) {
 			if( $bom_be ) { $val = ord($str{$i})   << 4; $val += ord($str{$i+1}); }
@@ -550,15 +550,15 @@ class PHPExcel_Shared_String
 	public static function CountCharacters($value, $enc = 'UTF-8')
 	{
 		if (self::getIsMbstringEnabled()) {
-			return mb_strlen($value, $enc);
+			return mb_strlen($value, $enc ?? '');
 		}
 
 		if (self::getIsIconvEnabled()) {
-			return iconv_strlen($value, $enc);
+			return iconv_strlen($value, $enc ?? '');
 		}
 
 		// else strlen
-		return strlen($value);
+		return strlen($value ?? '');
 	}
 
 	/**
@@ -771,6 +771,6 @@ class PHPExcel_Shared_String
 		if (is_numeric($value))
 			return $value;
 		$v = floatval($value);
-		return (is_numeric(substr($value,0,strlen($v)))) ? $v : $value;
+		return (is_numeric(substr($value,0,strlen($v ?? '')))) ? $v : $value;
 	}
 }

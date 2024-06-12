@@ -19,8 +19,8 @@
 			// strip the suffix (if applicable)
 			foreach ($strSuffixes as $strSuffix) {
 				if ((!$blnFound) &&
-					(substr($strFilename, strlen($strFilename) - strlen($strSuffix)) == $strSuffix)) {
-					$strFilename = substr($strFilename, 0, strlen($strFilename) - strlen($strSuffix));
+					(substr($strFilename, strlen($strFilename ?? '') - strlen($strSuffix ?? '')) == $strSuffix)) {
+					$strFilename = substr($strFilename, 0, strlen($strFilename ?? '') - strlen($strSuffix ?? ''));
 					$blnFound = true;
 				}
 			}

@@ -100,7 +100,7 @@ abstract class Zend_Uri
         $scheme         = strtolower($uri[0]);
         $schemeSpecific = isset($uri[1]) === true ? $uri[1] : '';
 
-        if (strlen($scheme) === 0) {
+        if (strlen($scheme ?? '') === 0) {
             require_once 'Zend/Uri/Exception.php';
             throw new Zend_Uri_Exception('An empty string was supplied for the scheme');
         }

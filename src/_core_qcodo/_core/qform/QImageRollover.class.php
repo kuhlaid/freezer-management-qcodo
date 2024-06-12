@@ -56,16 +56,16 @@
 				if ($strLinkStyle)
 					$strLinkStyle = ' style="' . $strLinkStyle . '"';
 
-				$strToolTip = ($this->strToolTip) ? ' tooltip ="' . QApplication::HtmlEntities($this->strToolTip) . '"' : null;
+				$strToolTip = ($this->strToolTip) ? ' tooltip ="' . QApplication::htmlentities($this->strToolTip ?? '') . '"' : null;
 
 				$strToReturn = '<a href="' . $this->strLinkUrl . '" id="' . $this->strControlId . '" name="' . $this->strControlId . '"' . $strToolTip . $strLinkStyle . '>';
 			} else
 				$strToReturn = '';
 
 			if ($this->strAltText)
-				$strAltText = ' alt="' . QApplication::HtmlEntities($this->strAltText) . '"';
+				$strAltText = ' alt="' . QApplication::htmlentities($this->strAltText ?? '') . '"';
 			else if ($this->strToolTip)
-				$strAltText = ' alt="' . QApplication::HtmlEntities($this->strToolTip) . '"';
+				$strAltText = ' alt="' . QApplication::htmlentities($this->strToolTip ?? '') . '"';
 			else
 				$strAltText = '';
 

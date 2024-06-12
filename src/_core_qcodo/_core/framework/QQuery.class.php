@@ -860,7 +860,7 @@
 		////////////////////////
 		static public function _(QQNode $objQueryNode, $strSymbol, $mixValue, $mixValueTwo = null) {
 			try {
-				switch(strtolower(trim($strSymbol))) {
+				switch(strtolower(trim($strSymbol ?? ''))) {
 					case '=': return QQ::Equal($objQueryNode, $mixValue);
 					case '!=': return QQ::NotEqual($objQueryNode, $mixValue);
 					case '>': return QQ::GreaterThan($objQueryNode, $mixValue);
@@ -998,7 +998,7 @@
 				if ((($intIndex + 1) < $intLength) &&
 					!($this->objNodeArray[$intIndex + 1] instanceof QQNode)) {
 					if ((!$this->objNodeArray[$intIndex + 1]) ||
-						(trim(strtolower($this->objNodeArray[$intIndex + 1])) == 'desc'))
+						(trim(strtolower($this->objNodeArray[$intIndex + 1] ?? '')) == 'desc'))
 						$strOrderByCommand .= ' DESC';
 					else
 						$strOrderByCommand .= ' ASC';
@@ -1026,7 +1026,7 @@
 				if ((($intIndex + 1) < $intLength) &&
 					!($this->objNodeArray[$intIndex + 1] instanceof QQNode)) {
 					if ((!$this->objNodeArray[$intIndex + 1]) ||
-						(trim(strtolower($this->objNodeArray[$intIndex + 1])) == 'desc'))
+						(trim(strtolower($this->objNodeArray[$intIndex + 1] ?? '')) == 'desc'))
 						$strOrderByCommand .= ' DESC';
 					else
 						$strOrderByCommand .= ' ASC';
@@ -1331,7 +1331,7 @@
 			// WHERE Clause
 			if (count($this->strWhereArray)) {
 				$strWhere = implode("\r\n	", $this->strWhereArray);
-				if (trim($strWhere) != '1=1')
+				if (trim($strWhere ?? '') != '1=1')
 					$strSql .= "\r\nWHERE\r\n	" . $strWhere;
 			}
 

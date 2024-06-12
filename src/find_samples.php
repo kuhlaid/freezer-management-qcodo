@@ -47,7 +47,7 @@ class FindSamples8 extends SampleListFormBase {
 				}
 			}
 		}
-		$this->freezerPullArray = unserialize(QSessionDB::get('__FREEZER_PULL_LIST__'));
+		$this->freezerPullArray = unserialize(QSessionDB::get('__FREEZER_PULL_LIST__') ?? '');
 		$this->sampleChkBx = QApplication::QueryString('sampleChkBx');
 
 		$this->btnAutoSelect_Create();
@@ -58,7 +58,7 @@ class FindSamples8 extends SampleListFormBase {
 		$this->lstStudyArray=array();
 		// if we are performing a sample search then load the search criteria
 		if (QSessionDB::get('__SAMPLE_SELECTION_SEARCH__')) {
-			$this->objSampleSelection = unserialize(QSessionDB::get('__SAMPLE_SELECTION_SEARCH__'));
+			$this->objSampleSelection = unserialize(QSessionDB::get('__SAMPLE_SELECTION_SEARCH__') ?? '');
 			$this->txtParticipants->Text = $this->objSampleSelection->ParticipantSelect;
 			$this->lstSampleType->SelectedValue = $this->objSampleSelection->SampleType;
 			$this->lstStudyArray = explode(",",$this->objSampleSelection->StudySelect);
@@ -206,7 +206,7 @@ class FindSamples8 extends SampleListFormBase {
 	protected function chkSamplePull_Change($strFormId, $strControlId, $strParameter) {
 		$chkSamplePull = $this->GetControl($strControlId);
 		$this->updateSampleSelections($chkSamplePull,$strParameter,null);
-// 		$this->freezerPullArray = unserialize(QSessionDB::get('__FREEZER_PULL_LIST__'));
+// 		$this->freezerPullArray = unserialize(QSessionDB::get('__FREEZER_PULL_LIST__') ?? '');
 // 		if (!is_array($this->freezerPullArray)) $this->freezerPullArray = array();
 
 // 		if ($chkSamplePull->Checked) {
@@ -221,7 +221,7 @@ class FindSamples8 extends SampleListFormBase {
 // 		}
 // 		$this->updateSearchLog();	// update the search log with sample selection
 		// show or hide the sample pull report link depending on if we have any selections
-		$th = unserialize(QSessionDB::get('__MAIN_APP_THIS__'));
+		$th = unserialize(QSessionDB::get('__MAIN_APP_THIS__') ?? '');
 		QApplication::ExecuteJavaScript(sprintf('$.get("sample-pull.php?option=c", function(data) { if(data==1) $("#dmI").show("slow");else $("#dmI").hide("fast")});', $th));
 	}
 
@@ -326,7 +326,7 @@ class FindSamples8 extends SampleListFormBase {
 	protected function updateSearchLog() {
 		// only save the sample selection changes if the log is not locked
 		if ($this->objSampleSelection && !$this->objSampleSelection->Lock) {
-			$this->objSampleSelection = unserialize(QSessionDB::get('__SAMPLE_SELECTION_SEARCH__'));
+			$this->objSampleSelection = unserialize(QSessionDB::get('__SAMPLE_SELECTION_SEARCH__') ?? '');
 			$this->objSampleSelection->ParticipantSelect = $this->txtParticipants->Text;
 			$this->objSampleSelection->SampleType = $this->lstSampleType->SelectedValue;
 			$lstStudy = '';
@@ -412,12 +412,12 @@ class FindSamples8 extends SampleListFormBase {
 	protected function autoSelect() {
 		$strParticipantArray = array();
 		$strAndCondition = '';
-		$this->txtParticipants->Text = trim($this->txtParticipants->Text);	// trim the participant list
+		$this->txtParticipants->Text = trim($this->txtParticipants->Text ?? '');	// trim the participant list
 		// get list of participants to search on
 		if ($this->txtParticipants->Text != '') {
 			// split IDs by new line
 			$delimiter = "\r\n";
-			$strParticipantArray = explode($delimiter,str_ireplace(' ', '', trim($this->txtParticipants->Text)));
+			$strParticipantArray = explode($delimiter,str_ireplace(' ', '', trim($this->txtParticipants->Text ?? '')));
 			$strParticipantTrimmedArray=array_map('trim',$strParticipantArray);	// we need to trim leading and trailing white space in the array values
 			$strComPart='';
 			if ($strParticipantTrimmedArray) foreach($strParticipantTrimmedArray as $key=>$strParticipant) {
@@ -466,7 +466,7 @@ class FindSamples8 extends SampleListFormBase {
 
 	// updating the sample selection for a freezer pull request
 	protected function updateSampleSelections($chkSamplePull=null,$strParameter=null,$objDbResult=null){
-		$this->freezerPullArray = unserialize(QSessionDB::get('__FREEZER_PULL_LIST__'));
+		$this->freezerPullArray = unserialize(QSessionDB::get('__FREEZER_PULL_LIST__') ?? '');
 		if (!is_array($this->freezerPullArray)) $this->freezerPullArray = array();
 		// if we are manually updating the sample selections
 		if ($chkSamplePull) {
@@ -495,10 +495,10 @@ class FindSamples8 extends SampleListFormBase {
 
 	protected function dtgSample_Bind() {
 		// get the latest list of samples to pull
-		$this->freezerPullArray = unserialize(QSessionDB::get('__FREEZER_PULL_LIST__'));
+		$this->freezerPullArray = unserialize(QSessionDB::get('__FREEZER_PULL_LIST__') ?? '');
 		$strParticipantArray = array();
 		$strAndCondition = '';
-		$this->txtParticipants->Text = trim($this->txtParticipants->Text);	// trim the participant list
+		$this->txtParticipants->Text = trim($this->txtParticipants->Text ?? '');	// trim the participant list
 		// get list of participants to search on
 		if ($this->txtParticipants->Text != '') {
 			// convert the participants list into an array if the list is separated by commas
@@ -506,7 +506,7 @@ class FindSamples8 extends SampleListFormBase {
 
 			// split IDs by new line
 			$delimiter = "\r\n";
-			$strParticipantArray = explode($delimiter,str_ireplace(' ', '', trim($this->txtParticipants->Text)));
+			$strParticipantArray = explode($delimiter,str_ireplace(' ', '', trim($this->txtParticipants->Text ?? '')));
 			$strParticipantTrimmedArray=array_map('trim',$strParticipantArray);	// we need to trim leading and trailing white space in the array values
 			$strAndCondition .= "QQ::In(QQN::Sample()->StudyCase, \$strParticipantTrimmedArray)";
 		}

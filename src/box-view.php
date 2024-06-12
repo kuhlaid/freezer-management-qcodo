@@ -265,7 +265,7 @@ class BoxEditForm8 extends BoxEditFormBase {
 		}
 	}
 
-	protected function completedControl($flag=1,$objControl) {
+	protected function completedControl($flag=1,$objControl=new stdClass()) {
 		if ($flag) {
 			$objControl->Opacity = 100;
 			$this->cssAddRemove($objControl, 'reqG', 'a');
@@ -357,7 +357,7 @@ class BoxEditForm8 extends BoxEditFormBase {
 			);
 
 			// if we want to delete a sample location then the text barcode field needs to be blank
-			if (trim($obj->Text) == ''){
+			if (trim($obj->Text ?? '') == ''){
 				// remove sample location
 				if ($objExistingSample) {
 					$objExistingSample->BoxId = NULL;
@@ -670,7 +670,7 @@ class BoxEditForm8 extends BoxEditFormBase {
 			$obj = '$this->txtS'.$i.'->Text';
 
 			// if we do have a sample in the slot then apply styling to the slot
-			if (trim(eval("return $obj;")) != '') {
+			if (trim(eval("return $obj;" ?? '')) != '') {
 				$showImport=false;
 				$this->lstSampleType->Enabled=false;
 				$this->lstStudy->Enabled=false;

@@ -506,11 +506,11 @@ class PHPExcel_Writer_Excel2007_Worksheet extends PHPExcel_Writer_Excel2007_Writ
 						} else if ($conditional->getConditionType() == PHPExcel_Style_Conditional::CONDITION_CONTAINSTEXT
 							&& $conditional->getOperatorType() == PHPExcel_Style_Conditional::OPERATOR_BEGINSWITH
 							&& !is_null($conditional->getText())) {
-							$objWriter->writeElement('formula',	'LEFT(' . $cellCoordinate . ',' . strlen($conditional->getText()) . ')="' . $conditional->getText() . '"');
+							$objWriter->writeElement('formula',	'LEFT(' . $cellCoordinate . ',' . strlen($conditional->getText( ?? '')) . ')="' . $conditional->getText() . '"');
 						} else if ($conditional->getConditionType() == PHPExcel_Style_Conditional::CONDITION_CONTAINSTEXT
 							&& $conditional->getOperatorType() == PHPExcel_Style_Conditional::OPERATOR_ENDSWITH
 							&& !is_null($conditional->getText())) {
-							$objWriter->writeElement('formula',	'RIGHT(' . $cellCoordinate . ',' . strlen($conditional->getText()) . ')="' . $conditional->getText() . '"');
+							$objWriter->writeElement('formula',	'RIGHT(' . $cellCoordinate . ',' . strlen($conditional->getText( ?? '')) . ')="' . $conditional->getText() . '"');
 						} else if ($conditional->getConditionType() == PHPExcel_Style_Conditional::CONDITION_CONTAINSTEXT
 							&& $conditional->getOperatorType() == PHPExcel_Style_Conditional::OPERATOR_NOTCONTAINS
 							&& !is_null($conditional->getText())) {

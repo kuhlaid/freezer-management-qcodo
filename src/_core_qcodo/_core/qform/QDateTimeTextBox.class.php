@@ -17,7 +17,7 @@
 
 		public static function ParseForDateTimeValue($strText) {
 			// Trim and Clean
-			$strText = strtolower(trim($strText));
+			$strText = strtolower(trim($strText ?? ''));
 			while(strpos($strText, '  ') !== false)
 				$strText = str_replace('  ', ' ', $strText);
 			$strText = str_replace('.', '', $strText);

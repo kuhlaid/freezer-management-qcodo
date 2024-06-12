@@ -73,7 +73,7 @@
 					$this->intSelectedDay = $intDay;
 					$this->intSelectedYear = $intYear;
 
-					if (strlen($intYear) && strlen($intMonth) && strlen($intDay))
+					if (strlen($intYear ?? '') && strlen($intMonth ?? '') && strlen($intDay ?? ''))
 						$dttNewDateTime->setDate($intYear, $intMonth, $intDay);
 					else
 						$dttNewDateTime->Year = null;
@@ -89,7 +89,7 @@
 					$strKey = $this->strControlId . '_lstHour';
 					if (array_key_exists($strKey, $_POST)) {
 						$intHour = $_POST[$strKey];
-						if (strlen($intHour)) {
+						if (strlen($intHour ?? '')) {
 							$intHour = $_POST[$this->strControlId . '_lstHour'];
 							$intMinute = $_POST[$this->strControlId . '_lstMinute'];
 							$intSecond = 0;
@@ -97,7 +97,7 @@
 								($this->strDateTimePickerType == QDateTimePickerType::DateTimeSeconds))
 								$intSecond = $_POST[$this->strControlId . '_lstSecond'];
 
-							if (strlen($intHour) && strlen($intMinute) && strlen($intSecond))
+							if (strlen($intHour ?? '') && strlen($intMinute ?? '') && strlen($intSecond ?? ''))
 								$dttNewDateTime->setTime($intHour, $intMinute, $intSecond);
 							else
 								$dttNewDateTime->Hour = null;
@@ -136,7 +136,7 @@
 						$this->strControlId,
 						$this->GetAttributes(),
 						$strStyle,
-						QApplication::HtmlEntities($this->DateTime->toString($this->FormatDisplay)));
+						QApplication::htmlentities($this->DateTime->toString($this->FormatDisplay ?? '')));
 				return $strToReturn;
 			}
 			elseif ($this->blnViewOnlyMode){

@@ -119,7 +119,7 @@
 
   function StrToHex(&$data) {
 
-    $datasize = strlen($data);                  // hex representations are double the size of octet representations, ofcoz
+    $datasize = strlen($data ?? '');                  // hex representations are double the size of octet representations, ofcoz
     $output   = str_repeat(' ', $datasize*2);   // pre-allocate output buffer to doubled size to prevent reallocation thrash
 
     $cursor   = 0;
@@ -143,7 +143,7 @@
 
     $out = '';
 
-    $len = strlen($inString);
+    $len = strlen($inString ?? '');
     for ($i=0; $i<$len; ++$i) {
       $out .= '<span class="tiny">&#8203;</span>' . $inString[$i];
     }
@@ -167,7 +167,7 @@
   echo "<p>Our data, encrypted:</p><pre>", print_r($enc, true), "</pre>";
   echo "<p>Our data, as the stream only, in hex:</p><tt>", MakeWrap(StrToHex($enc['output'])), "</tt>";
 
-  $rawsize = strlen($enc['output']);
+  $rawsize = strlen($enc['output'] ?? '');
 
   echo '<h2>After Restore</h2>';
 
@@ -184,7 +184,7 @@
   echo "<p>Our data, encrypted and compressed:</p><pre>", print_r($enc, true), "</pre>";
   echo "<p>Our data, as the stream only, in hex:</p><tt>", MakeWrap(StrToHex($enc['output'])), "</tt>";
 
-  $compsize = strlen($enc['output']);
+  $compsize = strlen($enc['output'] ?? '');
 
   $pct = 100 - (floor(($compsize / $rawsize) * 1000)/10);
 
@@ -207,7 +207,7 @@
   echo '<h2>And undone</h2>';
 
   $dsc = BlockDescramble($bsc, $LocalKey);
-  echo "<p>Recovery:</p><pre>", print_r(unserialize($dsc), true), "</pre>";
+  echo "<p>Recovery:</p><pre>", print_r(unserialize($dsc ?? ''), true), "</pre>";
 
 
 

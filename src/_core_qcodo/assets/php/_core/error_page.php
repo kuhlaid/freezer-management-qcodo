@@ -16,7 +16,7 @@
 */
 
 
-	$__exc_strMessageBody = htmlentities($__exc_strMessage);
+	$__exc_strMessageBody = htmlentities($__exc_strMessage ?? '');
 	$__exc_strMessageBody = str_replace(" ", "&nbsp;", str_replace("\n", "<br/>\n", $__exc_strMessageBody));
 	$__exc_strMessageBody = str_replace(":&nbsp;", ": ", $__exc_strMessageBody);
 	$__exc_objFileArray = file($__exc_strFilename);
@@ -83,9 +83,9 @@
 						_p('<pre>', false);
 						for ($__exc_intLine = max(1, $__exc_intLineNumber - 5); $__exc_intLine <= min(count($__exc_objFileArray), $__exc_intLineNumber + 5); $__exc_intLine++) {
 							if ($__exc_intLineNumber == $__exc_intLine)
-								printf("<font color=red>Line %s:    %s</font>", $__exc_intLine, htmlentities($__exc_objFileArray[$__exc_intLine - 1]));
+								printf("<font color=red>Line %s:    %s</font>", $__exc_intLine, htmlentities($__exc_objFileArray[$__exc_intLine - 1] ?? ''));
 							else
-								printf("Line %s:    %s", $__exc_intLine, htmlentities($__exc_objFileArray[$__exc_intLine - 1]));
+								printf("Line %s:    %s", $__exc_intLine, htmlentities($__exc_objFileArray[$__exc_intLine - 1] ?? ''));
 						}
 						_p('</pre>', false);
 ?>
@@ -101,9 +101,9 @@
 							$__exc_strJavascriptLabel);
 						printf('<br /><br /><div id="%s" class="code" style="Display: none;"><pre>%s</pre></div><br />',
 							$__exc_strJavascriptLabel,
-							htmlentities($__exc_objErrorAttribute->Contents));
+							htmlentities($__exc_objErrorAttribute->Contents ?? ''));
 					} else
-						printf("%s\n<br /><br />\n", htmlentities($__exc_objErrorAttribute->Contents));
+						printf("%s\n<br /><br />\n", htmlentities($__exc_objErrorAttribute->Contents ?? ''));
 				}
 
 ?>
@@ -144,11 +144,11 @@
 									if (strpos($__exc_StrSessionKey, 'qform') !== 0)
 										$__exc_ObjSessionVarArray[$__exc_StrSessionKey] = $__exc_StrSessionValue;
 								}
-								$__exc_StrVarExport = htmlentities(var_export($__exc_ObjSessionVarArray, true));
+								$__exc_StrVarExport = htmlentities(var_export($__exc_ObjSessionVarArray, true) ?? '');
 							} else if (($__exc_ObjVariableArray[$__exc_Key] instanceof QControl) || ($__exc_ObjVariableArray[$__exc_Key] instanceof QForm))
-								$__exc_StrVarExport = htmlentities($__exc_ObjVariableArray[$__exc_Key]->VarExport());
+								$__exc_StrVarExport = htmlentities($__exc_ObjVariableArray[$__exc_Key]->VarExport() ?? '');
 							else
-								$__exc_StrVarExport = htmlentities(var_export($__exc_ObjVariableArray[$__exc_Key], true));
+								$__exc_StrVarExport = htmlentities(var_export($__exc_ObjVariableArray[$__exc_Key], true) ?? '');
 
 							$__exc_StrToDisplay .= sprintf("  <a href=\"javascript:RenderPage(%s)\" title=\"%s\">%s</a>\n", $__exc_Key, $__exc_StrVarExport, $__exc_Key);
 							$__exc_StrToScript .= sprintf("  %s = \"<pre>%s</pre>\";\n", $__exc_Key, PrepDataForScript($__exc_StrVarExport));

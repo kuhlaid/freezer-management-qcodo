@@ -115,7 +115,7 @@ class PHPExcel_CachedObjectStorage_PHPTemp extends PHPExcel_CachedObjectStorage_
 		//	Set current entry to the requested entry
 		$this->_currentObjectID = $pCoord;
 		fseek($this->_fileHandle,$this->_cellCache[$pCoord]['ptr']);
-		$this->_currentObject = unserialize(fread($this->_fileHandle,$this->_cellCache[$pCoord]['sz']));
+		$this->_currentObject = unserialize(fread($this->_fileHandle,$this->_cellCache[$pCoord]['sz']) ?? '');
         //    Re-attach this as the cell's parent
         $this->_currentObject->attach($this);
 

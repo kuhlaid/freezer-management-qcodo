@@ -22,7 +22,7 @@
 		 * @return string the first character, or null
 		 */
 		public final static function FirstCharacter($strString) {
-			if (strlen($strString) > 0)
+			if (strlen($strString ?? '') > 0)
 				return substr($strString, 0 , 1);
 			else
 				return null;
@@ -35,7 +35,7 @@
 		 * @return string the last character, or null
 		 */
 		public final static function LastCharacter($strString) {
-			$intLength = strlen($strString);
+			$intLength = strlen($strString ?? '');
 			if ($intLength > 0)
 				return substr($strString, $intLength - 1);
 			else
@@ -50,11 +50,11 @@
 		 */
 		public final static function Truncate($strText, $intMaxLength) {
 			// wpg - we can specify that the string start from the back instead of front
-			if ($intMaxLength < 0 && strlen($strText) > -$intMaxLength) {
-				if (strlen($strText) > -$intMaxLength)
+			if ($intMaxLength < 0 && strlen($strText ?? '') > -$intMaxLength) {
+				if (strlen($strText ?? '') > -$intMaxLength)
 					return  "...".substr($strText, $intMaxLength);
 			}
-			elseif (strlen($strText) > $intMaxLength && $intMaxLength > 0)
+			elseif (strlen($strText ?? '') > $intMaxLength && $intMaxLength > 0)
 				return substr($strText, 0, $intMaxLength - 3) . "...";
 			else
 				return $strText;

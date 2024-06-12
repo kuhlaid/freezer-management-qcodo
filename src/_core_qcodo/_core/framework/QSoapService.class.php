@@ -288,9 +288,9 @@
 				$objReflectionProperties = $objReflection->getStaticProperties();
 				$strNamespace = $objReflectionProperties['DefaultNamespace'];
 			}
-			$strNamespace = trim($strNamespace);
+			$strNamespace = trim($strNamespace ?? '');
 			if (QString::LastCharacter($strNamespace) == '/')
-				$strNamespace = substr($strNamespace, 0, strlen($strNamespace) - 1);
+				$strNamespace = substr($strNamespace, 0, strlen($strNamespace ?? '') - 1);
 
 			// Check for Cached Disco
 			if ($strDisco === false) {
@@ -504,7 +504,7 @@
 						$blnArrayArray = array();
 						$strCommentArray = explode("\n", $strComments);
 						foreach ($strCommentArray as $strCommentLine) {
-							$strCommentLine = trim($strCommentLine);
+							$strCommentLine = trim($strCommentLine ?? '');
 							$strMatches = array();
 	
 							preg_match_all ("/[\s]*\*[\s]*@param[\s]+([a-zA-Z0-9_]+)(\[\])?[\s]+[&$]*([a-zA-Z0-9_]+)/", $strCommentLine, $strMatches);

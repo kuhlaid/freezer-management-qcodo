@@ -1364,7 +1364,7 @@ class PHPExcel_Calculation_MathTrig {
 		// Truncate
 		$adjust = pow(10, $digits);
 
-		if (($digits > 0) && (rtrim(intval((abs($value) - abs(intval($value))) * $adjust),'0') < $adjust/10))
+		if (($digits > 0) && (rtrim(intval((abs($value ?? '') - abs(intval($value))) * $adjust),'0') < $adjust/10))
 			return $value;
 
 		return (intval($value * $adjust)) / $adjust;

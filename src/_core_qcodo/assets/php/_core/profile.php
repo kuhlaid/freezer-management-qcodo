@@ -4,7 +4,7 @@ $intDatabaseIndex = $_POST['intDatabaseIndex'];
 $strProfileData = $_POST['strProfileData'];
 $strReferrer = $_POST['strReferrer'];
 
-$objProfileArray = unserialize(base64_decode($strProfileData));
+$objProfileArray = unserialize(base64_decode($strProfileData) ?? '');
 $objProfileArray = QType::Cast($objProfileArray, QType::ArrayType);
 if ((count($objProfileArray) % 2) != 0)
 	throw new Exception('Database Profiling data appears to have been corrupted.');

@@ -15,19 +15,20 @@ services:
         ports:
           - "8082:3306"
   website:
-    container_name: php74
+    container_name: php81
     build:
       context: ./
     links:
       - "mysql:database"
     volumes:
-      - ./src:/var/www/html
+      - type: bind
+        source: ./src
+        target: /var/www/html
     ports:
       - 8000:80
     depends_on:
       - mysql
     environment:
-      APPLICATION_NAME: ${APPLICATION_NAME}
       DB_NAME: ${DB_NAME}
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}

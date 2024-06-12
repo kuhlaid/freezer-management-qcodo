@@ -191,7 +191,7 @@
 			$this->strSerializedData = parent::format(DateTime::ISO8601);
 			return array('blnDateNull', 'blnTimeNull', 'strSerializedData');
 		}
-		public function __wakeup() {
+		public function __wakeup(): void {
 			parent::__construct($this->strSerializedData);
 		}
 
@@ -258,11 +258,11 @@
 
 			$intStartPosition = 0;
 			for ($intIndex = 0; $intIndex < count($strArray); $intIndex++) {
-				$strToken = trim($strArray[$intIndex]);
+				$strToken = trim($strArray[$intIndex] ?? '');
 				if ($strToken) {
 					$intEndPosition = strpos($strFormat, $strArray[$intIndex], $intStartPosition);
 					$strToReturn .= substr($strFormat, $intStartPosition, $intEndPosition - $intStartPosition);
-					$intStartPosition = $intEndPosition + strlen($strArray[$intIndex]);
+					$intStartPosition = $intEndPosition + strlen($strArray[$intIndex] ?? '');
 
 					switch ($strArray[$intIndex]) {
 						case 'M':
@@ -347,18 +347,18 @@
 				}
 			}
 
-			if ($intStartPosition < strlen($strFormat))
+			if ($intStartPosition < strlen($strFormat ?? ''))
 				$strToReturn .= substr($strFormat, $intStartPosition);
 
 			return $strToReturn;
 		}
 
-		public function format($strFormat) {
+		public function format(string $format): string {
 			$this->ReinforceNullProperties();
 			return parent::format($strFormat);
 		}
 
-		public function setTime($intHour, $intMinute, $intSecond=NULL, $microseconds = NULL) {
+		public function setTime(int $intHour, int $intMinute, int $intSecond=NULL, int $microseconds = 0): DateTime {
 			$intHour = QType::Cast($intHour, QType::Integer);
 			$intMinute = QType::Cast($intMinute, QType::Integer);
 			$intSecond = QType::Cast($intSecond, QType::Integer);
@@ -367,7 +367,7 @@
 			return $this;
 		}
 
-		public function setDate($intYear, $intMonth, $intDay) {
+		public function setDate(int $intYear, int $intMonth, int $intDay): DateTime {
 			$intYear = QType::Cast($intYear, QType::Integer);
 			$intMonth = QType::Cast($intMonth, QType::Integer);
 			$intDay = QType::Cast($intDay, QType::Integer);
@@ -500,12 +500,12 @@
 			return $intDifference;
 		}
 
-		public function add($dtsSpan=NULL){
+		public function add(DateInterval $interval): DateTime{
 			// Get this DateTime timestamp
 			$intTimestamp = $this->Timestamp;
 
 			// And add the Span Second count to it
-			$this->Timestamp = $this->Timestamp + $dtsSpan->Seconds;
+			$this->Timestamp = $this->Timestamp + $interval->Seconds;
 			return $this;
 		}
 
@@ -545,8 +545,8 @@
 			return $this;
 		}
 
-		public function Modify($mixValue) {
-			parent::modify($mixValue);
+		public function Modify(string $modifier): DateTime|false {
+			parent::modify($modifier);
 			return $this;
 		}
 

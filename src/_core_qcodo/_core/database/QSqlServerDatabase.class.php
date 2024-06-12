@@ -83,7 +83,7 @@
 			// Setup limit suffix (if applicable) via a TOP clause 
 			// Add QCODO_OFFSET tag if applicable
 
-			if (strlen($strLimitInfo)) {
+			if (strlen($strLimitInfo ?? '')) {
 				if (strpos($strLimitInfo, ';') !== false)
 					throw new Exception('Invalid Semicolon in LIMIT Info');
 				if (strpos($strLimitInfo, '`') !== false)
@@ -117,7 +117,7 @@
 
 		public function SqlSortByVariable($strSortByInfo) {
 			// Setup sorting information (if applicable) via a ORDER BY clause
-			if (strlen($strSortByInfo)) {
+			if (strlen($strSortByInfo ?? '')) {
 				if (strpos($strSortByInfo, ';') !== false)
 					throw new Exception('Invalid Semicolon in ORDER BY Info');
 				if (strpos($strSortByInfo, '`') !== false)
@@ -638,8 +638,8 @@
 				$columnTrimmed = $this->strColumnArray[$strColumnName];
 				
 				// wpg - mssql_query seems to return whitespaces so we will trim these
-				if (isset($columnTrimmed) && is_string($columnTrimmed) && strlen($columnTrimmed)>0)
-					$columnTrimmed = trim($this->strColumnArray[$strColumnName]);
+				if (isset($columnTrimmed) && is_string($columnTrimmed) && strlen($columnTrimmed ?? '')>0)
+					$columnTrimmed = trim($this->strColumnArray[$strColumnName] ?? '');
 				
 				switch ($strColumnType) {
 					case QDatabaseFieldType::Bit:

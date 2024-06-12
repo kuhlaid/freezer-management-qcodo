@@ -460,11 +460,11 @@ class PHPExcel_Style_NumberFormat extends PHPExcel_Style_Supervisor implements P
 			$value = round( (100 * $value), 0) . '%';
 		} else {
 			if (preg_match('/\.[#0]+/i', $format, $m)) {
-				$s = substr($m[0], 0, 1) . (strlen($m[0]) - 1);
+				$s = substr($m[0], 0, 1) . (strlen($m[0] ?? '') - 1);
 				$format = str_replace($m[0], $s, $format);
 			}
 			if (preg_match('/^[#0]+/', $format, $m)) {
-				$format = str_replace($m[0], strlen($m[0]), $format);
+				$format = str_replace($m[0], strlen($m[0] ?? ''), $format);
 			}
 			$format = '%' . str_replace('%', 'f%%', $format);
 
@@ -477,8 +477,8 @@ class PHPExcel_Style_NumberFormat extends PHPExcel_Style_Supervisor implements P
 		$sign = ($value < 0) ? '-' : '';
 
 		$integerPart = floor(abs($value));
-		$decimalPart = trim(fmod(abs($value),1),'0.');
-		$decimalLength = strlen($decimalPart);
+		$decimalPart = trim(fmod(abs($value ?? ''),1),'0.');
+		$decimalLength = strlen($decimalPart ?? '');
 		$decimalDivisor = pow(10,$decimalLength);
 
 		$GCD = PHPExcel_Calculation_MathTrig::GCD($decimalPart,$decimalDivisor);
@@ -512,7 +512,7 @@ class PHPExcel_Style_NumberFormat extends PHPExcel_Style_Supervisor implements P
 
 			foreach($result as $block) {
 				$divisor = 1 . $block[0];
-				$size = strlen($block[0]);
+				$size = strlen($block[0] ?? '');
 				$offset = $block[1];
 
 				$blockValue = sprintf(
@@ -632,7 +632,7 @@ class PHPExcel_Style_NumberFormat extends PHPExcel_Style_Supervisor implements P
 				$scale = 1; // same as no scale
 				$matches = array();
 				if (preg_match('/(#|0)(,+)/', $format, $matches)) {
-					$scale = pow(1000, strlen($matches[2]));
+					$scale = pow(1000, strlen($matches[2] ?? ''));
 
 					// strip the commas
 					$format = preg_replace('/0,+/', '0', $format);
@@ -663,11 +663,11 @@ class PHPExcel_Style_NumberFormat extends PHPExcel_Style_Supervisor implements P
 						$right = $matches[3];
 
 						// minimun width of formatted number (including dot)
-						$minWidth = strlen($left) + strlen($dec) + strlen($right);
+						$minWidth = strlen($left ?? '') + strlen($dec ?? '') + strlen($right ?? '');
 						if ($useThousands) {
 							$value = number_format(
 										$value
-										, strlen($right)
+										, strlen($right ?? '')
 										, PHPExcel_Shared_String::getDecimalSeparator()
 										, PHPExcel_Shared_String::getThousandsSeparator()
 									);
@@ -679,7 +679,7 @@ class PHPExcel_Style_NumberFormat extends PHPExcel_Style_Supervisor implements P
 							} elseif (preg_match('/0([^\d\.]+)0/', $format)) {
 								$value = self::_complexNumberFormatMask($value, $format);
 							} else {
-								$sprintf_pattern = "%0$minWidth." . strlen($right) . "f";
+								$sprintf_pattern = "%0$minWidth." . strlen($right ?? '') . "f";
 								$value = sprintf($sprintf_pattern, $value);
 								$value = preg_replace($number_regex, $value, $format);
 							}

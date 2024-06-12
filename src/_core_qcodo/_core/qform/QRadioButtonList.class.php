@@ -85,7 +85,7 @@
 				$strAccessKey = "";
 
 			$strStyle = $this->GetStyleAttributes();
-			if (strlen($strStyle) > 0)
+			if (strlen($strStyle ?? '') > 0)
 				$strStyle = sprintf('style="%s" ', $strStyle);
 
 			$strCustomAttributes = $this->GetCustomAttributes();
@@ -177,7 +177,7 @@
 								$strDisabledStart,
 								$this->strControlId,
 								$intIndex,
-								($this->blnHtmlEntities) ? QApplication::HtmlEntities($this->objItemsArray[$intIndex]->Name) : $this->objItemsArray[$intIndex]->Name,
+								($this->blnHtmlEntities) ? QApplication::htmlentities($this->objItemsArray[$intIndex]->Name ?? '') : $this->objItemsArray[$intIndex]->Name,
 								$this->strControlId,
 								$intIndex,
 								$this->strControlId,
@@ -200,7 +200,7 @@
 								$strTabIndex,
 								$this->strControlId,
 								$intIndex,
-								($this->blnHtmlEntities) ? QApplication::HtmlEntities($this->objItemsArray[$intIndex]->Name) : $this->objItemsArray[$intIndex]->Name,
+								($this->blnHtmlEntities) ? QApplication::htmlentities($this->objItemsArray[$intIndex]->Name ?? '') : $this->objItemsArray[$intIndex]->Name,
 								$strDisabledEnd);
 						}
 					}

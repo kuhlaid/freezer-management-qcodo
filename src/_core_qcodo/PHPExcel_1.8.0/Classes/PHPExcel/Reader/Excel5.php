@@ -475,7 +475,7 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 		$this->_loadOLE($pFilename);
 
 		// total byte size of Excel data (workbook global substream + sheet substreams)
-		$this->_dataSize = strlen($this->_data);
+		$this->_dataSize = strlen($this->_data ?? '');
 
 		$this->_pos		= 0;
 		$this->_sheets	= array();
@@ -524,7 +524,7 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 		$this->_loadOLE($pFilename);
 
 		// total byte size of Excel data (workbook global substream + sheet substreams)
-		$this->_dataSize = strlen($this->_data);
+		$this->_dataSize = strlen($this->_data ?? '');
 
 		// initialize
 		$this->_pos    = 0;
@@ -626,7 +626,7 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 		$this->_readDocumentSummaryInformation();
 
 		// total byte size of Excel data (workbook global substream + sheet substreams)
-		$this->_dataSize = strlen($this->_data);
+		$this->_dataSize = strlen($this->_data ?? '');
 
 		// initialize
 		$this->_pos					= 0;
@@ -1006,7 +1006,7 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 						//		Bar!$A$1:$IV$2
 
 						$explodes = explode('!', $range);	// FIXME: what if sheetname contains exclamation mark?
-						$sheetName = trim($explodes[0], "'");
+						$sheetName = trim($explodes[0], "'" ?? '');
 
 						if (count($explodes) == 2) {
 							if (strpos($explodes[1], ':') === FALSE) {
@@ -1072,7 +1072,7 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 
 				if (count($explodes) == 2) {
 					if (($docSheet = $this->_phpExcel->getSheetByName($explodes[0])) ||
-						($docSheet = $this->_phpExcel->getSheetByName(trim($explodes[0],"'")))) {
+						($docSheet = $this->_phpExcel->getSheetByName(trim($explodes[0],"'" ?? '')))) {
 						$extractedRange = $explodes[1];
 						$extractedRange = str_replace('$', '', $extractedRange);
 
@@ -1241,7 +1241,7 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 					$byteLength = self::_GetInt4d($this->_summaryInformation, $secOffset + 4 + $offset);
 					$value = substr($this->_summaryInformation, $secOffset + 8 + $offset, $byteLength);
 					$value = PHPExcel_Shared_String::ConvertEncoding($value, 'UTF-8', $codePage);
-					$value = rtrim($value);
+					$value = rtrim($value ?? '');
 					break;
 
 				case 0x40: // Filetime (64-bit value representing the number of 100-nanosecond intervals since January 1, 1601)
@@ -1412,7 +1412,7 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 					$byteLength = self::_GetInt4d($this->_documentSummaryInformation, $secOffset + 4 + $offset);
 					$value = substr($this->_documentSummaryInformation, $secOffset + 8 + $offset, $byteLength);
 					$value = PHPExcel_Shared_String::ConvertEncoding($value, 'UTF-8', $codePage);
-					$value = rtrim($value);
+					$value = rtrim($value ?? '');
 					break;
 
 				case 0x40:	//	Filetime (64-bit value representing the number of 100-nanosecond intervals since January 1, 1601)
@@ -1552,7 +1552,7 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 
 			$cellAddress = str_replace('$','',$cellAddress);
 			$noteLength = self::_GetInt2d($recordData, 4);
-			$noteText = trim(substr($recordData, 6));
+			$noteText = trim(substr($recordData, 6 ?? ''));
 //			echo 'Note Length=',$noteLength,'<br />';
 //			echo 'Note Text=',$noteText,'<br />';
 
@@ -1742,7 +1742,7 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 	{
 		$pwarray = str_repeat("\0", 64);
 
-		for ($i = 0; $i < strlen($password); $i++) {
+		for ($i = 0; $i < strlen($password ?? ''); $i++) {
 			$o = ord(substr($password, $i, 1));
 			$pwarray[2 * $i] = chr($o & 0xff);
 			$pwarray[2 * $i + 1] = chr(($o >> 8) & 0xff);
@@ -2597,7 +2597,7 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 		$offset = 0;
 
 		// there are 4 types of records
-		if (strlen($recordData) > 4) {
+		if (strlen($recordData ?? '') > 4) {
 			// external reference
 			// offset: 0; size: 2; number of sheet names ($nm)
 			$nm = self::_GetInt2d($recordData, 0);
@@ -2927,7 +2927,7 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 						// 1st fragment compressed
 						// this fragment uncompressed
 						$newstr = '';
-						for ($j = 0; $j < strlen($retstr); ++$j) {
+						for ($j = 0; $j < strlen($retstr ?? ''); ++$j) {
 							$newstr .= $retstr[$j] . chr(0);
 						}
 						$retstr = $newstr;
@@ -5079,7 +5079,7 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 
 			$rgbString = substr($iData, 12);
 			$rgbTriples = array();
-			while (strlen($rgbString) > 0) {
+			while (strlen($rgbString ?? '') > 0) {
 				$rgbTriples[] = unpack('Cb/Cg/Cr', $rgbString);
 				$rgbString = substr($rgbString, 3);
 			}
@@ -5225,7 +5225,7 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 		//echo "\n----\n";
 
 		// offset: 2 + sz; size: variable (optional)
-		if (strlen($formulaStructure) > 2 + $sz) {
+		if (strlen($formulaStructure ?? '') > 2 + $sz) {
 			$additionalData = substr($formulaStructure, 2 + $sz);
 
 			// for debug: dump the additional data
@@ -5254,7 +5254,7 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 		// start parsing the formula data
 		$tokens = array();
 
-		while (strlen($formulaData) > 0 and $token = $this->_getNextToken($formulaData, $baseCell)) {
+		while (strlen($formulaData ?? '') > 0 and $token = $this->_getNextToken($formulaData, $baseCell)) {
 			$tokens[] = $token;
 			$formulaData = substr($formulaData, $token['size']);
 
@@ -6739,7 +6739,7 @@ class PHPExcel_Reader_Excel5 extends PHPExcel_Reader_Abstract implements PHPExce
 	private static function _uncompressByteString($string)
 	{
 		$uncompressedString = '';
-		$strLen = strlen($string);
+		$strLen = strlen($string ?? '');
 		for ($i = 0; $i < $strLen; ++$i) {
 			$uncompressedString .= $string[$i] . "\0";
 		}

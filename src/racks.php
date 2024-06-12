@@ -127,7 +127,7 @@ class RackListForm8 extends RackListFormBase {
 				// 			return null;
 
 				$freezerName='';
-			if (array_key_exists($objRack->Freezer, $this->objFreezerArray) && trim($objRack->Freezer)!="")
+			if (array_key_exists($objRack->Freezer, $this->objFreezerArray) && trim($objRack->Freezer ?? '')!="")
 				$freezerName=$this->objFreezerArray[$objRack->Freezer];
 			return '<a href="freezer-view.php?intFreezer='.$objRack->Freezer.'">'.$freezerName.'</a>'.($objRack->Shelf ? "<br/>Shelf #".$objRack->Shelf:'');
 	}

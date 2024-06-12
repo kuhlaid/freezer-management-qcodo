@@ -446,7 +446,7 @@ class PHPExcel_Shared_OLE
 	public static function Asc2Ucs($ascii)
 	{
 		$rawname = '';
-		for ($i = 0; $i < strlen($ascii); ++$i) {
+		for ($i = 0; $i < strlen($ascii ?? ''); ++$i) {
 			$rawname .= $ascii{$i} . "\x00";
 		}
 		return $rawname;
@@ -508,7 +508,7 @@ class PHPExcel_Shared_OLE
 	*/
 	public static function OLE2LocalDate($string)
 	{
-		if (strlen($string) != 8) {
+		if (strlen($string ?? '') != 8) {
 			return new PEAR_Error("Expecting 8 byte string");
 		}
 

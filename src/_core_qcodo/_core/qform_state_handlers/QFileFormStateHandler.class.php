@@ -66,7 +66,7 @@
 			$strPrefix = self::$FileNamePrefix . $strSessionId;
 
 			// Go through all the files
-			if (strlen($strSessionId)) {
+			if (strlen($strSessionId ?? '')) {
 				$objDirectory = dir(self::$StatePath);
 				while (($strFile = $objDirectory->read()) !== false) {
 					$intPosition = strpos($strFile, $strPrefix);

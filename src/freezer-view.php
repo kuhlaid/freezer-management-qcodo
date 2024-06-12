@@ -141,7 +141,7 @@ class FreezerView extends BoxListFormBase {
 		if ($objBox->RackId != ''){
 			// if we are changing racks then add it
 			if ($objBox->RackId != $rack){
-				$rack = trim($objBox->RackId);
+				$rack = trim($objBox->RackId ?? '');
 				$notes='';
 				$rWidth = 113;
 				if ($objBox->RackId) {
@@ -567,7 +567,7 @@ class FreezerView8_af extends FreezerView {
 				// if we are changing racks then add it
 				if ($objBox->RackId != $rack){
 
-					$rack = trim($objBox->RackId);
+					$rack = trim($objBox->RackId ?? '');
 					$notes='';
 					$rWidth = 113;
 					if ($objBox->RackId) {

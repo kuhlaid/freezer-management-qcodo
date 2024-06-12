@@ -5,7 +5,7 @@
 		exit("No path_to_prepend.txt file was found.\r\nPlease be sure to specify the absolute path to prepend.inc.php in the ./path_to_prepend.txt file!\r\n");
 
 	// Next, use the absolute path found in path_to_prepend.txt
-	$strPathToPrepend = trim(file_get_contents($strPathToPrependTextFile));
+	$strPathToPrepend = trim(file_get_contents($strPathToPrependTextFile ?? ''));
 
 	if (!is_dir($strPathToPrepend))
 		exit("The text value found in the ./path_to_prepend.txt file does not appear to be a valid directory.\r\nPlease be sre to specify the correct absolute path to prepend.inc.php in the ./path_to_prepend.txt file!\r\n");

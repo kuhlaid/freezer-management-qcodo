@@ -52,7 +52,7 @@ The following variables values must reflect your installation needs.
   <cfloop list="#field#" index="line" delimiters="#crlf#">
 <!---     <cfset submitted_text = replace(submitted_text,"'","\'","All")>
     <cfset submitted_text = replace(submitted_text,"""","\""","All")> --->
-  	<cfset text = text & "^" & Trim(JSStringFormat(line)) & "#crlf#">
+  	<cfset text = text & "^" & trim(JSStringFormat(line ?? '')) & "#crlf#">
   </cfloop>
 </cfloop>
 
@@ -106,12 +106,12 @@ If your using the new version of mx 6.1 you can  use the following cfexecute tag
 			<cfset wrdList = mid(list,(LastIndexOf(':', list) + 2),(len(list) - (LastIndexOf(':', list) + 2)))>
 			<cfset wrdsList = "">
 			<cfloop list="#wrdList#" index="idx">
-				<cfset wrdsList = ListAppend(wrdsList, " '" & trim(replace(idx,"'","\'","All")) & "'", ", ")>
+				<cfset wrdsList = ListAppend(wrdsList, " '" & trim(replace(idx,"'","\'","All" ?? '')) & "'", ", ")>
 			</cfloop>
       <cfset wrdsList = Right(wrdsList, Len(wrdsList) - 1)>
 			<!--- javascript --->
-			<cfset texts.words = ListAppend(texts.words, "words[#input_cnt#][#word_cnt#] = '#trim(replace(bad_word,"'","\'","All"))#';", "#Chr(13)##Chr(10)#")>
-			<cfset texts.words = ListAppend(texts.words, "suggs[#input_cnt#][#word_cnt#] = [#trim(wrdsList)#];", "#Chr(13)##Chr(10)#")>
+			<cfset texts.words = ListAppend(texts.words, "words[#input_cnt#][#word_cnt#] = '#trim(replace(bad_word,"'","\'","All" ?? ''))#';", "#Chr(13)##Chr(10)#")>
+			<cfset texts.words = ListAppend(texts.words, "suggs[#input_cnt#][#word_cnt#] = [#trim(wrdsList ?? '')#];", "#Chr(13)##Chr(10)#")>
 			<cfset word_cnt = word_cnt + 1>
 		<cfelseif find("*", list)>
       <cfset input_cnt = input_cnt + "1">

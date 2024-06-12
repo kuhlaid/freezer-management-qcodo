@@ -72,13 +72,13 @@
 
 					// Ensure that the Value is properly formatted (unquoted, single-quoted, or double-quoted)
 					if (substr($mixValue, 0, 1) == "'") {
-						if (substr($mixValue, strlen($mixValue) - 1) != "'")
+						if (substr($mixValue, strlen($mixValue ?? '') - 1) != "'")
 							throw new QCallerException(sprintf("Improperly formatted OverrideAttribute: %s", $mixOverrideItem));
-						$mixValue = substr($mixValue, 1, strlen($mixValue) - 2);
+						$mixValue = substr($mixValue, 1, strlen($mixValue ?? '') - 2);
 					} else if (substr($mixValue, 0, 1) == '"') {
-						if (substr($mixValue, strlen($mixValue) - 1) != '"')
+						if (substr($mixValue, strlen($mixValue ?? '') - 1) != '"')
 							throw new QCallerException(sprintf("Improperly formatted OverrideAttribute: %s", $mixOverrideItem));
-						$mixValue = substr($mixValue, 1, strlen($mixValue) - 2);
+						$mixValue = substr($mixValue, 1, strlen($mixValue ?? '') - 2);
 					}
 
 					// Apply the override

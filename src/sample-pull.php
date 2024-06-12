@@ -63,8 +63,8 @@ class SamplePullReport extends SampleListFormBase {
 
 		// 		$this->objDefaultWaitIcon = new QWaitIcon($this);
 		// 		$this->objDefaultWaitIcon->CssClass = 'waitIcon';
-		$this->freezerPullArray = unserialize(QSessionDB::get('__FREEZER_PULL_LIST__'));
-		$this->objSampleSelection = unserialize(QSessionDB::get('__SAMPLE_SELECTION_SEARCH__'));
+		$this->freezerPullArray = unserialize(QSessionDB::get('__FREEZER_PULL_LIST__') ?? '');
+		$this->objSampleSelection = unserialize(QSessionDB::get('__SAMPLE_SELECTION_SEARCH__') ?? '');
 		$this->strBoxes = new QPlain($this);
 		$this->boxView();
 
@@ -329,7 +329,7 @@ class SamplePullReport extends SampleListFormBase {
 
 	protected function chkSamplePull_Change($strFormId, $strControlId, $strParameter) {
 		$chkSamplePull = $this->GetControl($strControlId);
-		$this->freezerPullArray = unserialize(QSessionDB::get('__FREEZER_PULL_LIST__'));
+		$this->freezerPullArray = unserialize(QSessionDB::get('__FREEZER_PULL_LIST__') ?? '');
 		if (!is_array($this->freezerPullArray)) $this->freezerPullArray = array();
 
 		if ($chkSamplePull->Checked) {
@@ -346,7 +346,7 @@ class SamplePullReport extends SampleListFormBase {
 
 		$this->dtgSample_Bind();
 		// show or hide the sample pull report link depending on if we have any selections
-		// 		$th = unserialize(QSessionDB::get('__MAIN_APP_THIS__'));
+		// 		$th = unserialize(QSessionDB::get('__MAIN_APP_THIS__') ?? '');
 		// 		QApplication::ExecuteJavaScript(sprintf('$.get("sample-pull.php?option=c", function(data) { if(data==1) $("#dmI").show("slow");else $("#dmI").hide("fast")});', $th));
 	}
 
@@ -382,7 +382,7 @@ class SamplePullReport extends SampleListFormBase {
 
 	protected function dtgSample_Bind() {
 		// get the latest list of samples to pull
-		$this->freezerPullArray = unserialize(QSessionDB::get('__FREEZER_PULL_LIST__'));
+		$this->freezerPullArray = unserialize(QSessionDB::get('__FREEZER_PULL_LIST__') ?? '');
 
 		$samples = array_values($this->freezerPullArray);
 		if (count($this->freezerPullArray) > 0)

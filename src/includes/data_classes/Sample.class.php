@@ -39,7 +39,7 @@ class Sample extends SampleGen {
 	 * @abstract Generates the coded barcode for a particular sample type and number for a participant
 	 *
 	*/
-	public static function codedSample($s_type='S',$num=1, $caseid) {
+	public static function codedSample($s_type='S',$num=1, $caseid='') {
 		return Sample::$townArray[substr($caseid,0,1)].substr($caseid,1).Sample::$sampleTypeArray[$s_type].$num;
 	}
 
@@ -47,7 +47,7 @@ class Sample extends SampleGen {
 	 * @abstract Generates the human-readable barcode label for a particular sample type and number for a participant
 	 *
 	 */
-	public static function labelSample($s_type='S',$num=1, $caseid) {
+	public static function labelSample($s_type='S',$num=1, $caseid='') {
 		return 'J3-'.$caseid.'-'.$s_type.$num;
 	}
 

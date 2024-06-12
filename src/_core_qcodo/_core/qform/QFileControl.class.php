@@ -65,7 +65,7 @@
 		public function Validate() {
 			$this->strValidationError = "";
 			if ($this->blnRequired) {
-				if (strlen($this->strFileName) > 0)
+				if (strlen($this->strFileName ?? '') > 0)
 					return true;
 				else {
 					$this->strValidationError = sprintf("%s is required", $this->strName);

@@ -142,9 +142,9 @@ class Zend_Gdata_MediaMimeStream
         $activePart = $this->_parts[$this->_currentPart];
         $buffer = $activePart->read($bytesRequested);
 
-        while(strlen($buffer) < $bytesRequested) {
+        while(strlen($buffer ?? '') < $bytesRequested) {
           $this->_currentPart += 1;
-          $nextBuffer = $this->read($bytesRequested - strlen($buffer));
+          $nextBuffer = $this->read($bytesRequested - strlen($buffer ?? ''));
           if($nextBuffer === FALSE) {
             break;
           }

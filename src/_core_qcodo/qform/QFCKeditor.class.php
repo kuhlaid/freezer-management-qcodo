@@ -247,7 +247,7 @@
 				$this->strControlId,
 				$this->GetAttributes(),
 				$strStyle,
-				QApplication::HtmlEntities($this->strText));
+				QApplication::htmlentities($this->strText ?? ''));
 			}
 
 			return $strToReturn;
@@ -259,7 +259,7 @@
 
 		public function Validate() {
 			$this->strValidationError = "";
-			if ($this->intMinLength > (strlen($this->strText))) {
+			if ($this->intMinLength > (strlen($this->strText ?? ''))) {
 
 				if ($this->strName)
 					$this->strValidationError = _t(sprintf("%s too short (must be at least %s characters long)",$this->strName,$this->intMinLength));
@@ -269,7 +269,7 @@
 			}
 
 			if ($this->blnRequired) {
-				if (strlen($this->strText) > 0)
+				if (strlen($this->strText ?? '') > 0)
 					return true;
 				else {
 					if ($this->strName)

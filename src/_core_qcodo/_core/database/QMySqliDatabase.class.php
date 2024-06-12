@@ -15,7 +15,7 @@
 
 		public function SqlLimitVariableSuffix($strLimitInfo) {
 			// Setup limit suffix (if applicable) via a LIMIT clause 
-			if (strlen($strLimitInfo)) {
+			if (strlen($strLimitInfo ?? '')) {
 				if (strpos($strLimitInfo, ';') !== false)
 					throw new Exception('Invalid Semicolon in LIMIT Info');
 				if (strpos($strLimitInfo, '`') !== false)
@@ -28,7 +28,7 @@
 
 		public function SqlSortByVariable($strSortByInfo) {
 			// Setup sorting information (if applicable) via a ORDER BY clause
-			if (strlen($strSortByInfo)) {
+			if (strlen($strSortByInfo ?? '')) {
 				if (strpos($strSortByInfo, ';') !== false)
 					throw new Exception('Invalid Semicolon in ORDER BY Info');
 				if (strpos($strSortByInfo, '`') !== false)
@@ -240,7 +240,7 @@
 		// MySql defines KeyDefinition to be [OPTIONAL_NAME] ([COL], ...)
 		// If the key name exists, this will parse it out and return it
 		private function ParseNameFromKeyDefinition($strKeyDefinition) {
-			$strKeyDefinition = trim($strKeyDefinition);
+			$strKeyDefinition = trim($strKeyDefinition ?? '');
 
 			$intPosition = strpos($strKeyDefinition, '(');
 
@@ -251,11 +251,11 @@
 				return null;
 			
 			// If we're here, then we have a key name defined
-			$strName = trim(substr($strKeyDefinition, 0, $intPosition));
+			$strName = trim(substr($strKeyDefinition, 0, $intPosition ?? ''));
 			
 			// Rip Out leading and trailing "`" character (if applicable)
 			if (substr($strName, 0, 1) == '`')
-				return substr($strName, 1, strlen($strName) - 2);
+				return substr($strName, 1, strlen($strName ?? '') - 2);
 			else
 				return $strName;
 		}
@@ -263,18 +263,18 @@
 		// MySql defines KeyDefinition to be [OPTIONAL_NAME] ([COL], ...)
 		// This will return an array of strings that are the names [COL], etc.
 		private function ParseColumnNameArrayFromKeyDefinition($strKeyDefinition) {
-			$strKeyDefinition = trim($strKeyDefinition);
+			$strKeyDefinition = trim($strKeyDefinition ?? '');
 			
 			// Get rid of the opening "(" and the closing ")"
 			$intPosition = strpos($strKeyDefinition, '(');
 			if ($intPosition === false)
 				throw new Exception("Invalid Key Definition: $strKeyDefinition");
-			$strKeyDefinition = trim(substr($strKeyDefinition, $intPosition + 1));
+			$strKeyDefinition = trim(substr($strKeyDefinition, $intPosition + 1 ?? ''));
 
 			$intPosition = strpos($strKeyDefinition, ')');
 			if ($intPosition === false)
 				throw new Exception("Invalid Key Definition: $strKeyDefinition");
-			$strKeyDefinition = trim(substr($strKeyDefinition, 0, $intPosition));
+			$strKeyDefinition = trim(substr($strKeyDefinition, 0, $intPosition ?? ''));
 
 			// Create the Array
 			// TODO: Current method doesn't support key names with commas or parenthesis in them!
@@ -309,7 +309,7 @@
 				// So this is a key object if any of those key-related words exist at position 2
 				switch (2) {
 					case (strpos($strLine, 'PRIMARY KEY')):
-						$strKeyDefinition = substr($strLine, strlen('  PRIMARY KEY '));
+						$strKeyDefinition = substr($strLine, strlen('  PRIMARY KEY ' ?? ''));
 
 						$strKeyName = $this->ParseNameFromKeyDefinition($strKeyDefinition);
 						$strColumnNameArray = $this->ParseColumnNameArrayFromKeyDefinition($strKeyDefinition);
@@ -319,7 +319,7 @@
 						break;
 
 					case (strpos($strLine, 'UNIQUE KEY')):
-						$strKeyDefinition = substr($strLine, strlen('  UNIQUE KEY '));
+						$strKeyDefinition = substr($strLine, strlen('  UNIQUE KEY ' ?? ''));
 
 						$strKeyName = $this->ParseNameFromKeyDefinition($strKeyDefinition);
 						$strColumnNameArray = $this->ParseColumnNameArrayFromKeyDefinition($strKeyDefinition);
@@ -329,7 +329,7 @@
 						break;
 
 					case (strpos($strLine, 'KEY')):
-						$strKeyDefinition = substr($strLine, strlen('  KEY '));
+						$strKeyDefinition = substr($strLine, strlen('  KEY ' ?? ''));
 
 						$strKeyName = $this->ParseNameFromKeyDefinition($strKeyDefinition);
 						$strColumnNameArray = $this->ParseColumnNameArrayFromKeyDefinition($strKeyDefinition);
@@ -360,7 +360,7 @@
 				// * contains "FOREIGN KEY"
 				if ((strpos($strLine, "CONSTRAINT") == 2) &&
 					(strpos($strLine, "FOREIGN KEY") !== false)) {
-					$strLine = substr($strLine, strlen('  CONSTRAINT '));
+					$strLine = substr($strLine, strlen('  CONSTRAINT ' ?? ''));
 					
 					// By the end of the following lines, we will end up with a strTokenArray
 					// Index 0: the FK name
@@ -378,10 +378,10 @@
 					// Cleanup, and change Index 1 and Index 3 to be an array based on the
 					// parsed column name list
 					if (substr($strTokenArray[0], 0, 1) == '`')
-						$strTokenArray[0] = substr($strTokenArray[0], 1, strlen($strTokenArray[0]) - 2);
+						$strTokenArray[0] = substr($strTokenArray[0], 1, strlen($strTokenArray[0] ?? '') - 2);
 					$strTokenArray[1] = $this->ParseColumnNameArrayFromKeyDefinition($strTokenArray[1]);
 					if (substr($strTokenArray[2], 0, 1) == '`')
-						$strTokenArray[2] = substr($strTokenArray[2], 1, strlen($strTokenArray[2]) - 2);
+						$strTokenArray[2] = substr($strTokenArray[2], 1, strlen($strTokenArray[2] ?? '') - 2);
 					$strTokenArray[3] = $this->ParseColumnNameArrayFromKeyDefinition($strTokenArray[3]);
 					
 					// Create the FK object and add it to the return array
@@ -415,9 +415,9 @@
 			$strFinalLine = strtoupper($strLineArray[count($strLineArray) - 1]);
 
 			if (substr($strFinalLine, 0, 7) == ') TYPE=') {
-				return trim(substr($strFinalLine, 7));
+				return trim(substr($strFinalLine, 7 ?? ''));
 			} else if (substr($strFinalLine, 0, 9) == ') ENGINE=') {
-				return trim(substr($strFinalLine, 9));
+				return trim(substr($strFinalLine, 9 ?? ''));
 			} else
 				throw new Exception("Invalid Table Description");
 		}
@@ -515,7 +515,7 @@
 					case QDatabaseFieldType::Bit:
 						// Account for single bit value
 						$chrBit = $this->strColumnArray[$strColumnName];
-						if ((strlen($chrBit) == 1) && (ord($chrBit) == 0))
+						if ((strlen($chrBit ?? '') == 1) && (ord($chrBit) == 0))
 							return false;
 
 						// Otherwise, use PHP conditional to determine true or false

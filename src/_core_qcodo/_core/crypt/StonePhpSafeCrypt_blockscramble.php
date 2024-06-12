@@ -30,8 +30,8 @@
 
     $strongkey = md5($weakkey);
 
-    $keysize   = strlen($strongkey);                                       // because calling sizeof() every ten cycles is retarded
-    $datasize  = strlen($data);                                            // and again
+    $keysize   = strlen($strongkey ?? '');                                       // because calling sizeof() every ten cycles is retarded
+    $datasize  = strlen($data ?? '');                                            // and again
     $output    = str_repeat(' ', $datasize);                               // pre-allocate output buffer to prevent reallocation thrash
 
     $di        = 0;                                                        // data index cursor
@@ -65,9 +65,9 @@
 
     $strongkey = md5($weakkey);
 
-    $output    = str_repeat(' ', strlen($data));         // pre-allocate output buffer to prevent reallocation thrash
-    $keysize   = strlen($strongkey);                     // because calling sizeof() every ten cycles is retarded
-    $datasize  = strlen($data);                          // and again
+    $output    = str_repeat(' ', strlen($data ?? ''));         // pre-allocate output buffer to prevent reallocation thrash
+    $keysize   = strlen($strongkey ?? '');                     // because calling sizeof() every ten cycles is retarded
+    $datasize  = strlen($data ?? '');                          // and again
     
     $di        = 0;                                      // data index cursor
     $bi        = 0;                                      // block index cursor

@@ -351,7 +351,7 @@
 				if ($intEndPosition === false)
 					return $strHtml;
 				$strToken = substr($strHtml, $intStartPosition + 3, ($intEndPosition - $intStartPosition) - 3);
-				$strToken = trim($strToken);
+				$strToken = trim($strToken ?? '');
 
 				if ($strToken) {
 					// Because Eval doesn't utilize exception management, we need to do hack thru the PHP Error Handler
@@ -379,7 +379,7 @@
 					$strEvaledToken,
 					substr($strHtml, $intEndPosition + 2));
 
-				$intPosition = $intStartPosition + strlen($strEvaledToken);
+				$intPosition = $intStartPosition + strlen($strEvaledToken ?? '');
 			}
 
 			return $strHtml;
@@ -434,7 +434,7 @@
 		public function Sort_Click($strFormId, $strControlId, $strParameter) {
 			$this->blnModified = true;
 
-			if (strlen($strParameter)) {
+			if (strlen($strParameter ?? '')) {
 				// Sorting
 				$intColumnIndex = QType::Cast($strParameter, QType::Integer);
 				$objColumn = $this->objColumnArray[$intColumnIndex];
@@ -581,7 +581,7 @@
 					$strHtml = $this->ParseColumnHtml($objColumn, $objObject);
 
 					if ($objColumn->HtmlEntities)
-						$strHtml = QApplication::HtmlEntities($strHtml);
+						$strHtml = QApplication::htmlentities($strHtml ?? '');
 
 					 // For IE
 					if (QApplication::IsBrowser(QBrowserType::InternetExplorer) &&
@@ -663,7 +663,7 @@
 				if ($intEndPosition === false)
 					return $strHtml;
 				$strToken = substr($strHtml, $intStartPosition + 3, ($intEndPosition - $intStartPosition) - 3);
-				$strToken = trim($strToken);
+				$strToken = trim($strToken ?? '');
 
 				if ($strToken) {
 					// Because Eval doesn't utilize exception management, we need to do hack thru the PHP Error Handler
@@ -691,7 +691,7 @@
 					$strEvaledToken,
 					substr($strHtml, $intEndPosition + 2));
 
-				$intPosition = $intStartPosition + strlen($strEvaledToken);
+				$intPosition = $intStartPosition + strlen($strEvaledToken ?? '');
 			}
 
 			return $strHtml;

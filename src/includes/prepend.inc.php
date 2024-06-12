@@ -159,7 +159,7 @@ if (!defined('__PREPEND_INCLUDED__')) {
 		$needle = $strSearch;
 		$haystack =	$strSubject;
 		$ind = stripos($haystack, $needle);
-		$len = strlen($needle);
+		$len = strlen($needle ?? '');
 		if($ind !== false){
 			return substr($haystack, 0, $ind) . "<span class='hghLight bld'>" . substr($haystack, $ind, $len) . "</span>" .
 					highlightResults($needle, substr($haystack, $ind + $len));
@@ -176,7 +176,7 @@ if (!defined('__PREPEND_INCLUDED__')) {
 
 	function errorAlert( $text, $action='window.history.go(-1);', $mode=1 ) {
 		$text = nl2br( $text );
-		$text = addslashes( $text );
+		$text = addslashes( $text  ?? '');
 		$text = strip_tags( $text );
 
 		switch ( $mode ) {
@@ -223,7 +223,7 @@ if (!defined('__PREPEND_INCLUDED__')) {
 			return false;
 		}
 
-		$objTypeUserAccessArray = unserialize(__USER_ACL__);	// we need to parse out the array from the access constant
+		$objTypeUserAccessArray = unserialize(__USER_ACL__ ?? '');	// we need to parse out the array from the access constant
 
 		// we will check each user login access type
 		if ($objTypeUserAccessArray) foreach ($objTypeUserAccessArray as $objTypeUserAccess) {
@@ -416,7 +416,7 @@ if (!defined('__PREPEND_INCLUDED__')) {
 		define ('__DEMO_MODE__', true);
 
 	if (QSessionDB::get(__SESSION_PREFIX__.'LoggedInUserObj')) {
-		$objUser = unserialize(QSessionDB::get(__SESSION_PREFIX__.'LoggedInUserObj'));
+		$objUser = unserialize(QSessionDB::get(__SESSION_PREFIX__.'LoggedInUserObj') ?? '');
 
 		// if the user is logged in then set access
 		if ($objUser) {

@@ -128,7 +128,7 @@
 
 			$strAlt = null;
 			if ($this->strAlternateText)
-				$strAlt = ' alt="' . QApplication::HtmlEntities($this->strAlternateText) . '"';
+				$strAlt = ' alt="' . QApplication::htmlentities($this->strAlternateText ?? '') . '"';
 
 			// Render final "IMG SRC" tag
 			$strToReturn = sprintf('<img id="%s" src="%s" %s%s%s/>',
@@ -167,7 +167,7 @@
 			if (function_exists('gzcompress'))
 				$strData = gzuncompress($strData);
 
-			$objLabel = unserialize($strData);
+			$objLabel = unserialize($strData ?? '');
 			$objLabel->RenderImage();
 		}
 		
@@ -591,7 +591,7 @@
 
 						$this->strImagePath = realpath($this->strImagePath);
 
-						$strSourceImageType = trim(strtolower(substr($this->strImagePath, strrpos($this->strImagePath, '.') + 1)));
+						$strSourceImageType = trim(strtolower(substr($this->strImagePath, strrpos($this->strImagePath, '.' ?? '') + 1)));
 						switch ($strSourceImageType) {
 							case 'jpeg':
 							case 'jpg':
@@ -632,7 +632,7 @@
 						throw $objExc;
 					}
 
-					if (strlen($mixValue) != 6)
+					if (strlen($mixValue ?? '') != 6)
 						throw new QInvalidCastException('BackColor must be a 6-digit hexadecimal value');
 
 					// Verify ControlId is only Hexadecimal Digits

@@ -38,7 +38,7 @@ class BoxListForm8 extends BoxListFormBase {
 			}
 		}
 
-		$this->objSampleSelection = unserialize(QSessionDB::get('__SAMPLE_SELECTION_SEARCH__'));
+		$this->objSampleSelection = unserialize(QSessionDB::get('__SAMPLE_SELECTION_SEARCH__') ?? '');
 
 		// make things more efficient by just making one query to the type tables
 		$objTypeOfBoxArray = TypeOfBox::QueryArray(QQ::All(),null,null,array('id','name','columns','`rows`'));
@@ -277,7 +277,7 @@ class BoxListForm8 extends BoxListFormBase {
 		$boxName = $objBox->Name;
 		// if someone is searching on box name then run highlighter
 		if ($this->txtBox->Text != '')
-			$boxName = highlightResults(trim($this->txtBox->Text), $objBox->Name);
+			$boxName = highlightResults(trim($this->txtBox->Text ?? ''), $objBox->Name);
 
 		//			$objSample = Sample::QuerySingle(QQ::Equal(QQN::Sample()->BoxId, $objBox->Id), QQ::Clause(QQ::LimitInfo(1)), null, array('sample_type_id'));
 		$sampleType = '';
@@ -423,7 +423,7 @@ class BoxListForm8 extends BoxListFormBase {
 	public function dtgBox_IssuesColumn_Render(Box $objBox) {
 		// if someone is searching on box name then run highlighter
 		if ($this->txtBox->Text != '')
-			return highlightResults(trim($this->txtBox->Text), $objBox->Issues);
+			return highlightResults(trim($this->txtBox->Text ?? ''), $objBox->Issues);
 		else
 			return $objBox->Issues;
 	}
@@ -431,7 +431,7 @@ class BoxListForm8 extends BoxListFormBase {
 	public function dtgBox_Description_Render(Box $objBox) {
 		// if someone is searching on box name then run highlighter
 		if ($this->txtBox->Text != '')
-			return highlightResults(trim($this->txtBox->Text), $objBox->Description);
+			return highlightResults(trim($this->txtBox->Text ?? ''), $objBox->Description);
 		else
 			return $objBox->Description;
 	}
@@ -559,7 +559,7 @@ class BoxListForm8 extends BoxListFormBase {
 			return;
 		}
 		elseif ($this->txtBox->Text != '') {
-			$strAndCondition = "QQ::OrCondition(QQ::Like(QQN::Box()->Name,'%".trim($this->txtBox->Text)."%'),QQ::Like(QQN::Box()->Issues,'%".trim($this->txtBox->Text)."%'),QQ::Like(QQN::Box()->Description,'%".trim($this->txtBox->Text)."%'))";
+			$strAndCondition = "QQ::OrCondition(QQ::Like(QQN::Box()->Name,'%".trim($this->txtBox->Text ?? '')."%'),QQ::Like(QQN::Box()->Issues,'%".trim($this->txtBox->Text ?? '')."%'),QQ::Like(QQN::Box()->Description,'%".trim($this->txtBox->Text ?? '')."%'))";
 		}
 		elseif ($this->lstBoxType->SelectedValue != ''){
 			// filter by box type
